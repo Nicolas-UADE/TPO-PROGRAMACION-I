@@ -1,118 +1,137 @@
 # CRUD PRODUCTOS
 
-def buscar_producto(cod_productos, codigo):
-    pos = -1
-    i = 0
 
-    while i < len(cod_productos) and pos == -1:
-        if cod_productos[i] == codigo:
-            pos = i
-        i = i+1
+def alta_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos):
+    print("\n\n==========ALTA DE PRODUCTOS==========")
 
-    return pos
+    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
 
+    while pregunta_codigo == 0:
+            print("Codigo inexistente...")
+            pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
 
-def alta_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos):
+    if pregunta_codigo == -1:
+                menu_principal()
+                print("Volviendo al menu principal...\n\n")
 
-    codigo = int(input("Ingrese código del producto: "))
+    pos = busqueda_secuencial(IDS, pregunta_codigo)
 
-    pos = buscar_producto(cod_productos, codigo)
-
-    if pos != -1:
+    while pos != -1:
         print("Ya existe un producto con ese código.")
 
+        pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
+        
+        pos = busqueda_secuencial(IDS, pregunta_codigo)
+
     else:
-        nombre = input("Ingrese nombre del producto: ")
+        pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
 
-        print("1. Alimentos")
-        print("2. Limpieza")
-        print("3. Bebidas")
-        categoria = int(input("Ingrese categoría: "))
+        print("\n1. Alimentos\n2. Limpieza\n3. Bebidas")
+       
+        categoria = obtener_entero("Ingrese categoría... ",1,3)
 
-        while categoria < 1 or categoria > 3:
-            categoria = int(input("Categoría inválida. Reingrese: "))
-
-        precio = float(input("Ingrese precio: "))
+        precio = float(input("Ingrese precio... "))
 
         while precio <= 0:
-            precio = float(input("Precio inválido. Reingrese: "))
+            precio = float(input("Precio inválido. Reingrese... "))
 
-        stock = int(input("Ingrese stock: "))
-
-        while stock < 0:
-            stock = int(input("Stock inválido. Reingrese: "))
+        stock = obtener_entero("Ingrese stock... ",0,100000)
 
         descuento = float(input("Ingrese descuento: "))
 
         while descuento < 0 or descuento > 100:
             descuento = float(input("Descuento inválido. Reingrese: "))
 
-        cod_productos.append(codigo)
-        nom_productos.append(nombre)
-        categorias_productos.append(categoria)
-        precios_productos.append(precio)
-        stock_productos.append(stock)
+        IDS.append(pregunta_codigo)
+        PRODUCTOS.append(pregunta_nombre)
+        CATEGORIA.append(categoria)
+        PRECIOS.append(precio)
+        STOCK.append(stock)
         descuentos_productos.append(descuento)
 
-        print("Producto agregado correctamente.")
+        print("\n\nProducto agregado correctamente.\n\n")
+        print('===================')
 
 
-def baja_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos):
+def baja_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos):
 
-    codigo = int(input("Ingrese código del producto a eliminar: "))
+    print("\n\n==========BAJA DE PRODUCTOS==========")
 
-    pos = buscar_producto(cod_productos, codigo)
+    pregunta_codigo = obtener_entero("\n\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+
+    
+
+    while pregunta_codigo == 0:
+        print("Codigo inexistente...")
+        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+
+    if pregunta_codigo == -1:
+                    menu_principal()
+                    print("Volviendo al menu principal...\n\n")
+
+    pos = busqueda_secuencial(IDS, pregunta_codigo)
 
     if pos == -1:
         print("Producto inexistente.")
 
-    else:
-        cod_productos[pos] = -1
-        nom_productos[pos] = -1
-        categorias_productos[pos] = -1
-        precios_productos[pos] = -1
-        stock_productos[pos] = -1
+    pregunta_seguridad = obtener_caracter(f"\nEsta seguro de eliminar el producto{pregunta_codigo}? Y/N").upper()
+
+    if pregunta_seguridad == "Y":
+        
+        IDS[pos] = -1
+        PRODUCTOS[pos] = -1
+        CATEGORIA[pos] = -1
+        PRECIOS[pos] = -1
+        STOCK[pos] = -1
         descuentos_productos[pos] = -1
 
         print("Producto eliminado correctamente.")
+        print('===================')
+    else:
+        print("\nBaja de producto cancelada.")
+        print('===================')
+        
 
 
-def modificar_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos):
+def modificar_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos):
+    print("\n\n==========MODIFICACION DE PRODUCTOS==========")
 
-    codigo = int(input("Ingrese código del producto a modificar: "))
+    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
 
-    pos = buscar_producto(cod_productos, codigo)
+    while pregunta_codigo == 0:
+            print("Codigo inexistente...")
+            pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,10000)
+
+    if pregunta_codigo == -1:
+                menu_principal()
+                print("Volviendo al menu principal...\n\n")
+
+
+    pos = busqueda_secuencial(IDS, pregunta_codigo)
 
     if pos == -1:
         print("Producto inexistente.")
 
     else:
-        nom_productos[pos] = input("Ingrese nuevo nombre: ")
+        PRODUCTOS[pos] = input("Ingrese nuevo nombre... ").upper()
 
-        print("1. Alimentos")
-        print("2. Limpieza")
-        print("3. Bebidas")
+        print("\n1. Alimentos\n2. Limpieza\n3. Bebidas")
 
-        categoria = int(input("Ingrese nueva categoría: "))
+        categoria = obtener_caracter("\nIngrese nueva categoría... ")
 
-        while categoria < 1 or categoria > 3:
-            categoria = int(input("Categoría inválida. Reingrese: "))
+        CATEGORIA[pos] = categoria
 
-        categorias_productos[pos] = categoria
-
-        precio = float(input("Ingrese nuevo precio: "))
+        precio = float(input("Ingrese nuevo precio... "))
 
         while precio <= 0:
-            precio = float(input("Precio inválido. Reingrese: "))
+            print("Precio inválido.")
+            precio = float(input("Ingrese nuevo precio... "))
 
-        precios_productos[pos] = precio
+        PRECIOS[pos] = precio
 
-        stock = int(input("Ingrese nuevo stock: "))
+        stock = obtener_entero("Ingrese nuevo stock: ",0,1000000)
 
-        while stock < 0:
-            stock = int(input("Stock inválido. Reingrese: "))
-
-        stock_productos[pos] = stock
+        STOCK[pos] = stock
 
         descuento = float(input("Ingrese nuevo descuento: "))
 
@@ -122,30 +141,28 @@ def modificar_producto(cod_productos, nom_productos, categorias_productos, preci
         descuentos_productos[pos] = descuento
 
         print("Producto modificado correctamente.")
+        print('===================')
 
 
-def listar_productos(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos):
+def listar_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos):
 
-    print("----- PRODUCTOS -----")
+    print("\n\n==========LISTA DE PRODUCTOS==========")
 
-    for i in range(len(cod_productos)):
+    for i in range(len(IDS)):
 
-        if cod_productos[i] != -1:
+        if IDS[i] != -1:
 
-            print("Código:", cod_productos[i])
-            print("Nombre:", nom_productos[i])
+            print(f"Código:{IDS[i]} Nombre: {PRODUCTOS[i]}")
 
-            if categorias_productos[i] == 1:
+            if CATEGORIA[i] == 1:
                 print("Categoría: Alimentos")
-            elif categorias_productos[i] == 2:
+            elif CATEGORIA[i] == 2:
                 print("Categoría: Limpieza")
             else:
                 print("Categoría: Bebidas")
 
-            print("Precio:", precios_productos[i])
-            print("Stock:", stock_productos[i])
-            print("Descuento:", descuentos_productos[i], "%")
-            print("--------------------")
+            print(f"Precio: {PRECIOS[i]} Stock: {STOCK[i]} Descuento: {descuentos_productos[i]} %")
+    print('===================')
 
 
 
@@ -157,12 +174,12 @@ def listar_productos(cod_productos, nom_productos, categorias_productos, precios
 
 # CRUD CLIENTES 
 
-def buscar_cliente(cod_clientes, codigo):
+def buscar_cliente(cod_clientes, pregunta_codigo):
     pos = -1
     i = 0
 
     while i < len(cod_clientes) and pos == -1:
-        if cod_clientes[i] == codigo:
+        if cod_clientes[i] == pregunta_codigo:
             pos = i
         i = i + 1
 
@@ -171,15 +188,15 @@ def buscar_cliente(cod_clientes, codigo):
 
 def alta_cliente(cod_clientes, nom_clientes, tipos_clientes):
 
-    codigo = int(input("Ingrese código del cliente: "))
+    pregunta_codigo = int(input("Ingrese código del cliente: "))
 
-    pos = buscar_cliente(cod_clientes, codigo)
+    pos = buscar_cliente(cod_clientes, pregunta_codigo)
 
     if pos != -1:
         print("Ya existe un cliente con ese código.")
 
     else:
-        nombre = input("Ingrese nombre del cliente: ")
+        pregunta_nombre = input("Ingrese nombre del cliente: ")
 
         print("1. Frecuente")
         print("2. Mayorista")
@@ -190,8 +207,8 @@ def alta_cliente(cod_clientes, nom_clientes, tipos_clientes):
         while tipo < 1 or tipo > 3:
             tipo = int(input("Tipo inválido. Reingrese: "))
 
-        cod_clientes.append(codigo)
-        nom_clientes.append(nombre)
+        cod_clientes.append(pregunta_codigo)
+        nom_clientes.append(pregunta_nombre)
         tipos_clientes.append(tipo)
 
         print("Cliente agregado correctamente.")
@@ -199,9 +216,9 @@ def alta_cliente(cod_clientes, nom_clientes, tipos_clientes):
 
 def baja_cliente(cod_clientes, nom_clientes, tipos_clientes):
 
-    codigo = int(input("Ingrese código del cliente a eliminar: "))
+    pregunta_codigo = int(input("Ingrese código del cliente a eliminar: "))
 
-    pos = buscar_cliente(cod_clientes, codigo)
+    pos = buscar_cliente(cod_clientes, pregunta_codigo)
 
     if pos == -1:
         print("Cliente inexistente.")
@@ -216,9 +233,9 @@ def baja_cliente(cod_clientes, nom_clientes, tipos_clientes):
 
 def modificar_cliente(cod_clientes, nom_clientes, tipos_clientes):
 
-    codigo = int(input("Ingrese código del cliente a modificar: "))
+    pregunta_codigo = int(input("Ingrese código del cliente a modificar: "))
 
-    pos = buscar_cliente(cod_clientes, codigo)
+    pos = buscar_cliente(cod_clientes, pregunta_codigo)
 
     if pos == -1:
         print("Cliente inexistente.")
@@ -270,23 +287,23 @@ def listar_clientes(cod_clientes, nom_clientes, tipos_clientes):
 
 #   CRUD VENTAS 
 
-def buscar_venta(cod_ventas, codigo):
+def buscar_venta(cod_ventas, pregunta_codigo):
     pos = -1
     i = 0
 
     while i < len(cod_ventas) and pos == -1:
-        if cod_ventas[i] == codigo:
+        if cod_ventas[i] == pregunta_codigo:
             pos = i
         i = i + 1
 
     return pos
 
 
-def alta_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas, fechas_ventas, cod_clientes, cod_productos, stock_productos):
+def alta_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas, fechas_ventas, cod_clientes, IDS, STOCK):
 
-    codigo = int(input("Ingrese código de venta: "))
+    pregunta_codigo = int(input("Ingrese código de venta: "))
 
-    pos = buscar_venta(cod_ventas, codigo)
+    pos = buscar_venta(cod_ventas, pregunta_codigo)
 
     if pos != -1:
         print("Ya existe una venta con ese código.")
@@ -302,7 +319,7 @@ def alta_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas,
         else:
             cod_producto = int(input("Ingrese código del producto: "))
 
-            pos_producto = buscar_producto(cod_productos, cod_producto)
+            pos_producto = busqueda_secuencial(IDS, cod_producto)
 
             if pos_producto == -1:
                 print("Producto inexistente.")
@@ -313,28 +330,28 @@ def alta_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas,
                 while cantidad <= 0:
                     cantidad = int(input("Cantidad inválida. Reingrese: "))
 
-                if cantidad > stock_productos[pos_producto]:
+                if cantidad > STOCK[pos_producto]:
                     print("Stock insuficiente.")
 
                 else:
                     fecha = input("Ingrese fecha de venta: ")
 
-                    cod_ventas.append(codigo)
+                    cod_ventas.append(pregunta_codigo)
                     clientes_ventas.append(cod_cliente)
                     productos_ventas.append(cod_producto)
                     cantidades_ventas.append(cantidad)
                     fechas_ventas.append(fecha)
 
-                    stock_productos[pos_producto] = stock_productos[pos_producto] - cantidad
+                    STOCK[pos_producto] = STOCK[pos_producto] - cantidad
 
                     print("Venta registrada correctamente.")
 
 
 def baja_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas, fechas_ventas):
 
-    codigo = int(input("Ingrese código de venta a eliminar: "))
+    pregunta_codigo = int(input("Ingrese código de venta a eliminar: "))
 
-    pos = buscar_venta(cod_ventas, codigo)
+    pos = buscar_venta(cod_ventas, pregunta_codigo)
 
     if pos == -1:
         print("Venta inexistente.")
@@ -349,11 +366,11 @@ def baja_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas,
         print("Venta eliminada correctamente.")
 
 
-def modificar_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas, fechas_ventas, cod_clientes, cod_productos):
+def modificar_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ventas, fechas_ventas, cod_clientes, IDS):
 
-    codigo = int(input("Ingrese código de venta a modificar: "))
+    pregunta_codigo = int(input("Ingrese código de venta a modificar: "))
 
-    pos = buscar_venta(cod_ventas, codigo)
+    pos = buscar_venta(cod_ventas, pregunta_codigo)
 
     if pos == -1:
         print("Venta inexistente.")
@@ -369,7 +386,7 @@ def modificar_venta(cod_ventas, clientes_ventas, productos_ventas, cantidades_ve
         else:
             cod_producto = int(input("Ingrese nuevo código de producto: "))
 
-            pos_producto = buscar_producto(cod_productos, cod_producto)
+            pos_producto = busqueda_secuencial(IDS, cod_producto)
 
             if pos_producto == -1:
                 print("Producto inexistente.")
@@ -413,7 +430,7 @@ def listar_ventas(cod_ventas, clientes_ventas, productos_ventas, cantidades_vent
 
 
 
-            def menu_productos(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos, rol):
+            def menu_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos, rol):
 
     opcion = 0
 
@@ -431,24 +448,24 @@ def listar_ventas(cod_ventas, clientes_ventas, productos_ventas, cantidades_vent
         if opcion == 1:
 
             if rol == "ADMIN":
-                alta_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos)
+                alta_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos)
             else:
                 print("No tiene permisos.")
 
         elif opcion == 2:
 
             if rol == "ADMIN":
-                baja_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos)
+                baja_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos)
             else:
                 print("No tiene permisos.")
 
         elif opcion == 3:
 
             if rol == "ADMIN":
-                modificar_producto(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos)
+                modificar_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos)
             else:
                 print("No tiene permisos.")
 
         elif opcion == 4:
 
-            listar_productos(cod_productos, nom_productos, categorias_productos, precios_productos, stock_productos, descuentos_productos)
+            listar_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, descuentos_productos)
