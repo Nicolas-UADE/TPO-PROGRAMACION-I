@@ -15,6 +15,18 @@ USUARIOS_ADMIN = [
     "LEANDRO"
 ]
 
+IDS = [
+    482719,
+    935164,
+    271853,
+    604927,
+    158436,
+    793205,
+    326581,
+    841672,
+    519348,
+    267914
+]
 CONTRASENIAS_ADMIN = [
     1, 2, 3, 4, 5,
     6, 7, 8, 9, 10
@@ -64,6 +76,7 @@ CATEGORIA = [
     "Bebidas"
 ]
 DESCUENTO=[0,0,0,0,0,0,0,0,0,0]
+
 PRECIOS = [
     1500,
     1800,
@@ -203,7 +216,7 @@ def login():
 
 
 def menu_principal():
-    print("==========\nMENU PRINCIPAL\n==========")
+    print("\n\n==========\nMENU PRINCIPAL\n==========")
     ask_menu = obtener_entero("0. Salir\n1. Productos\n2. Clientes\n3.Ventas...",0,3)
 
     if ask_menu == 0:
@@ -234,7 +247,7 @@ def productos():
             case 1:
                 listar_productos()
 
-def alta_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
+def alta_producto():
     print("\n\n==========ALTA DE PRODUCTOS==========")
 
     pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
@@ -247,14 +260,14 @@ def alta_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
                 menu_principal()
                 print("Volviendo al menu principal...\n\n")
 
-    pos = busqueda_secuencial(IDS, pregunta_codigo)
+    pos = busqueda_secuencial()
 
     while pos != -1:
         print("Ya existe un producto con ese código.")
 
         pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
         
-        pos = busqueda_secuencial(IDS, pregunta_codigo)
+        pos = busqueda_secuencial()
 
     else:
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
@@ -286,7 +299,7 @@ def alta_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
         print('===================')
 
 
-def baja_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
+def baja_producto():
 
     print("\n\n==========BAJA DE PRODUCTOS==========")
 
@@ -326,7 +339,7 @@ def baja_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
         
 
 
-def modificar_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
+def modificar_producto():
     print("\n\n==========MODIFICACION DE PRODUCTOS==========")
 
     pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
@@ -377,7 +390,7 @@ def modificar_producto(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
         print('===================')
 
 
-def listar_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
+def listar_productos():
 
     print("\n\n==========LISTA DE PRODUCTOS==========")
 
@@ -385,7 +398,7 @@ def listar_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
 
         if IDS[i] != -1:
 
-            print(f"Código:{IDS[i]} Nombre: {PRODUCTOS[i]}")
+            print(f"Código:{IDS[i]} Nombre: {PRODUCTOS[i]} Precio: {PRECIOS[i]} Stock: {STOCK[i]} Descuento: {DESCUENTO[i]} %")
 
             if CATEGORIA[i] == 1:
                 print("Categoría: Alimentos")
@@ -393,8 +406,6 @@ def listar_productos(IDS, PRODUCTOS, CATEGORIA, PRECIOS, STOCK, DESCUENTO):
                 print("Categoría: Limpieza")
             else:
                 print("Categoría: Bebidas")
-
-            print(f"Precio: {PRECIOS[i]} Stock: {STOCK[i]} Descuento: {DESCUENTO[i]} %")
     print('===================')
 
 def clientes():
