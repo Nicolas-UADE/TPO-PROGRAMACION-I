@@ -15,7 +15,7 @@ USUARIOS_ADMIN = [
     "LEANDRO"
 ]
 
-IDS = [
+IDS_PRODUCTOS = [
     482719,
     935164,
     271853,
@@ -197,6 +197,7 @@ def busqueda_secuencial(lista, parametro):
     else:
         return -1
 
+
     
 def login():
     INGRESO = False
@@ -257,14 +258,6 @@ def login():
 
 
 
-        
-
-
-
-    
-
-
-
 def menu_principal():
     print("\n\n==========\nMENU PRINCIPAL\n==========")
     ask_menu = obtener_entero("0. Salir\n1. Productos\n2. Clientes\n3.Ventas...",0,3)
@@ -277,7 +270,7 @@ def menu_principal():
 
 
 def productos():
-    print("==========\nPRODUCTOS\n==========")
+    print("\n\n==========\nPRODUCTOS\n==========")
     if ADMIN == True:
         ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto...",0,3)
         match ask:
@@ -338,7 +331,7 @@ def alta_producto():
         while descuento < 0 or descuento > 100:
             descuento = float(input("Descuento inválido. Reingrese: "))
 
-        IDS.append(pregunta_codigo)
+        IDS_PRODUCTOS.append(pregunta_codigo)
         PRODUCTOS.append(pregunta_nombre)
         CATEGORIA.append(categoria)
         PRECIOS.append(precio)
@@ -365,7 +358,7 @@ def baja_producto():
                     menu_principal()
                     print("Volviendo al menu principal...\n\n")
 
-    pos = busqueda_secuencial(IDS, pregunta_codigo)
+    pos = busqueda_secuencial(IDS_PRODUCTOS, pregunta_codigo)
 
     if pos == -1:
         print("Producto inexistente.")
@@ -374,7 +367,7 @@ def baja_producto():
 
     if pregunta_seguridad == "Y":
         
-        IDS[pos] = -1
+        IDS_PRODUCTOS[pos] = -1
         PRODUCTOS[pos] = -1
         CATEGORIA[pos] = -1
         PRECIOS[pos] = -1
@@ -403,7 +396,7 @@ def modificar_producto():
                 print("Volviendo al menu principal...\n\n")
 
 
-    pos = busqueda_secuencial(IDS, pregunta_codigo)
+    pos = busqueda_secuencial(IDS_PRODUCTOS, pregunta_codigo)
 
     if pos == -1:
         print("Producto inexistente.")
@@ -443,12 +436,17 @@ def modificar_producto():
 def listar_productos():
 
     print("\n\n==========LISTA DE PRODUCTOS==========")
+    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE",1,2)
+    if pregunta_orden == 1:
+         pass
+    else:
+         pass
 
-    for i in range(len(IDS)):
+    for i in range(len(IDS_PRODUCTOS)):
 
-        if IDS[i] != -1:
+        if IDS_PRODUCTOS[i] != -1:
 
-            print(f"Código:{IDS[i]} Nombre: {PRODUCTOS[i]} Precio: {PRECIOS[i]} Stock: {STOCK[i]} Descuento: {DESCUENTO[i]} %")
+            print(f"Código:{IDS_PRODUCTOS[i]} Nombre: {PRODUCTOS[i]} Precio: {PRECIOS[i]} Stock: {STOCK[i]} Descuento: {DESCUENTO[i]} %")
 
             if CATEGORIA[i] == 1:
                 print("Categoría: Alimentos")
