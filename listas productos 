@@ -1,0 +1,50 @@
+productos_limpieza = [
+    "Lavandina",
+    "Detergente",
+    "Jabon",
+    "Desinfectante",
+    "Esponja",
+    "Limpiavidrios",
+    "Desengrasante",
+    "Suavizante",
+    "Escoba",
+    "Trapo"
+]
+
+productos_comida = [
+    "Arroz",
+    "Fideos",
+    "Pan",
+    "Galletitas",
+    "Harina",
+    "Atun",
+    "Pure",
+    "Aceite",
+    "Azucar",
+    "Sal"
+]
+
+productos_bebida = [
+    "Agua",
+    "Coca Cola",
+    "Sprite",
+    "Fanta",
+    "Jugo",
+    "Soda",
+    "Pepsi",
+    "Gatorade",
+    "Aquarius",
+    "Paso de los Toros"
+]
+productos_otros = [
+    "Pilas",
+    "Servilletas",
+    "Velas",
+    "Fosforos",
+    "Bolsas",
+    "Papel aluminio",
+    "Film",
+    "Vasos",
+    "Platos",
+    "Encendedor"
+]
