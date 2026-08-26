@@ -103,6 +103,56 @@ STOCK = [
     16
 ]
 
+PRODUCTOS_LIMPIEZA = [
+    "Lavandina",
+    "Detergente",
+    "Jabon",
+    "Desinfectante",
+    "Esponja",
+    "Limpiavidrios",
+    "Desengrasante",
+    "Suavizante",
+    "Escoba",
+    "Trapo"
+]
+
+PRODUCTOS_COMIDA = [
+    "Arroz",
+    "Fideos",
+    "Pan",
+    "Galletitas",
+    "Harina",
+    "Atun",
+    "Pure",
+    "Aceite",
+    "Azucar",
+    "Sal"
+]
+
+PRODUCTOS_BEBIDA = [
+    "Agua",
+    "Coca Cola",
+    "Sprite",
+    "Fanta",
+    "Jugo",
+    "Soda",
+    "Pepsi",
+    "Gatorade",
+    "Aquarius",
+    "Paso de los Toros"
+]
+PRODUCTOS_OTROS = [
+    "Pilas",
+    "Servilletas",
+    "Velas",
+    "Fosforos",
+    "Bolsas",
+    "Papel aluminio",
+    "Film",
+    "Vasos",
+    "Platos",
+    "Encendedor"
+]
 
 def positivo(valor):
     return valor > 0
