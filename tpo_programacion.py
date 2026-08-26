@@ -50,7 +50,18 @@ PRODUCTOS = [
     "Jabon",
     "Gaseosa"
 ]
-
+IDS = [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+]
 CATEGORIA = [
     "Lacteos",
     "Almacen",
@@ -65,16 +76,16 @@ CATEGORIA = [
 ]
 
 PRECIOS = [
-    1500,
+    1600,
     1800,
     1200,
-    3500,
+    2500,
     1300,
-    4200,
-    1600,
-    5500,
-    1400,
-    2800
+    2800,
+    2200,
+    3500,
+    1800,
+    2500
 ]
 
 STOCK = [
@@ -194,21 +205,39 @@ def login():
 
 
 def productos():
-    print("==========\nPRODUCTOS\n==========")
+    print("\n\n==========\nPRODUCTOS\n==========")
+    if ADMIN == True:
+        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto...",0,3)
+        match ask:
+            case 0:
+                rectroceder()
+            case 1:
+                listado_productos()
+            case 2:
+                baja_producto()
+            case 3:
+                alta_producto()
+    else:
+        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n",0,1)
+        match ask:
+            case 0:
+                rectroceder()
+            case 1:
+                listado_productos()
 
-    ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto...",0,3)
-    match ask:
-        case 0:
-            rectroceder()
-        case 1:
-            listado_productos()
-        case 2:
-            baja_producto()
-        case 3:
-            alta_producto()
 
 def baja_producto():
-    pass
+    print("\n\n==========BAJA DE PRODUCTOS==========")
+    baja = obtener_entero("Ingrese el ID del producto a dar de baja.  -1 Para salir...",-1,100000000)
+    pos = busqueda_secuencial(IDS,baja)
+    if baja == -1:
+        menu_principal()
+        print("Volviendo al menu principal...\n\n")
+    while pos == -1:
+        print("Producto no encontrado...\n")
+        baja = obtener_entero("Ingrese el ID del producto a dar de baja.  -1 Para salir...",-1,100000000)
+        pos = busqueda_secuencial(IDS,baja)
+        
 
 def alta_producto():
     pass
