@@ -272,7 +272,7 @@ def menu_principal():
 def productos():
     print("\n\n==========\nPRODUCTOS\n==========")
     if ADMIN == True:
-        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto...",0,3)
+        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n Modificar producto...",0,4)
         match ask:
             case 0:
                 rectroceder()
@@ -282,6 +282,8 @@ def productos():
                 baja_producto()
             case 3:
                 alta_producto()
+            case 4:
+                modificar_producto()
     else:
         ask = obtener_entero("0. Retroceder\n1. Listado de producto\n",0,1)
         match ask:
@@ -293,11 +295,11 @@ def productos():
 def alta_producto():
     print("\n\n==========ALTA DE PRODUCTOS==========")
 
-    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
+    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,1000000)
 
     while pregunta_codigo == 0:
             print("Codigo inexistente...")
-            pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+            pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000)
 
     if pregunta_codigo == -1:
                 menu_principal()
@@ -308,7 +310,7 @@ def alta_producto():
     while pos != -1:
         print("Ya existe un producto con ese código.")
 
-        pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
+        pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,1000000)
         
         pos = busqueda_secuencial()
 
@@ -346,13 +348,13 @@ def baja_producto():
 
     print("\n\n==========BAJA DE PRODUCTOS==========")
 
-    pregunta_codigo = obtener_entero("\n\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000000000000)
+    pregunta_codigo = obtener_entero("\n\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000)
 
     
 
     while pregunta_codigo == 0:
         print("Codigo inexistente...")
-        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000000000)
+        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000)
 
     if pregunta_codigo == -1:
                     menu_principal()
@@ -362,7 +364,7 @@ def baja_producto():
 
     while pos == -1:
         print("Producto inexistente.")
-        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000)
         pos = busqueda_secuencial(IDS_PRODUCTOS, pregunta_codigo)
 
 
@@ -388,11 +390,11 @@ def baja_producto():
 def modificar_producto():
     print("\n\n==========MODIFICACION DE PRODUCTOS==========")
 
-    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,100000)
+    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,1000000)
 
     while pregunta_codigo == 0:
             print("Codigo inexistente...")
-            pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,10000)
+            pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...",-1,1000000)
 
     if pregunta_codigo == -1:
                 menu_principal()
