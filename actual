@@ -154,6 +154,26 @@ PRODUCTOS_OTROS = [
     "Encendedor"
 ]
 
+def generar_lista_ids(PRODUCTOS): #Llamar a la funcion en AGREGAR PRODUCTOS
+
+    for i in range (len(PRODUCTOS)):
+         nuevo_id=random.randint(100000,1000000)
+
+         IDS.append(nuevo_id)
+
+    return IDS
+#Verificar que no este ya asociado ese ID, con un while y una busqueda secuencial. 
+matriz_resumen = []
+
+for i in range(len(PRODUCTOS)):
+     matriz_resumen.append([lista_ids[i], PRODUCTOS[i], CATEGORIA[i], PRECIOS[i], DESCUENTO[i], STOCK[i]])
+
+print("ID       PRODUCTO       CATEGORIA      PRECIO     DESC (%)   STOCK")
+print("------------------------------------------------------------------")
+for i in range(len(matriz_resumen)):
+    print(f"ID: {matriz_resumen[i][0]} | Prod: {matriz_resumen[i][1]} | Cat: {matriz_resumen[i][2]} | Precio: ${matriz_resumen[i][3]} | Stock: {matriz_resumen[i][5]}")
+
+
 def positivo(valor):
     return valor > 0
 
