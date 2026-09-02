@@ -346,13 +346,13 @@ def baja_producto():
 
     print("\n\n==========BAJA DE PRODUCTOS==========")
 
-    pregunta_codigo = obtener_entero("\n\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+    pregunta_codigo = obtener_entero("\n\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000000000000)
 
     
 
     while pregunta_codigo == 0:
         print("Codigo inexistente...")
-        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000000000)
 
     if pregunta_codigo == -1:
                     menu_principal()
@@ -360,10 +360,13 @@ def baja_producto():
 
     pos = busqueda_secuencial(IDS_PRODUCTOS, pregunta_codigo)
 
-    if pos == -1:
+    while pos == -1:
         print("Producto inexistente.")
+        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,100000)
+        pos = busqueda_secuencial(IDS_PRODUCTOS, pregunta_codigo)
 
-    pregunta_seguridad = obtener_caracter(f"\nEsta seguro de eliminar el producto{pregunta_codigo}? Y/N").upper()
+
+    pregunta_seguridad = obtener_caracter(f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N...").upper()
 
     if pregunta_seguridad == "Y":
         
@@ -436,7 +439,7 @@ def modificar_producto():
 def listar_productos():
 
     print("\n\n==========LISTA DE PRODUCTOS==========")
-    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE",1,2)
+    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE ",1,2)
     if pregunta_orden == 1:
          pass
     else:
