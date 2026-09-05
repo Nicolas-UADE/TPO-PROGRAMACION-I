@@ -161,6 +161,10 @@ def positivo(valor):
 def rango(inicio,hasta,valor):
     return inicio <= valor and hasta >= valor
 
+from id_generator import generador_de_id
+
+def genera_id():
+    pass
 
 def obtener_caracter(texto):
     ask = input(texto).upper()
@@ -407,7 +411,7 @@ def modificar_producto():
         print("Producto inexistente.")
 
     else:
-        PRODUCTOS[pos] = input("Ingrese nuevo nombre... ").upper()
+        PRODUCTOS[pos] = obtener_caracter("Ingrese nuevo nombre... ")
 
         print("\n1. Alimentos\n2. Limpieza\n3. Bebidas")
 
