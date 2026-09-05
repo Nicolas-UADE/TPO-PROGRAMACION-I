@@ -118,10 +118,10 @@ def positivo(valor):
 def rango(inicio,hasta,valor):
     return inicio <= valor and hasta >= valor
 
-from funciones import generador_de_id
+from funciones.id_generator import generador_de_id
 
 def genera_id():
-    pass
+    return generador_de_id
 
 def obtener_caracter(texto):
     ask = input(texto).upper()
@@ -168,13 +168,15 @@ def busqueda_por_codigo(lista, codigo):
         return -1
 
 def ordenar_por_codigo():
-    ordenados_codigo = sorted(PRODUCTOS,key=lambda fila: fila[PRODUCTOS_CODIGO])
+    activos = productos_activos()
+    ordenados_codigo = sorted(activos,key=lambda fila: fila[PRODUCTOS_CODIGO])
     for p in ordenados_codigo:
         lista = print(f'{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}')
     return lista
 
 def ordenar_alfabeticamente():
-    ordenados_codigo = sorted(PRODUCTOS,key=lambda fila: fila[PRODUCTOS_NOMBRE])
+    activos = productos_activos()
+    ordenados_codigo = sorted(activos,key=lambda fila: fila[PRODUCTOS_NOMBRE])
     for p in ordenados_codigo:
         lista = print(f'{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}')
     return lista
@@ -193,13 +195,14 @@ def lista_cabeza_productos():
          
 def productos_activos():
     activos = []
-    for i in PRODUCTOS:
-        if PRODUCTOS[i][PRODUCTOS_CODIGO] != ELIMINADO:
-            activos.append([PRODUCTOS[i][PRODUCTOS_CODIGO], 
-                            PRODUCTOS[i][PRODUCTOS_CATEGORIA],
-                            PRODUCTOS[i][PRODUCTOS_PRECIO],
-                            PRODUCTOS[i][PRODUCTOS_STOCK],
-                            PRODUCTOS[i][PRODUCTOS_DESCUENTO]])
+    for fila in PRODUCTOS:
+        if fila[PRODUCTOS_CODIGO] != ELIMINADO:
+            activos.append([fila[PRODUCTOS_CODIGO], 
+                            fila[PRODUCTOS_NOMBRE], 
+                            fila[PRODUCTOS_CATEGORIA],
+                            fila[PRODUCTOS_PRECIO],
+                            fila[PRODUCTOS_STOCK],
+                            fila[PRODUCTOS_DESCUENTO]])
     return activos
     
 def login():
@@ -275,7 +278,7 @@ def menu_principal():
 def productos():
     print("\n\n==========\nPRODUCTOS\n==========")
     if ADMIN == True:
-        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n Modificar producto...",0,4)
+        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto...",0,4)
         match ask:
             case 0:
                 rectroceder()
@@ -357,19 +360,19 @@ def baja_producto():
                     menu_principal()
                     print("Volviendo al menu principal...\n\n")
 
-    pos = busqueda_secuencial(PRODUCTOS, pregunta_codigo)
+    pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
 
     while pos == -1:
         print("Producto inexistente.")
         pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...",-1,1000000)
-        pos = busqueda_secuencial(PRODUCTOS,pregunta_codigo)
+        pos = busqueda_por_codigo(PRODUCTOS,pregunta_codigo)
 
 
     pregunta_seguridad = obtener_caracter(f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N...").upper()
 
     if pregunta_seguridad == "Y":
         
-        PRODUCTOS[PRODUCTOS_CODIGO][pos] = -1
+        PRODUCTOS[pos][PRODUCTOS_CODIGO]= -1
         
 
         print("Producto eliminado correctamente.")
@@ -400,13 +403,13 @@ def modificar_producto():
         print("Producto inexistente.")
 
     else:
-        PRODUCTOS[PRODUCTOS_NOMBRE][pos] = obtener_caracter("Ingrese nuevo nombre... ")
+        PRODUCTOS[pos][PRODUCTOS_NOMBRE]= obtener_caracter("Ingrese nuevo nombre... ")
 
         print("\n1. Alimentos\n2. Limpieza\n3. Bebidas")
 
         categoria = obtener_caracter("\nIngrese nueva categoría... ")
 
-        PRODUCTOS[PRODUCTOS_CATEGORIA][pos] = categoria
+        PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = categoria
 
         precio = float(input("Ingrese nuevo precio... "))
 
@@ -414,18 +417,18 @@ def modificar_producto():
             print("Precio inválido.")
             precio = float(input("Ingrese nuevo precio... "))
 
-        PRODUCTOS[PRODUCTOS_PRECIO][pos] = precio
+        PRODUCTOS[pos][PRODUCTOS_PRECIO]= precio
 
         stock = obtener_entero("Ingrese nuevo stock: ",0,1000000)
 
-        PRODUCTOS[PRODUCTOS_STOCK][pos] = stock
+        PRODUCTOS[pos][PRODUCTOS_STOCK]= stock
 
         descuento = float(input("Ingrese nuevo descuento: "))
 
         while descuento < 0 or descuento > 100:
             descuento = float(input("Descuento inválido. Reingrese: "))
 
-        PRODUCTOS[PRODUCTOS_DESCUENTO][pos] = descuento
+        PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
 
         print("Producto modificado correctamente.")
         print('===================')
