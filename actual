@@ -15,18 +15,6 @@ USUARIOS_ADMIN = [
     "LEANDRO"
 ]
 
-IDS_PRODUCTOS = [
-    482719,
-    935164,
-    271853,
-    604927,
-    158436,
-    793205,
-    326581,
-    841672,
-    519348,
-    267914
-]
 CONTRASENIAS_ADMIN = [
     1, 2, 3, 4, 5,
     6, 7, 8, 9, 10
@@ -51,57 +39,19 @@ CONTRASENIAS_LECTORES = [
 ]
 
 PRODUCTOS = [
-    "Leche",
-    "Arroz",
-    "Fideos",
-    "Aceite",
-    "Azucar",
-    "Yerba",
-    "Galletitas",
-    "Cafe",
-    "Jabon",
-    "Gaseosa"
-]
+    ["Leche",482719,"Lacteos",1500,25],
+    ["Arroz",935164,"Alimento",1800,18],
+    ["Fideos",271853,"Alimento",1200,32],
+    ["Aceite",604927,"Alimento",3500,14],
+    ["Azucar",158436,"Almacen", 1300, 27],
+    ["Yerba",793205,"Almacen",4200,12],
+    ["Galletitas",326581,"Galletitas",1600,20],
+    ["Cafe", 841672,"Bebidas",5500,9],
+    ["Jabon",519348,"Limpieza",1400,35],
+    ["Gaseosa",267914,"Bebidas",2800,16]
+]   
 
-CATEGORIA = [
-    "Lacteos",
-    "Almacen",
-    "Almacen",
-    "Almacen",
-    "Almacen",
-    "Almacen",
-    "Galletitas",
-    "Bebidas",
-    "Limpieza",
-    "Bebidas"
-]
 DESCUENTO=[0,0,0,0,0,0,0,0,0,0]
-
-PRECIOS = [
-    1500,
-    1800,
-    1200,
-    3500,
-    1300,
-    4200,
-    1600,
-    5500,
-    1400,
-    2800
-]
-
-STOCK = [
-    25,
-    18,
-    32,
-    14,
-    27,
-    12,
-    20,
-    9,
-    35,
-    16
-]
 
 PRODUCTOS_LIMPIEZA = [
     "Lavandina",
