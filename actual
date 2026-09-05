@@ -161,7 +161,7 @@ def positivo(valor):
 def rango(inicio,hasta,valor):
     return inicio <= valor and hasta >= valor
 
-from id_generator import generador_de_id
+from funciones import generador_de_id
 
 def genera_id():
     pass
