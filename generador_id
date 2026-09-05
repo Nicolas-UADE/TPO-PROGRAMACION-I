@@ -1,2 +1,0 @@
-def generador_de_id():
-    pass
