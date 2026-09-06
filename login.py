@@ -1,5 +1,4 @@
-from Funciones.funciones import obtener_caracter,obtener_entero,busqueda_secuencial
-from listas import USUARIOS_ADMIN,USUARIOS_LECTORES,CONTRASENIAS_LECTORES,CONTRASENIAS_ADMIN
+from Funciones.funciones import obtener_caracter,obtener_entero,coincidencia
 
 def login():
     INGRESO = False
@@ -11,19 +10,7 @@ def login():
 
     ask_code = obtener_entero("Ingrese contrasenia (Numerica)...",0,1000)
 
-    es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN,ask_usuario) 
-
-    es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN,ask_code)
-
-    es_lector_usuario = busqueda_secuencial(USUARIOS_LECTORES,ask_usuario) 
-
-    es_lector_contrasenia = busqueda_secuencial(CONTRASENIAS_LECTORES,ask_code)
-
-
-    if es_admin_usuario == es_admin_contrasenia and es_admin_usuario != -1 and es_admin_contrasenia != -1:
-        ADMIN = True
-    elif es_lector_usuario == es_lector_contrasenia and es_lector_usuario != -1 and es_lector_contrasenia != -1:
-        LECTOR = True
+    ADMIN,LECTOR = coincidencia(ask_usuario,ask_code)
 
     while ADMIN == False and LECTOR == False and maximo_intentos > 0:
         print("Usuario o contrasenia incorrectas.", maximo_intentos, "cantidad de intentos restantes")     
@@ -34,19 +21,7 @@ def login():
 
         ask_code = obtener_entero("Ingrese contrasenia (Numerica)...",0,1000)
 
-        es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN,ask_usuario) 
-
-        es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN,ask_code)
-
-        es_lector_usuario = busqueda_secuencial(USUARIOS_LECTORES,ask_usuario) 
-
-        es_lector_contrasenia = busqueda_secuencial(CONTRASENIAS_LECTORES,ask_code)
-
-        if es_admin_usuario == es_admin_contrasenia and es_admin_usuario != -1 and es_admin_contrasenia != -1:
-            ADMIN = True
-        elif es_lector_usuario == es_lector_contrasenia and es_lector_usuario != -1 and es_lector_contrasenia != -1:
-            LECTOR = True
-
+        ADMIN,LECTOR = coincidencia(ask_usuario,ask_code)
 
     if maximo_intentos == 0:
         print("Maximo de intentos exedido\n Acceso denegado...")
