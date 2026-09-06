@@ -1,4 +1,5 @@
 from listas import ADMIN
+
 from crud.crud_productos import listar_productos,baja_producto,alta_producto,modificar_producto
 
 from crud.crud_clientes import clientes
@@ -6,6 +7,12 @@ from crud.crud_clientes import clientes
 from crud.crud_ventas import ventas
 
 from Funciones.funciones import volver_al_menu,obtener_entero
+
+que_soy = int(input("1.ADMIN. 2LECTOR.  "))
+if que_soy == 1:
+    ADMIN = True
+else:
+    ADMIN = False
 
 def menu_principal():
     print("\n\n==========\nMENU PRINCIPAL\n==========")

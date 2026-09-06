@@ -1,7 +1,7 @@
 from listas import ADMIN,PRODUCTOS_DESCUENTO,PRODUCTOS,PRODUCTOS_CODIGO,PRODUCTOS_CATEGORIA,PRODUCTOS_NOMBRE,PRODUCTOS_PRECIO,PRODUCTOS_STOCK,productos_id_individual,productos_nombre_individual
 from Funciones.funciones import busqueda_por_codigo,obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,volver_al_menu,busqueda_secuencial
 from Funciones.funciones import buscar,lista_cabeza_productos
-from menu import menu_principal
+
 def productos():
     print("\n\n==========\nPRODUCTOS\n==========")
     if ADMIN == True:
@@ -194,6 +194,7 @@ def listar_productos():
         cuenta_busqueda,busqueda_posiciones = buscar(productos_nombre_individual,pregunta)
         if cuenta_busqueda == 0:
             print("Producto no encontrado...")
+            from menu import menu_principal
             menu_principal()
         else:
             i = 0
