@@ -20,6 +20,8 @@ def genera_id():
     pass
 
 def coincidencia(pregunta_usu,pregunta_code):
+    ADMIN = False
+    LECTOR = False
     es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN,pregunta_usu) 
     
     es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN,pregunta_code)
