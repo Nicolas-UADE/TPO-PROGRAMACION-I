@@ -1,5 +1,5 @@
-from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO
-from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO
+from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES
+from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
 
 
 def generador_de_id():
@@ -19,6 +19,20 @@ def rango(inicio, hasta, valor):
 def genera_id():
     pass
 
+def coincidencia(pregunta_usu,pregunta_code):
+    es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN,pregunta_usu) 
+    
+    es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN,pregunta_code)
+
+    es_lector_usuario = busqueda_secuencial(USUARIOS_LECTORES,pregunta_usu) 
+
+    es_lector_contrasenia = busqueda_secuencial(CONTRASENIAS_LECTORES,pregunta_code)
+
+    if es_admin_usuario == es_admin_contrasenia and es_admin_usuario != -1 and es_admin_contrasenia != -1:
+            ADMIN = True
+    elif es_lector_usuario == es_lector_contrasenia and es_lector_usuario != -1 and es_lector_contrasenia != -1:
+            LECTOR = True
+    return ADMIN , LECTOR
 
 def obtener_caracter(texto):
     ask = input(texto).upper()
