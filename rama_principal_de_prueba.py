@@ -61,20 +61,21 @@ productos_nombre_individual = [
     "GALLETITAS",
     "CAFE",
     "JABON",
-    "PEPSI"
+    "PEPSI",
 ]
 
-productos_id_individual = [482719,
-        935164,
-        271853,
-        604927,
-        158436,
-        793205,
-        326581,
-        841672,
-        519348,
-        267914
-        ]
+productos_id_individual = [
+    482719,
+    935164,
+    271853,
+    604927,
+    158436,
+    793205,
+    326581,
+    841672,
+    519348,
+    267914,
+]
 PRODUCTOS_LIMPIEZA = [
     "Lavandina",
     "Detergente",
@@ -135,7 +136,7 @@ def rango(inicio, hasta, valor):
     return inicio <= valor and hasta >= valor
 
 
-#from funciones import generador_de_id
+# from funciones import generador_de_id
 
 
 def genera_id():
@@ -149,7 +150,8 @@ def obtener_caracter(texto):
         ask = input(texto).upper()
     return ask
 
-def buscar(lista,elemento):
+
+def buscar(lista, elemento):
     lista_origen = []
     lista_origen.extend(lista)
     contador = 0
@@ -159,15 +161,15 @@ def buscar(lista,elemento):
         posiciones.append(posicion)
 
         lista_origen[posicion] = 0
-        contador +=1
-        
-            
-    return contador,posiciones
+        contador += 1
+
+    return contador, posiciones
+
 
 def volver_al_menu():
-        print("Volviendo al menu principal...\n\n")
-        menu_principal()
-        
+    print("Volviendo al menu principal...\n\n")
+    menu_principal()
+
 
 def obtener_entero(texto, minimo, maximo):
     valor_invalido = True
@@ -377,7 +379,10 @@ def alta_producto():
         "\nIngrese código del producto... -1 Para salir...", -1, 1000000
     )
 
-    while pregunta_codigo == 0:pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000)
+    while pregunta_codigo == 0:
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000
+        )
 
     if pregunta_codigo == -1:
         volver_al_menu()
@@ -392,7 +397,7 @@ def alta_producto():
         )
 
         if pregunta_codigo == -1:
-                volver_al_menu()
+            volver_al_menu()
 
         pos = busqueda_secuencial()
 
@@ -431,7 +436,9 @@ def baja_producto():
     )
 
     while pregunta_codigo == 0:
-        pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000)
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000
+        )
 
     if pregunta_codigo == -1:
         volver_al_menu()
@@ -444,7 +451,7 @@ def baja_producto():
             "\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000
         )
         if pregunta_codigo == -1:
-                volver_al_menu()
+            volver_al_menu()
         pos = busqueda_secuencial(PRODUCTOS, pregunta_codigo)
 
     pregunta_seguridad = obtener_caracter(
@@ -465,11 +472,15 @@ def baja_producto():
 def modificar_producto():
     print("\n\n==========MODIFICACION DE PRODUCTOS==========")
 
-    pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...", -1, 1000000)
+    pregunta_codigo = obtener_entero(
+        "\nIngrese código del producto... -1 Para salir...", -1, 1000000
+    )
 
     while pregunta_codigo == 0:
-        pregunta_codigo = obtener_entero("\nIngrese código del producto... -1 Para salir...", -1, 1000000)
-    
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del producto... -1 Para salir...", -1, 1000000
+        )
+
     if pregunta_codigo == -1:
         volver_al_menu()
 
@@ -513,11 +524,19 @@ def modificar_producto():
 def listar_productos():
 
     print("\n\n==========LISTA DE PRODUCTOS==========")
-    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
+    pregunta_orden = obtener_entero(
+        "Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
+        -1,
+        4,
+    )
     if pregunta_orden == -1:
         volver_al_menu()
     if pregunta_orden == 0:
-        pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
+        pregunta_orden = obtener_entero(
+            "Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
+            -1,
+            4,
+        )
 
     if pregunta_orden == 1:
         lista_cabeza_productos()
@@ -528,10 +547,11 @@ def listar_productos():
         print()
         ordenar_alfabeticamente()
 
-
     if pregunta_orden == 3:
         pregunta = obtener_caracter("\nIngrese nombre del producto...").upper()
-        cuenta_busqueda,busqueda_posiciones = buscar(productos_nombre_individual,pregunta)
+        cuenta_busqueda, busqueda_posiciones = buscar(
+            productos_nombre_individual, pregunta
+        )
         if cuenta_busqueda == 0:
             print("Producto no encontrado...")
             menu_principal()
@@ -539,24 +559,23 @@ def listar_productos():
             i = 0
             print(f"\nCantidad de productos encontrados...{cuenta_busqueda}\n")
             while i < cuenta_busqueda:
-                
+
                 print(f"\n{PRODUCTOS[busqueda_posiciones[i]]}\n")
                 i += 1
 
-
     if pregunta_orden == 4:
-        pregunta = obtener_entero("\nIngrese codigo del producto...",100000,1000000)
-        cuenta_busqueda, busqueda_posiciones = buscar(productos_id_individual,pregunta)
+        pregunta = obtener_entero("\nIngrese codigo del producto...", 100000, 1000000)
+        cuenta_busqueda, busqueda_posiciones = buscar(productos_id_individual, pregunta)
         if cuenta_busqueda == 0:
-                    print("Producto no encontrado...")
-                    menu_principal()
+            print("Producto no encontrado...")
+            menu_principal()
         else:
             i = 0
             while i < cuenta_busqueda:
                 print(f"\nProducto encontrado...{cuenta_busqueda}\n")
                 print(f"\n{PRODUCTOS[busqueda_posiciones[i]]}\n")
                 i += 1
-        
+
     print("===================")
 
 
