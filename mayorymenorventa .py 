@@ -1,0 +1,16 @@
+def mayor_menor_venta(VENTAS):
+    if len(VENTAS) > 0:
+        mayor = VENTAS[0][4]
+        menor = VENTAS[0][4]
+
+        for fila in VENTAS:
+
+            if fila[4] > mayor:
+                mayor = fila[4]
+
+            if fila[4] < menor:
+                menor = fila[4]
+
+        return mayor, menor
+
+    return 0, 0
