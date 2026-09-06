@@ -1,7 +1,7 @@
 from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO
 from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO
 
-from Funciones.funciones import menu_principal
+
 def generador_de_id():
     pass
 
@@ -43,6 +43,7 @@ def buscar(lista,elemento):
     return contador,posiciones
 
 def volver_al_menu():
+        from menu import menu_principal
         print("Volviendo al menu principal...\n\n")
         menu_principal()
         

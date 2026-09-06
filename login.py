@@ -1,5 +1,5 @@
-from rama_principal_de_prueba import obtener_caracter,obtener_entero
-from rama_principal_de_prueba import busqueda_secuencial,USUARIOS_ADMIN,USUARIOS_LECTORES,CONTRASENIAS_LECTORES,CONTRASENIAS_ADMIN
+from Funciones.funciones import obtener_caracter,obtener_entero,busqueda_secuencial
+from listas import USUARIOS_ADMIN,USUARIOS_LECTORES,CONTRASENIAS_LECTORES,CONTRASENIAS_ADMIN
 
 def login():
     INGRESO = False
