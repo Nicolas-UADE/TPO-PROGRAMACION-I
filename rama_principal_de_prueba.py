@@ -40,28 +40,28 @@ USUARIOS_LECTORES = [
 CONTRASENIAS_LECTORES = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
 
 PRODUCTOS = [
-    [482719, "Leche", "Lacteos", 1500, 25, 0],
-    [935164, "Arroz", "Alimento", 1800, 18, 0],
+    [482719, "LECHE", "Lacteos", 1500, 25, 0],
+    [935164, "ARROZ", "Alimento", 1800, 18, 0],
     [271853, "JABON", "Alimento", 1200, 32, 0],
-    [604927, "Aceite", "Alimento", 3500, 14, 0],
-    [158436, "Azucar", "Alimento", 1300, 27, 0],
-    [793205, "Yerba", "Alimento", 4200, 12, 0],
-    [326581, "Galletitas", "Alimento", 1600, 20, 0],
-    [841672, "Cafe", "Bebidas", 5500, 9, 0],
+    [604927, "ACEITE", "Alimento", 3500, 14, 0],
+    [158436, "AZUCAR", "Alimento", 1300, 27, 0],
+    [793205, "YERBA", "Alimento", 4200, 12, 0],
+    [326581, "GALLETITAS", "Alimento", 1600, 20, 0],
+    [841672, "CAFE", "Bebidas", 5500, 9, 0],
     [519348, "JABON", "Limpieza", 1400, 35, 0],
-    [267914, "JABON", "Bebidas", 2800, 16, 0],
+    [267914, "PEPSI", "Bebidas", 2800, 16, 0],
 ]
 productos_nombre_individual = [
-    "Leche",
-    "Arroz",
+    "LECHE",
+    "ARROZ",
     "JABON",
-    "Aceite",
-    "Azucar",
-    "Yerba",
-    "Galletitas",
-    "Cafe",
+    "ACEITE",
+    "AZUCAR",
+    "YERBA",
+    "GALLETITAS",
+    "CAFE",
     "JABON",
-    "JABON"
+    "PEPSI"
 ]
 
 productos_id_individual = [482719,
@@ -150,7 +150,8 @@ def obtener_caracter(texto):
     return ask
 
 def buscar(lista,elemento):
-    lista_origen = lista
+    lista_origen = []
+    lista_origen.extend(lista)
     contador = 0
     posiciones = []
     while elemento in lista_origen:
@@ -345,7 +346,7 @@ def productos():
     print("\n\n==========\nPRODUCTOS\n==========")
     if ADMIN == True:
         ask = obtener_entero(
-            "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n Modificar producto...",
+            "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto...",
             0,
             4,
         )
@@ -512,11 +513,11 @@ def modificar_producto():
 def listar_productos():
 
     print("\n\n==========LISTA DE PRODUCTOS==========")
-    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo... -1 para salir", -1, 4)
+    pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
     if pregunta_orden == -1:
         volver_al_menu()
     if pregunta_orden == 0:
-        pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo... -1 para salir", -1, 4)
+        pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
 
     if pregunta_orden == 1:
         lista_cabeza_productos()
@@ -526,6 +527,8 @@ def listar_productos():
         lista_cabeza_productos()
         print()
         ordenar_alfabeticamente()
+
+
     if pregunta_orden == 3:
         pregunta = obtener_caracter("\nIngrese nombre del producto...").upper()
         cuenta_busqueda,busqueda_posiciones = buscar(productos_nombre_individual,pregunta)
@@ -534,8 +537,9 @@ def listar_productos():
             menu_principal()
         else:
             i = 0
+            print(f"\nCantidad de productos encontrados...{cuenta_busqueda}\n")
             while i < cuenta_busqueda:
-                print(f"\nCantidad de productos encontrados...{cuenta_busqueda}\n")
+                
                 print(f"\n{PRODUCTOS[busqueda_posiciones[i]]}\n")
                 i += 1
 
