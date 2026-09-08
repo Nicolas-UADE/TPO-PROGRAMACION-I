@@ -124,7 +124,8 @@ def modificar_producto():
 
     pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
 
-    if pos == -1:
+
+    if pos == -1 or pos == ELIMINADO:
         print("Producto inexistente.")
 
     else:
