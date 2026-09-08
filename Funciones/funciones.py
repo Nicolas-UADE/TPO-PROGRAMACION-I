@@ -1,9 +1,16 @@
+import random
 from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES
 from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
 
 
-def generador_de_id():
-    pass
+def generador_de_id(lista):
+    nuevo_id=random.randint(100000,1000000)
+
+    while nuevo_id in lista == True:
+          nuevo_id=random.randint(100000,1000000)
+    lista.append(nuevo_id)
+
+    return 
 
 def positivo(valor):
     return valor > 0
