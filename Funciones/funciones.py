@@ -10,7 +10,7 @@ def generador_de_id(lista):
           nuevo_id=random.randint(100000,1000000)
     lista.append(nuevo_id)
 
-    return 
+    return nuevo_id
 
 def positivo(valor):
     return valor > 0
