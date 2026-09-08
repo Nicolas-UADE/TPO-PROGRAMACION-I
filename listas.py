@@ -40,6 +40,7 @@ USUARIOS_LECTORES = [
 CONTRASENIAS_LECTORES = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
 
 PRODUCTOS = [
+    [482719, "PILAS", "Otros", 1500, 25, 0],
     [935164, "ARROZ", "Alimentos", 1800, 18, 0],
     [271853, "JABON", "Alimentos", 1200, 32, 0],
     [604927, "ACEITE", "Alimentos", 3500, 14, 0],
@@ -51,6 +52,7 @@ PRODUCTOS = [
     [267914, "PEPSI", "Bebidas", 2800, 16, 0],
 ]
 productos_nombre_individual = [
+    "PILAS",
     "ARROZ",
     "JABON",
     "ACEITE",
@@ -62,7 +64,8 @@ productos_nombre_individual = [
     "PEPSI"
 ]
 
-productos_id_individual = [935164,
+productos_id_individual = [482719,
+        935164,
         271853,
         604927,
         158436,
