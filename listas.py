@@ -40,19 +40,17 @@ USUARIOS_LECTORES = [
 CONTRASENIAS_LECTORES = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
 
 PRODUCTOS = [
-    [482719, "LECHE", "Lacteos", 1500, 25, 0],
-    [935164, "ARROZ", "Alimento", 1800, 18, 0],
-    [271853, "JABON", "Alimento", 1200, 32, 0],
-    [604927, "ACEITE", "Alimento", 3500, 14, 0],
-    [158436, "AZUCAR", "Alimento", 1300, 27, 0],
-    [793205, "YERBA", "Alimento", 4200, 12, 0],
-    [326581, "GALLETITAS", "Alimento", 1600, 20, 0],
-    [841672, "CAFE", "Bebidas", 5500, 9, 0],
+    [935164, "ARROZ", "Alimentos", 1800, 18, 0],
+    [271853, "JABON", "Alimentos", 1200, 32, 0],
+    [604927, "ACEITE", "Alimentos", 3500, 14, 0],
+    [158436, "AZUCAR", "Alimentos", 1300, 27, 0],
+    [793205, "YERBA", "Alimentos", 4200, 12, 0],
+    [326581, "GALLETITAS", "Alimentos", 1600, 20, 0],
+    [841672, "CAFE", "Bebidas", 5500, 9, 0],    
     [519348, "JABON", "Limpieza", 1400, 35, 0],
     [267914, "PEPSI", "Bebidas", 2800, 16, 0],
 ]
 productos_nombre_individual = [
-    "LECHE",
     "ARROZ",
     "JABON",
     "ACEITE",
@@ -64,8 +62,7 @@ productos_nombre_individual = [
     "PEPSI"
 ]
 
-productos_id_individual = [482719,
-        935164,
+productos_id_individual = [935164,
         271853,
         604927,
         158436,
@@ -88,7 +85,7 @@ PRODUCTOS_LIMPIEZA = [
     "Trapo",
 ]
 
-PRODUCTOS_COMIDA = [
+PRODUCTOS_ALIMENTOS = [
     "Arroz",
     "Fideos",
     "Pan",
