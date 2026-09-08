@@ -19,12 +19,9 @@ def positivo(valor):
 def rango(inicio, hasta, valor):
     return inicio <= valor and hasta >= valor
 
-
-#from funciones import generador_de_id
-
-
-def genera_id():
-    pass
+def redondeo(numero):
+    return f'$ {numero:,.2f}'
+    
 
 def coincidencia(pregunta_usu,pregunta_code):
     ADMIN = False
