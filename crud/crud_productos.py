@@ -1,6 +1,6 @@
 from listas import ADMIN,PRODUCTOS_DESCUENTO,PRODUCTOS,PRODUCTOS_CODIGO,PRODUCTOS_CATEGORIA,PRODUCTOS_NOMBRE,PRODUCTOS_PRECIO,PRODUCTOS_STOCK,productos_id_individual,productos_nombre_individual
 from Funciones.funciones import busqueda_por_codigo,obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,volver_al_menu,busqueda_secuencial
-from Funciones.funciones import buscar,lista_cabeza_productos
+from Funciones.funciones import buscar,lista_cabeza_productos,redondeo,generador_de_id
 
 def productos():
     print("\n\n==========\nPRODUCTOS\n==========")
@@ -32,64 +32,41 @@ def productos():
 
 def alta_producto():
     print("\n\n==========ALTA DE PRODUCTOS==========")
+    pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
 
-    pregunta_codigo = obtener_entero(
-        "\nIngrese código del producto a agregar. -1 Para salir...", -1, 1000000
-    )
 
-    while pregunta_codigo == 0:pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000)
+    categoria = obtener_entero("Ingrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros...", 1, 4)
 
-    if pregunta_codigo == -1:
-        volver_al_menu()
+    match categoria:
+        case 1:
+            categoria = "ALIMENTOS"
+        case 2:
+            categoria = "LIMPIEZA"
+        case 3:
+            categoria = "BEBIDAS"
+        case 4:
+            categoria = "OTROS"
+    
+    
+    precio = obtener_entero("Ingrese precio... ",0,100000000)
+    
+    stock = obtener_entero("Ingrese stock... ", 0, 100000)
 
-    pos = busqueda_secuencial(pregunta_codigo)
+    descuento = obtener_entero("Ingrese descuento: 1-100 (%)...",1,100)
 
-    while pos != -1:
-        print("Ya existe un producto con ese código.")
+    #aca hacer funcion de porcentaje y restarle el descuento al valor inicial del producto
 
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto a agregar. -1 Para salir...", -1, 1000000
-        )
+    codigo = generador_de_id(productos_id_individual)
 
-        if pregunta_codigo == -1:
-                volver_al_menu()
-
-        pos = busqueda_secuencial(pregunta_codigo)
-
+    pregunta_seguridad = obtener_caracter("Esta seguro de agregar este producto? Y/N...").upper()
+    if pregunta_seguridad == "Y":
+         PRODUCTOS.append([codigo, pregunta_nombre, categoria, precio, stock, descuento])
+         print("\n\nProducto agregado correctamente.\n\n")
+         print("===================")
     else:
-        pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
-
-        print("\n1. Alimentos\n2. Limpieza\n3. Bebidas\n4. Otros")
-
-        categoria = obtener_entero("Ingrese categoría... ", 1, 4)
-
-        if categoria == 1:
-            categoria = "Alimentos"
-        elif categoria == 2:
-            categoria = "Limpieza"
-        elif categoria == 3:
-            categoria = "Bebidas"
-        elif categoria == 4:
-            categoria = "Otros"
-
-        precio = float(input("Ingrese precio... "))
-
-        while precio <= 0:
-            precio = float(input("Precio inválido. Reingrese... "))
-
-        stock = obtener_entero("Ingrese stock... ", 0, 100000)
-
-        descuento = float(input("Ingrese descuento: "))
-
-        while descuento < 0 or descuento > 100:
-            descuento = float(input("Descuento inválido. Reingrese: "))
-
-        PRODUCTOS.append(
-            [pregunta_codigo, pregunta_nombre, categoria, precio, stock, descuento]
-        )
-        print("\n\nProducto agregado correctamente.\n\n")
+        print("Alta de producto cancelada...\n Volviendo al menu principal...")
         print("===================")
-
+        volver_al_menu()
 
 def baja_producto():
 
