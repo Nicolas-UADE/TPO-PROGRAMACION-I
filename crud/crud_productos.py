@@ -34,7 +34,7 @@ def alta_producto():
     print("\n\n==========ALTA DE PRODUCTOS==========")
 
     pregunta_codigo = obtener_entero(
-        "\nIngrese código del producto... -1 Para salir...", -1, 1000000
+        "\nIngrese código del producto a agregar. -1 Para salir...", -1, 1000000
     )
 
     while pregunta_codigo == 0:pregunta_codigo = obtener_entero("\nIngrese código del producto a eliminar. -1 Para salir...", -1, 1000000)
@@ -42,26 +42,35 @@ def alta_producto():
     if pregunta_codigo == -1:
         volver_al_menu()
 
-    pos = busqueda_secuencial()
+    pos = busqueda_secuencial(pregunta_codigo)
 
     while pos != -1:
         print("Ya existe un producto con ese código.")
 
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto... -1 Para salir...", -1, 1000000
+            "\nIngrese código del producto a agregar. -1 Para salir...", -1, 1000000
         )
 
         if pregunta_codigo == -1:
                 volver_al_menu()
 
-        pos = busqueda_secuencial()
+        pos = busqueda_secuencial(pregunta_codigo)
 
     else:
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
 
-        print("\n1. Alimentos\n2. Limpieza\n3. Bebidas")
+        print("\n1. Alimentos\n2. Limpieza\n3. Bebidas\n4. Otros")
 
-        categoria = obtener_entero("Ingrese categoría... ", 1, 3)
+        categoria = obtener_entero("Ingrese categoría... ", 1, 4)
+
+        if categoria == 1:
+            categoria = "Alimentos"
+        elif categoria == 2:
+            categoria = "Limpieza"
+        elif categoria == 3:
+            categoria = "Bebidas"
+        elif categoria == 4:
+            categoria = "Otros"
 
         precio = float(input("Ingrese precio... "))
 
@@ -76,7 +85,7 @@ def alta_producto():
             descuento = float(input("Descuento inválido. Reingrese: "))
 
         PRODUCTOS.append(
-            pregunta_codigo, pregunta_nombre, categoria, precio, stock, descuento
+            [pregunta_codigo, pregunta_nombre, categoria, precio, stock, descuento]
         )
         print("\n\nProducto agregado correctamente.\n\n")
         print("===================")
