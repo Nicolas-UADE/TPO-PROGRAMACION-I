@@ -15,6 +15,21 @@ def generador_de_id(lista):
 def positivo(valor):
     return valor > 0
 
+def productos_activos():
+    activos = []
+    for i in PRODUCTOS:
+        if i[PRODUCTOS_CODIGO] != ELIMINADO:
+            activos.append(
+                [
+                    i[PRODUCTOS_CODIGO],
+                    i[PRODUCTOS_NOMBRE],
+                    i[PRODUCTOS_CATEGORIA],
+                    i[PRODUCTOS_PRECIO],
+                    i[PRODUCTOS_STOCK],
+                    i[PRODUCTOS_DESCUENTO],
+                ]
+            )
+    return activos
 
 def rango(inicio, hasta, valor):
     return inicio <= valor and hasta >= valor
@@ -105,7 +120,7 @@ def busqueda_por_codigo(lista, codigo):
 
 
 def ordenar_por_codigo():
-    ordenados_codigo = sorted(PRODUCTOS, key=lambda fila: fila[PRODUCTOS_CODIGO])
+    ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
     for p in ordenados_codigo:
         lista = print(
             f"{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}"
@@ -114,7 +129,7 @@ def ordenar_por_codigo():
 
 
 def ordenar_alfabeticamente():
-    ordenados_codigo = sorted(PRODUCTOS, key=lambda fila: fila[PRODUCTOS_NOMBRE])
+    ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE])
     for p in ordenados_codigo:
         lista = print(
             f"{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}"
@@ -138,18 +153,3 @@ def lista_cabeza_productos():
     )
     return lista
 
-
-def productos_activos():
-    activos = []
-    for i in PRODUCTOS:
-        if PRODUCTOS[i][PRODUCTOS_CODIGO] != ELIMINADO:
-            activos.append(
-                [
-                    PRODUCTOS[i][PRODUCTOS_CODIGO],
-                    PRODUCTOS[i][PRODUCTOS_CATEGORIA],
-                    PRODUCTOS[i][PRODUCTOS_PRECIO],
-                    PRODUCTOS[i][PRODUCTOS_STOCK],
-                    PRODUCTOS[i][PRODUCTOS_DESCUENTO],
-                ]
-            )
-    return activos
