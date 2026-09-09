@@ -1,39 +1,47 @@
-from listas import CLIENTES, CLIENTES_ID, CLIENTES_NOMBRE, CLIENTES_APELLIDO, CLIENTES_DNI, CLIENTES_TELEFONO, CLIENTES_EMAIL
-from listas import clientes_id_individual, clientes_nombre_individual, ELIMINADO, ADMIN
+import listas
+
+from listas import (
+    CLIENTES,
+    CLIENTES_ID,
+    CLIENTES_NOMBRE,
+    CLIENTES_APELLIDO,
+    CLIENTES_DNI,
+    CLIENTES_TELEFONO,
+    CLIENTES_EMAIL,
+    clientes_id_individual,
+    clientes_nombre_individual,
+    ELIMINADO,
+)
 
 from Funciones.funciones import obtener_caracter, obtener_entero
-from Funciones.funciones import busqueda_secuencial, ordenar_por_codigo
-from Funciones.funciones import ordenar_alfabeticamente, volver_al_menu
-from Funciones.funciones import buscar, generador_de_id
+from Funciones.funciones import busqueda_secuencial, buscar, generador_de_id
 
 
 def clientes():
     print("==========\nCLIENTES\n==========")
 
-    if ADMIN == True:
+    # Se consulta listas.ADMIN directamente para que tome el valor
+    # actualizado por el login/menu.
+    if listas.ADMIN:
         ask = obtener_entero(
             "0. Retroceder\n"
             "1. Listado de clientes\n"
             "2. Baja de cliente\n"
             "3. Alta de cliente\n"
-            "4. Modificar cliente...",
+            "4. Modificar cliente...\n",
             0,
             4,
         )
 
         match ask:
             case 0:
-                volver_al_menu()
-
+                return
             case 1:
                 listar_clientes()
-
             case 2:
                 baja_cliente()
-
             case 3:
                 alta_cliente()
-
             case 4:
                 modificar_cliente()
 
@@ -42,44 +50,35 @@ def clientes():
             "0. Retroceder\n"
             "1. Listado de clientes\n",
             0,
-            1
+            1,
         )
 
         match ask:
             case 0:
-                volver_al_menu()
-
+                return
             case 1:
                 listar_clientes()
 
 
 def alta_cliente():
-
     print("\n\n==========ALTA DE CLIENTES==========")
 
-    nombre = obtener_caracter(
-        "\nIngrese nombre del cliente... "
-    ).upper()
-
-    apellido = obtener_caracter(
-        "Ingrese apellido del cliente... "
-    ).upper()
+    nombre = obtener_caracter("\nIngrese nombre del cliente... ").upper()
+    apellido = obtener_caracter("Ingrese apellido del cliente... ").upper()
 
     dni = obtener_entero(
         "Ingrese DNI del cliente... ",
         1000000,
-        99999999
+        99999999,
     )
 
     telefono = obtener_entero(
         "Ingrese teléfono del cliente... ",
         100000000,
-        9999999999
+        9999999999,
     )
 
-    email = obtener_caracter(
-        "Ingrese email del cliente... "
-    )
+    email = obtener_caracter("Ingrese email del cliente... ")
 
     codigo = generador_de_id(clientes_id_individual)
 
@@ -88,286 +87,200 @@ def alta_cliente():
     ).upper()
 
     if pregunta_seguridad == "Y":
-
         CLIENTES.append([
             codigo,
             nombre,
             apellido,
             dni,
             telefono,
-            email
+            email,
         ])
 
         clientes_id_individual.append(codigo)
         clientes_nombre_individual.append(nombre)
 
-        print("\n\nCliente agregado correctamente.\n\n")
+        print("\n\nCliente agregado correctamente.\n")
         print("===================")
-
     else:
-
-        print(
-            "Alta de cliente cancelada...\n"
-            "Volviendo al menu principal..."
-        )
-
+        print("\nAlta de cliente cancelada.")
         print("===================")
-
-        volver_al_menu()
 
 
 def baja_cliente():
-
     print("\n\n==========BAJA DE CLIENTES==========")
 
     pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del cliente a eliminar. "
-        "-1 Para salir...",
+        "\nIngrese código del cliente a eliminar. -1 Para salir... ",
         -1,
-        1000000
+        1000000,
     )
-
-    while pregunta_codigo == 0:
-
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a eliminar. "
-            "-1 Para salir...",
-            -1,
-            1000000
-        )
 
     if pregunta_codigo == -1:
-        volver_al_menu()
+        return
 
-    pos = busqueda_secuencial(
-        clientes_id_individual,
-        pregunta_codigo
-    )
+    pos = busqueda_secuencial(clientes_id_individual, pregunta_codigo)
 
-    while pos == -1:
-
+    while pos == -1 or clientes_id_individual[pos] == ELIMINADO:
         print("Cliente inexistente.")
 
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a eliminar. "
-            "-1 Para salir...",
+            "\nIngrese código del cliente a eliminar. -1 Para salir... ",
             -1,
-            1000000
+            1000000,
         )
 
         if pregunta_codigo == -1:
-            volver_al_menu()
+            return
 
-        pos = busqueda_secuencial(
-            clientes_id_individual,
-            pregunta_codigo
-        )
+        pos = busqueda_secuencial(clientes_id_individual, pregunta_codigo)
 
     pregunta_seguridad = obtener_caracter(
-        f"\nEsta seguro de eliminar el cliente "
-        f"{pregunta_codigo}? Y/N..."
+        f"\nEsta seguro de eliminar el cliente {pregunta_codigo}? Y/N..."
     ).upper()
 
     if pregunta_seguridad == "Y":
-
         CLIENTES[pos][CLIENTES_ID] = ELIMINADO
         clientes_id_individual[pos] = ELIMINADO
 
         print("Cliente eliminado correctamente.")
-        print("===================")
-
     else:
-
         print("\nBaja de cliente cancelada.")
-        print("===================")
+
+    print("===================")
 
 
 def modificar_cliente():
-
     print("\n\n==========MODIFICACION DE CLIENTES==========")
 
     pregunta_codigo = obtener_entero(
-        "\nIngrese código del cliente... "
-        "-1 Para salir...",
+        "\nIngrese código del cliente... -1 Para salir... ",
         -1,
-        1000000
+        1000000,
     )
-
-    while pregunta_codigo == 0:
-
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente... "
-            "-1 Para salir...",
-            -1,
-            1000000
-        )
 
     if pregunta_codigo == -1:
-        volver_al_menu()
+        return
 
-    pos = busqueda_secuencial(
-        clientes_id_individual,
-        pregunta_codigo
-    )
+    pos = busqueda_secuencial(clientes_id_individual, pregunta_codigo)
 
-    if pos == -1 or pos == ELIMINADO:
-
+    if pos == -1 or clientes_id_individual[pos] == ELIMINADO:
         print("Cliente inexistente.")
+        return
 
-    else:
+    nuevo_nombre = obtener_caracter("Ingrese nuevo nombre... ").upper()
+    CLIENTES[pos][CLIENTES_NOMBRE] = nuevo_nombre
+    clientes_nombre_individual[pos] = nuevo_nombre
 
-        nuevo_nombre = obtener_caracter(
-            "Ingrese nuevo nombre... "
-        ).upper()
+    nuevo_apellido = obtener_caracter("Ingrese nuevo apellido... ").upper()
+    CLIENTES[pos][CLIENTES_APELLIDO] = nuevo_apellido
 
-        CLIENTES[pos][CLIENTES_NOMBRE] = nuevo_nombre
-        clientes_nombre_individual[pos] = nuevo_nombre
+    nuevo_dni = obtener_entero(
+        "Ingrese nuevo DNI... ",
+        1000000,
+        99999999,
+    )
+    CLIENTES[pos][CLIENTES_DNI] = nuevo_dni
 
-        nuevo_apellido = obtener_caracter(
-            "Ingrese nuevo apellido... "
-        ).upper()
+    nuevo_telefono = obtener_entero(
+        "Ingrese nuevo teléfono... ",
+        100000000,
+        9999999999,
+    )
+    CLIENTES[pos][CLIENTES_TELEFONO] = nuevo_telefono
 
-        CLIENTES[pos][CLIENTES_APELLIDO] = nuevo_apellido
+    nuevo_email = obtener_caracter("Ingrese nuevo email... ")
+    CLIENTES[pos][CLIENTES_EMAIL] = nuevo_email
 
-        nuevo_dni = obtener_entero(
-            "Ingrese nuevo DNI... ",
-            1000000,
-            99999999
-        )
+    print("Cliente modificado correctamente.")
+    print("===================")
 
-        CLIENTES[pos][CLIENTES_DNI] = nuevo_dni
 
-        nuevo_telefono = obtener_entero(
-            "Ingrese nuevo teléfono... ",
-            100000000,
-            9999999999
-        )
-
-        CLIENTES[pos][CLIENTES_TELEFONO] = nuevo_telefono
-
-        nuevo_email = obtener_caracter(
-            "Ingrese nuevo email... "
-        )
-
-        CLIENTES[pos][CLIENTES_EMAIL] = nuevo_email
-
-        print("Cliente modificado correctamente.")
-        print("===================")
+def _clientes_activos():
+    """Devuelve los clientes que no fueron dados de baja."""
+    return [
+        cliente for cliente in CLIENTES
+        if cliente[CLIENTES_ID] != ELIMINADO
+    ]
 
 
 def listar_clientes():
-
     print("\n\n==========LISTA DE CLIENTES==========")
 
     pregunta_orden = obtener_entero(
-        "Elija metodo de ordenamiento. "
-        "1.ID  "
-        "2.ALFABETICAMENTE "
-        "3.Buscar por nombre. "
-        "4.Buscar por codigo. "
-        "-1 para salir...",
+        "Elija metodo de listado.\n"
+        "1. ID\n"
+        "2. ALFABETICAMENTE\n"
+        "3. Buscar por nombre\n"
+        "4. Buscar por codigo\n"
+        "-1. Salir\n",
         -1,
-        4
+        4,
     )
 
     if pregunta_orden == -1:
-        volver_al_menu()
+        return
 
-    if pregunta_orden == 0:
-
-        pregunta_orden = obtener_entero(
-            "Elija metodo de ordenamiento. "
-            "1.ID  "
-            "2.ALFABETICAMENTE "
-            "3.Buscar por nombre. "
-            "4.Buscar por codigo. "
-            "-1 para salir...",
-            -1,
-            4
-        )
+    activos = _clientes_activos()
 
     if pregunta_orden == 1:
+        # Ordena SOLO clientes, no PRODUCTOS.
+        resultado = sorted(activos, key=lambda cliente: cliente[CLIENTES_ID])
 
-        print()
+        print("\nClientes ordenados por ID:")
+        for cliente in resultado:
+            print(cliente)
 
-        ordenar_por_codigo()
+    elif pregunta_orden == 2:
+        # Ordena SOLO clientes por apellido y luego nombre.
+        resultado = sorted(
+            activos,
+            key=lambda cliente: (
+                cliente[CLIENTES_APELLIDO],
+                cliente[CLIENTES_NOMBRE],
+            ),
+        )
 
-    if pregunta_orden == 2:
+        print("\nClientes ordenados alfabeticamente:")
+        for cliente in resultado:
+            print(cliente)
 
-        print()
-
-        ordenar_alfabeticamente()
-
-    if pregunta_orden == 3:
-
+    elif pregunta_orden == 3:
         pregunta = obtener_caracter(
-            "\nIngrese nombre del cliente..."
+            "\nIngrese nombre del cliente... "
         ).upper()
 
-        cuenta_busqueda, busqueda_posiciones = buscar(
-            clientes_nombre_individual,
-            pregunta
-        )
+        encontrados = [
+            cliente
+            for cliente in activos
+            if pregunta in cliente[CLIENTES_NOMBRE]
+        ]
 
-        if cuenta_busqueda == 0:
-
-            print("Cliente no encontrado...")
-
-            from menu import menu_principal
-            menu_principal()
-
+        if not encontrados:
+            print("Cliente no encontrado.")
         else:
+            print(f"\nCantidad de clientes encontrados: {len(encontrados)}")
+            for cliente in encontrados:
+                print(cliente)
 
-            i = 0
-
-            print(
-                f"\nCantidad de clientes encontrados..."
-                f"{cuenta_busqueda}\n"
-            )
-
-            while i < cuenta_busqueda:
-
-                print(
-                    f"\n{CLIENTES[busqueda_posiciones[i]]}\n"
-                )
-
-                i += 1
-
-    if pregunta_orden == 4:
-
+    elif pregunta_orden == 4:
         pregunta = obtener_entero(
-            "\nIngrese codigo del cliente...",
+            "\nIngrese codigo del cliente... ",
             100000,
-            1000000
+            1000000,
         )
 
-        cuenta_busqueda, busqueda_posiciones = buscar(
-            clientes_id_individual,
-            pregunta
-        )
+        encontrados = [
+            cliente
+            for cliente in activos
+            if cliente[CLIENTES_ID] == pregunta
+        ]
 
-        if cuenta_busqueda == 0:
-
-            print("Cliente no encontrado...")
-
-            from menu import menu_principal
-            menu_principal()
-
+        if not encontrados:
+            print("Cliente no encontrado.")
         else:
-
-            i = 0
-
-            while i < cuenta_busqueda:
-
-                print(
-                    f"\nCliente encontrado..."
-                    f"{cuenta_busqueda}\n"
-                )
-
-                print(
-                    f"\n{CLIENTES[busqueda_posiciones[i]]}\n"
-                )
-
-                i += 1
+            print("\nCliente encontrado:")
+            for cliente in encontrados:
+                print(cliente)
 
     print("===================")
+
