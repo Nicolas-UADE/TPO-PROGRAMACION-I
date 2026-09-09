@@ -42,7 +42,7 @@ CONTRASENIAS_LECTORES = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
 PRODUCTOS = [
     [482719, "PILAS", "OTROS", 1500, 25, 0],
     [935164, "ARROZ", "ALIMENTOS", 1800, 18, 0],
-    [271853, "JABON", "ALIMENTOS", 1200, 32, 0],
+    [271853, "ATUN", "ALIMENTOS", 1200, 32, 0],
     [604927, "ACEITE", "ALIMENTOS", 3500, 14, 0],
     [158436, "AZUCAR", "ALIMENTOS", 1300, 27, 0],
     [793205, "YERBA", "ALIMENTOS", 4200, 12, 0],
@@ -54,7 +54,7 @@ PRODUCTOS = [
 productos_nombre_individual = [
     "PILAS",
     "ARROZ",
-    "JABON",
+    "ATUN",
     "ACEITE",
     "AZUCAR",
     "YERBA",
