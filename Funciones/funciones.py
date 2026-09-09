@@ -1,20 +1,51 @@
 import random
-from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES
-from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
+from listas import (
+    CONTRASENIAS_ADMIN,
+    CONTRASENIAS_LECTORES,
+    ELIMINADO,
+    PRODUCTOS,
+    PRODUCTOS_CATEGORIA,
+    PRODUCTOS_CODIGO,
+    PRODUCTOS_DESCUENTO,
+    PRODUCTOS_NOMBRE,
+    PRODUCTOS_PRECIO,
+    PRODUCTOS_STOCK,
+    USUARIOS_ADMIN,
+    USUARIOS_LECTORES,
+)
 
+
+def normalizar_texto(texto):
+    texto = texto.strip()
+    palabras = texto.split()
+    texto = " ".join(palabras)
+    return texto
+
+
+def cadenas_iguales(texto_uno, texto_dos):
+    texto_uno = normalizar_texto(texto_uno).lower()
+    texto_dos = normalizar_texto(texto_dos).lower()
+    return texto_uno == texto_dos
+
+
+def recortar_texto(texto, cantidad):
+    if len(texto) > cantidad:
+        texto = texto[:cantidad - 3] + "..."
+    return texto
 
 
 def generador_de_id(lista):
-    nuevo_id=random.randint(100000,1000000)
+    nuevo_id = random.randint(100000, 1000000)
 
-    while nuevo_id in lista == True:
-          nuevo_id=random.randint(100000,1000000)
-    lista.append(nuevo_id)
+    while nuevo_id in lista:
+        nuevo_id = random.randint(100000, 1000000)
 
     return nuevo_id
 
+
 def positivo(valor):
     return valor > 0
+
 
 def productos_activos():
     activos = []
@@ -31,6 +62,21 @@ def productos_activos():
                 ]
             )
     return activos
+
+
+def buscar_productos_por_nombre(matriz_productos, texto_buscado):
+    productos_encontrados = []
+    texto_buscado = normalizar_texto(texto_buscado).lower()
+
+    for producto in matriz_productos:
+        nombre_producto = normalizar_texto(producto[PRODUCTOS_NOMBRE]).lower()
+
+        if producto[PRODUCTOS_CODIGO] != ELIMINADO and texto_buscado in nombre_producto:
+            productos_encontrados.append(producto)
+
+    return productos_encontrados
+
+
 def inicio(texto):
     print(texto.center(96, "-"))
 
@@ -39,6 +85,19 @@ def rango(inicio, hasta, valor):
 
 def redondeo(numero):
     return f'$ {numero:,.2f}'
+
+
+def mostrar_producto(producto):
+    nombre = normalizar_texto(producto[PRODUCTOS_NOMBRE]).upper()
+    categoria = normalizar_texto(producto[PRODUCTOS_CATEGORIA]).upper()
+    nombre = recortar_texto(nombre, 15)
+    categoria = recortar_texto(categoria, 15)
+    precio = redondeo(producto[PRODUCTOS_PRECIO])
+    descuento = f"{producto[PRODUCTOS_DESCUENTO]} %"
+
+    print(
+        f"{producto[PRODUCTOS_CODIGO]:<15} | {nombre:<15} | {categoria:<15} | {precio:<15} | {producto[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
+    )
     
 
 def coincidencia(pregunta_usu,pregunta_code):
@@ -59,10 +118,10 @@ def coincidencia(pregunta_usu,pregunta_code):
     return ADMIN , LECTOR
 
 def obtener_caracter(texto):
-    ask = input(texto).upper()
+    ask = normalizar_texto(input(texto)).upper()
     while len(ask) == 0:
         print("Debe ingresar un caracter")
-        ask = input(texto).upper()
+        ask = normalizar_texto(input(texto)).upper()
     return ask
 
 def buscar(lista,elemento):
@@ -123,9 +182,7 @@ def ordenar_por_codigo():
     ancho = 96
     print("-" * ancho)
     for p in ordenados_codigo:
-        print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
-        )
+        mostrar_producto(p)
     print("-" * ancho)
 
 
@@ -134,9 +191,7 @@ def ordenar_alfabeticamente():
     ancho = 96
     print("-" * ancho)
     for p in ordenados_codigo:
-        print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
-        )
+        mostrar_producto(p)
     print("-" * ancho)
 
 
@@ -158,4 +213,3 @@ def lista_cabeza_productos():
     )
     
     print("-" * ancho)
-

@@ -1,7 +1,31 @@
-from listas import PRODUCTOS_DESCUENTO,PRODUCTOS,PRODUCTOS_CODIGO,PRODUCTOS_CATEGORIA,PRODUCTOS_NOMBRE,PRODUCTOS_PRECIO,PRODUCTOS_STOCK,productos_id_individual,productos_nombre_individual,ELIMINADO
-from Funciones.funciones import busqueda_por_codigo,obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,busqueda_secuencial
-from Funciones.funciones import buscar,lista_cabeza_productos,generador_de_id,productos_activos,inicio
 import listas
+from listas import (
+    ELIMINADO,
+    PRODUCTOS,
+    PRODUCTOS_CATEGORIA,
+    PRODUCTOS_CODIGO,
+    PRODUCTOS_DESCUENTO,
+    PRODUCTOS_NOMBRE,
+    PRODUCTOS_PRECIO,
+    PRODUCTOS_STOCK,
+    productos_id_individual,
+    productos_nombre_individual,
+)
+from Funciones.funciones import (
+    buscar_productos_por_nombre,
+    busqueda_por_codigo,
+    busqueda_secuencial,
+    cadenas_iguales,
+    generador_de_id,
+    inicio,
+    lista_cabeza_productos,
+    mostrar_producto,
+    obtener_caracter,
+    obtener_entero,
+    ordenar_alfabeticamente,
+    ordenar_por_codigo,
+)
+
 
 def productos():
     texto = "PRODUCTOS"
@@ -36,7 +60,7 @@ def productos():
 def alta_producto():
     texto = "ALTA DE PRODUCTOS"
     inicio(texto)
-    pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
+    pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ")
 
 
     categoria = obtener_entero("Ingrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros...", 1, 4)
@@ -62,8 +86,8 @@ def alta_producto():
 
     codigo = generador_de_id(productos_id_individual)
 
-    pregunta_seguridad = obtener_caracter("Esta seguro de agregar este producto? Y/N...").upper()
-    if pregunta_seguridad == "Y":
+    pregunta_seguridad = obtener_caracter("Esta seguro de agregar este producto? Y/N...")
+    if cadenas_iguales(pregunta_seguridad, "Y"):
          PRODUCTOS.append([codigo, pregunta_nombre, categoria, precio, stock, descuento])
          productos_id_individual.append(codigo)
          productos_nombre_individual.append(pregunta_nombre)
@@ -102,9 +126,9 @@ def baja_producto():
 
     pregunta_seguridad = obtener_caracter(
         f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N..."
-    ).upper()
+    )
 
-    if pregunta_seguridad == "Y":
+    if cadenas_iguales(pregunta_seguridad, "Y"):
 
         PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
         productos_id_individual[pos] = ELIMINADO    
@@ -180,48 +204,48 @@ def listar_productos():
     pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
     if pregunta_orden == -1:
         return
-    if pregunta_orden == 0:
+
+    while pregunta_orden == 0:
         pregunta_orden = obtener_entero("Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...", -1, 4)
 
     if pregunta_orden == 1:
         lista_cabeza_productos()
         print()
         ordenar_por_codigo()
-    if pregunta_orden == 2:
+
+    elif pregunta_orden == 2:
         lista_cabeza_productos()
         print()
         ordenar_alfabeticamente()
 
+    elif pregunta_orden == 3:
+        pregunta = obtener_caracter("\nIngrese nombre o parte del nombre...")
+        productos_encontrados = buscar_productos_por_nombre(PRODUCTOS, pregunta)
 
-    if pregunta_orden == 3:
-        pregunta = obtener_caracter("\nIngrese nombre del producto...").upper()
-        cuenta_busqueda,busqueda_posiciones = buscar(productos_nombre_individual,pregunta)
-        if cuenta_busqueda == 0:
+        if len(productos_encontrados) == 0:
             print("Producto no encontrado...")
             return
         else:
-            i = 0
-            print(f"\nCantidad de productos encontrados...{cuenta_busqueda}\n")
-            while i < cuenta_busqueda:
-                
-                print(f"\n{productos_activos()[busqueda_posiciones[i]]}\n")
-                i += 1
+            print(f"\nCantidad de productos encontrados...{len(productos_encontrados)}\n")
+            lista_cabeza_productos()
+
+            for producto in productos_encontrados:
+                mostrar_producto(producto)
+
             texto = ""
             inicio(texto)
 
-
-    if pregunta_orden == 4:
+    elif pregunta_orden == 4:
         pregunta = obtener_entero("\nIngrese codigo del producto...",100000,1000000)
-        cuenta_busqueda, busqueda_posiciones = buscar(productos_id_individual,pregunta)
-        if cuenta_busqueda == 0:
-                    print("Producto no encontrado...")
-                    return
+        posicion = busqueda_por_codigo(PRODUCTOS, pregunta)
+
+        if posicion == -1:
+            print("Producto no encontrado...")
+            return
         else:
-            i = 0
-            while i < cuenta_busqueda:
-                print(f"\nProducto encontrado...{cuenta_busqueda}\n")
-                print(f"\n{productos_activos()[busqueda_posiciones[i]]}\n")
-                i += 1
+            print("\nProducto encontrado...\n")
+            lista_cabeza_productos()
+            mostrar_producto(PRODUCTOS[posicion])
             texto = ""
             inicio(texto)
         
