@@ -130,9 +130,9 @@ def ordenar_por_codigo():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
     ancho = 96
     print("-" * ancho)
-    for p in ordenados_codigo:
+    for i in ordenados_codigo:
         print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
         )
     print("-" * ancho)
 
@@ -141,9 +141,9 @@ def ordenar_alfabeticamente():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE])
     ancho = 96
     print("-" * ancho)
-    for p in ordenados_codigo:
+    for i in ordenados_codigo:
         print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
         )
     print("-" * ancho)
 
