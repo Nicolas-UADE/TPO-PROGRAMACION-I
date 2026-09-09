@@ -1,5 +1,5 @@
 import random
-from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES
+from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES,productos_nombre_individual
 from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
 
 
@@ -31,6 +31,14 @@ def productos_activos():
                 ]
             )
     return activos
+
+def productos_nombres_activos():
+    activos = []
+    for i in productos_nombre_individual:
+        if i != ELIMINADO:
+            activos.append(i)
+    return activos
+
 def inicio(texto):
     print(texto.center(96, "-"))
 
@@ -117,14 +125,23 @@ def busqueda_por_codigo(lista, codigo):
     else:
         return -1
 
+# def busqueda_por_codigo(lista, codigo):
+#     i = 0
+#     while i < len(lista) and lista[i][PRODUCTOS_CODIGO] != codigo:
+#         i += 1
+#     if i < len(lista):
+#         return i
+#     else:
+#         return -1
+
 
 def ordenar_por_codigo():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
     ancho = 96
     print("-" * ancho)
-    for p in ordenados_codigo:
+    for i in ordenados_codigo:
         print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
         )
     print("-" * ancho)
 
@@ -133,9 +150,9 @@ def ordenar_alfabeticamente():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE])
     ancho = 96
     print("-" * ancho)
-    for p in ordenados_codigo:
+    for i in ordenados_codigo:
         print(
-            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
         )
     print("-" * ancho)
 

@@ -1,6 +1,6 @@
 from listas import PRODUCTOS_DESCUENTO,PRODUCTOS,PRODUCTOS_CODIGO,PRODUCTOS_CATEGORIA,PRODUCTOS_NOMBRE,PRODUCTOS_PRECIO,PRODUCTOS_STOCK,productos_id_individual,productos_nombre_individual,ELIMINADO
-from Funciones.funciones import busqueda_por_codigo,obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,busqueda_secuencial
-from Funciones.funciones import buscar,lista_cabeza_productos,generador_de_id,productos_activos,inicio
+from Funciones.funciones import obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,busqueda_secuencial
+from Funciones.funciones import buscar,lista_cabeza_productos,generador_de_id,productos_activos,inicio,productos_nombres_activos
 import listas
 
 def productos():
@@ -37,6 +37,11 @@ def alta_producto():
     texto = "ALTA DE PRODUCTOS"
     inicio(texto)
     pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
+    
+    while pregunta_nombre in productos_nombres_activos():
+        print("Poducto ya vigente...")
+        pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
+        
 
 
     categoria = obtener_entero("Ingrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros...", 1, 4)
@@ -107,7 +112,8 @@ def baja_producto():
     if pregunta_seguridad == "Y":
 
         PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
-        productos_id_individual[pos] = ELIMINADO    
+        productos_id_individual[pos] = ELIMINADO
+        productos_nombre_individual[pos] = ELIMINADO    
 
         print("Producto eliminado correctamente.")
         print("===================")
@@ -192,7 +198,6 @@ def listar_productos():
         print()
         ordenar_alfabeticamente()
 
-
     if pregunta_orden == 3:
         pregunta = obtener_caracter("\nIngrese nombre del producto...").upper()
         cuenta_busqueda,busqueda_posiciones = buscar(productos_nombre_individual,pregunta)
@@ -203,8 +208,9 @@ def listar_productos():
             i = 0
             print(f"\nCantidad de productos encontrados...{cuenta_busqueda}\n")
             while i < cuenta_busqueda:
-                
-                print(f"\n{productos_activos()[busqueda_posiciones[i]]}\n")
+                producto = PRODUCTOS[busqueda_posiciones[i]]
+                if producto[PRODUCTOS_CODIGO] != ELIMINADO:
+                    print(f"\n{producto}\n")
                 i += 1
             texto = ""
             inicio(texto)
@@ -219,10 +225,12 @@ def listar_productos():
         else:
             i = 0
             while i < cuenta_busqueda:
-                print(f"\nProducto encontrado...{cuenta_busqueda}\n")
-                print(f"\n{productos_activos()[busqueda_posiciones[i]]}\n")
+                producto = PRODUCTOS[busqueda_posiciones[i]]
+                if producto[PRODUCTOS_CODIGO] != ELIMINADO:
+                    print(f"\nProducto encontrado...{cuenta_busqueda}\n")
+                    print(f"\n{producto}\n")
                 i += 1
             texto = ""
             inicio(texto)
-        
-    
+                
+            
