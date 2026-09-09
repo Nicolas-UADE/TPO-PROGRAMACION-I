@@ -14,6 +14,7 @@ if que_soy == 1:
 else:
     listas.ADMIN = False
 
+
 def menu_principal():
     texto = "MENU PRINCIPAL"
     inicio(texto)
