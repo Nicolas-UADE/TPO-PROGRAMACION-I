@@ -3,6 +3,7 @@ from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCT
 from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
 
 
+
 def generador_de_id(lista):
     nuevo_id=random.randint(100000,1000000)
 
@@ -30,6 +31,8 @@ def productos_activos():
                 ]
             )
     return activos
+def inicio(texto):
+    print(texto.center(96, "-"))
 
 def rango(inicio, hasta, valor):
     return inicio <= valor and hasta >= valor
@@ -77,10 +80,6 @@ def buscar(lista,elemento):
             
     return contador,posiciones
 
-def volver_al_menu():
-        from menu import menu_principal
-        print("Volviendo al menu principal...\n\n")
-        menu_principal()
         
 
 def obtener_entero(texto, minimo, maximo):
@@ -121,20 +120,24 @@ def busqueda_por_codigo(lista, codigo):
 
 def ordenar_por_codigo():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
+    ancho = 96
+    print("-" * ancho)
     for p in ordenados_codigo:
-        lista = print(
-            f"{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}"
+        print(
+            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
         )
-    return lista
+    print("-" * ancho)
 
 
 def ordenar_alfabeticamente():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE])
+    ancho = 96
+    print("-" * ancho)
     for p in ordenados_codigo:
-        lista = print(
-            f"{p[PRODUCTOS_CODIGO]:<15}{p[PRODUCTOS_NOMBRE]:15}{p[PRODUCTOS_CATEGORIA]:15}{p[PRODUCTOS_PRECIO]:<15}{p[PRODUCTOS_STOCK]:<15}{p[PRODUCTOS_DESCUENTO]:<15}"
+        print(
+            f"{p[PRODUCTOS_CODIGO]:<15} | {p[PRODUCTOS_NOMBRE]:<15} | {p[PRODUCTOS_CATEGORIA]:<15} | {redondeo(p[PRODUCTOS_PRECIO]):<15} | {p[PRODUCTOS_STOCK]:<15} | {p[PRODUCTOS_DESCUENTO]:<15}"
         )
-    return lista
+    print("-" * ancho)
 
 
 def lista_cabeza_productos():
@@ -148,8 +151,11 @@ def lista_cabeza_productos():
     list.append(codigo), list.append(nombre), list.append(tipo), list.append(
         precio
     ), list.append(stock), list.append(descuento)
-    lista = print(
-        f"{list[0]:<15}{list[1]:15}{list[2]:15}{list[3]:15}{list[4]:15}{list[5]:15}"
+    ancho = 96
+    print("-" * ancho)
+    print(
+        f"{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
     )
-    return lista
+    
+    print("-" * ancho)
 
