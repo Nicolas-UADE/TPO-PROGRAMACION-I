@@ -132,7 +132,7 @@ def ordenar_por_codigo():
     print("-" * ancho)
     for i in ordenados_codigo:
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}%"
         )
     print("-" * ancho)
 
@@ -143,7 +143,7 @@ def ordenar_alfabeticamente():
     print("-" * ancho)
     for i in ordenados_codigo:
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
+            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}%"
         )
     print("-" * ancho)
 
