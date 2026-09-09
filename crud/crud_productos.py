@@ -37,6 +37,11 @@ def alta_producto():
     texto = "ALTA DE PRODUCTOS"
     inicio(texto)
     pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
+    cantidad_coincide = buscar(productos_activos(),pregunta_nombre)
+    if cantidad_coincide != 0:
+        print("Poducto ya vigente...")
+        pregunta_nombre = obtener_caracter("\nIngrese nombre del producto... ").upper()
+        cantidad_coincide = buscar(productos_nombre_individual,pregunta_nombre)
 
 
     categoria = obtener_entero("Ingrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros...", 1, 4)
