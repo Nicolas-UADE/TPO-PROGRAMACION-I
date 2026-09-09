@@ -125,6 +125,15 @@ def busqueda_por_codigo(lista, codigo):
     else:
         return -1
 
+# def busqueda_por_codigo(lista, codigo):
+#     i = 0
+#     while i < len(lista) and lista[i][PRODUCTOS_CODIGO] != codigo:
+#         i += 1
+#     if i < len(lista):
+#         return i
+#     else:
+#         return -1
+
 
 def ordenar_por_codigo():
     ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
