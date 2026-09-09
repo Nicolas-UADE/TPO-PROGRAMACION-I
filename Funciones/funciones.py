@@ -1,5 +1,5 @@
 import random
-from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES
+from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES,productos_nombre_individual
 from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
 
 
@@ -31,6 +31,14 @@ def productos_activos():
                 ]
             )
     return activos
+
+def productos_nombres_activos():
+    activos = []
+    for i in productos_nombre_individual:
+        if i != ELIMINADO:
+            activos.append(i)
+    return activos
+
 def inicio(texto):
     print(texto.center(96, "-"))
 
