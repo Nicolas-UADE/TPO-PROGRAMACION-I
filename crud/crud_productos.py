@@ -98,11 +98,10 @@ def alta_producto():
         productos_id_individual.append(codigo)
         productos_nombre_individual.append(pregunta_nombre)
         print("\n\nProducto agregado correctamente.\n\n")
-        print("===================")
     else:
         print("Alta de producto cancelada...\n Volviendo al menu principal...")
-        print("===================")
-        return
+    texto = ""
+    inicio(texto)
 
 
 def baja_producto():
@@ -144,10 +143,11 @@ def baja_producto():
         productos_nombre_individual[pos] = ELIMINADO
 
         print("Producto eliminado correctamente.")
-        print("===================")
+        
     else:
         print("\nBaja de producto cancelada.")
-        print("===================")
+    texto = ""
+    inicio(texto)
 
 
 def modificar_producto():
@@ -191,23 +191,32 @@ def modificar_producto():
                 nueva_categoria = "BEBIDAS"
             case 4:
                 nueva_categoria = "OTROS"
-
-        PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = nueva_categoria
-
         precio = obtener_entero("Ingrese nuevo precio... ", 1, 100000)
-
-        PRODUCTOS[pos][PRODUCTOS_PRECIO] = precio
-
+            
         stock = obtener_entero("Ingrese nuevo stock: ", 0, 1000000)
 
-        PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
-
         descuento = obtener_entero("Ingrese nuevo descuento: ", 1, 100)
+        pregunta_seguridad = obtener_caracter(
+                        f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N..."
+                    ).upper()
+                
+        if pregunta_seguridad == "Y":
 
-        PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
+            PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
 
-        print("Producto modificado correctamente.")
-        print("===================")
+            PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = nueva_categoria
+
+            PRODUCTOS[pos][PRODUCTOS_PRECIO] = precio
+
+            PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
+            print("Producto modificado correctamente.")
+            texto = ""
+            inicio(texto)
+        else: 
+            print("Modificacion cancelada...")
+            texto = ""
+            inicio(texto)
+
 
 
 def listar_productos():
@@ -215,7 +224,7 @@ def listar_productos():
     texto = "LISTA DE PRODUCTOS"
     inicio(texto)
     pregunta_orden = obtener_entero(
-        "Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
+        "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
         -1,
         4,
     )
@@ -223,7 +232,7 @@ def listar_productos():
         return
     if pregunta_orden == 0:
         pregunta_orden = obtener_entero(
-            "Elija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
+            "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir...",
             -1,
             4,
         )
