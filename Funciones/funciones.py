@@ -59,7 +59,7 @@ def productos_nombres_activos():
 
 
 def inicio(texto):
-    print(texto.center(96, "-"))
+    print(texto.center(109, "-"))
 
 
 def rango(inicio, hasta, valor):
@@ -159,11 +159,12 @@ def ordenar_por_codigo():
     ordenados_codigo = sorted(
         productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO]
     )
-    ancho = 96
+    ancho = 109
     print("-" * ancho)
     for i in ordenados_codigo:
+        descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}%"
+            f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
         )
     print("-" * ancho)
 
@@ -172,11 +173,12 @@ def ordenar_alfabeticamente():
     ordenados_codigo = sorted(
         productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE]
     )
-    ancho = 96
+    ancho = 109
     print("-" * ancho)
     for i in ordenados_codigo:
+        descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}%"
+            f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
         )
     print("-" * ancho)
 
@@ -192,10 +194,10 @@ def lista_cabeza_productos():
     list.append(codigo), list.append(nombre), list.append(tipo), list.append(
         precio
     ), list.append(stock), list.append(descuento)
-    ancho = 96
+    ancho = 109
     print("-" * ancho)
     print(
-        f"{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
+        f"|{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
     )
 
     print("-" * ancho)

@@ -7,9 +7,9 @@ def login():
     LECTOR = False
     print("==========\nBIENVENIDO\n==========")
     maximo_intentos = 4
-    ask_usuario = obtener_caracter("Ingrese usuario...")
+    ask_usuario = obtener_caracter("Ingrese usuario\n.")
 
-    ask_code = obtener_entero("Ingrese contrasenia (Numerica)...", 0, 1000)
+    ask_code = obtener_entero("Ingrese contrasenia (Numerica)\n.", 0, 1000)
 
     ADMIN, LECTOR = coincidencia(ask_usuario, ask_code)
 
@@ -22,9 +22,9 @@ def login():
 
         maximo_intentos -= 1
 
-        ask_usuario = obtener_caracter("Ingrese usuario...")
+        ask_usuario = obtener_caracter("Ingrese usuario\n.")
 
-        ask_code = obtener_entero("Ingrese contrasenia (Numerica)...", 0, 1000)
+        ask_code = obtener_entero("Ingrese contrasenia (Numerica)\n.", 0, 1000)
 
         ADMIN, LECTOR = coincidencia(ask_usuario, ask_code)
 
