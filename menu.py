@@ -18,7 +18,7 @@ else:
 def menu_principal():
     texto = "MENU PRINCIPAL"
     inicio(texto)
-    ask_menu = obtener_entero("0. Salir\n1. Productos\n2. Clientes\n3.Ventas...", 0, 3)
+    ask_menu = obtener_entero("0. Salir\n1. Productos\n2. Clientes\n3.Ventas\n.", 0, 3)
 
     if ask_menu == 0:
         print("Saliendo del programa...")
