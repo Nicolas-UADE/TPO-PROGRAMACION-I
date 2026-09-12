@@ -1,20 +1,37 @@
 import random
-from listas import PRODUCTOS_CODIGO,PRODUCTOS_NOMBRE,PRODUCTOS_CATEGORIA,PRODUCTOS_PRECIO,USUARIOS_ADMIN,USUARIOS_LECTORES,productos_nombre_individual
-from listas import PRODUCTOS_STOCK,PRODUCTOS,PRODUCTOS_DESCUENTO,ELIMINADO,USUARIOS_ADMIN,CONTRASENIAS_ADMIN,CONTRASENIAS_LECTORES
-
+from listas import (
+    PRODUCTOS_CODIGO,
+    PRODUCTOS_NOMBRE,
+    PRODUCTOS_CATEGORIA,
+    PRODUCTOS_PRECIO,
+    USUARIOS_ADMIN,
+    USUARIOS_LECTORES,
+    productos_nombre_individual,
+)
+from listas import (
+    PRODUCTOS_STOCK,
+    PRODUCTOS,
+    PRODUCTOS_DESCUENTO,
+    ELIMINADO,
+    USUARIOS_ADMIN,
+    CONTRASENIAS_ADMIN,
+    CONTRASENIAS_LECTORES,
+)
 
 
 def generador_de_id(lista):
-    nuevo_id=random.randint(100000,1000000)
+    nuevo_id = random.randint(100000, 1000000)
 
     while nuevo_id in lista == True:
-          nuevo_id=random.randint(100000,1000000)
+        nuevo_id = random.randint(100000, 1000000)
     lista.append(nuevo_id)
 
     return nuevo_id
 
+
 def positivo(valor):
     return valor > 0
+
 
 def productos_activos():
     activos = []
@@ -32,6 +49,7 @@ def productos_activos():
             )
     return activos
 
+
 def productos_nombres_activos():
     activos = []
     for i in productos_nombre_individual:
@@ -39,32 +57,44 @@ def productos_nombres_activos():
             activos.append(i)
     return activos
 
+
 def inicio(texto):
-    print(texto.center(96, "-"))
+    print(texto.center(109, "-"))
+
 
 def rango(inicio, hasta, valor):
     return inicio <= valor and hasta >= valor
 
-def redondeo(numero):
-    return f'$ {numero:,.2f}'
-    
 
-def coincidencia(pregunta_usu,pregunta_code):
+def redondeo(numero):
+    return f"$ {numero:,.2f}"
+
+
+def coincidencia(pregunta_usu, pregunta_code):
     ADMIN = False
     LECTOR = False
-    es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN,pregunta_usu) 
-    
-    es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN,pregunta_code)
+    es_admin_usuario = busqueda_secuencial(USUARIOS_ADMIN, pregunta_usu)
 
-    es_lector_usuario = busqueda_secuencial(USUARIOS_LECTORES,pregunta_usu) 
+    es_admin_contrasenia = busqueda_secuencial(CONTRASENIAS_ADMIN, pregunta_code)
 
-    es_lector_contrasenia = busqueda_secuencial(CONTRASENIAS_LECTORES,pregunta_code)
+    es_lector_usuario = busqueda_secuencial(USUARIOS_LECTORES, pregunta_usu)
 
-    if es_admin_usuario == es_admin_contrasenia and es_admin_usuario != -1 and es_admin_contrasenia != -1:
-            ADMIN = True
-    elif es_lector_usuario == es_lector_contrasenia and es_lector_usuario != -1 and es_lector_contrasenia != -1:
-            LECTOR = True
-    return ADMIN , LECTOR
+    es_lector_contrasenia = busqueda_secuencial(CONTRASENIAS_LECTORES, pregunta_code)
+
+    if (
+        es_admin_usuario == es_admin_contrasenia
+        and es_admin_usuario != -1
+        and es_admin_contrasenia != -1
+    ):
+        ADMIN = True
+    elif (
+        es_lector_usuario == es_lector_contrasenia
+        and es_lector_usuario != -1
+        and es_lector_contrasenia != -1
+    ):
+        LECTOR = True
+    return ADMIN, LECTOR
+
 
 def obtener_caracter(texto):
     ask = input(texto).upper()
@@ -73,7 +103,8 @@ def obtener_caracter(texto):
         ask = input(texto).upper()
     return ask
 
-def buscar(lista,elemento):
+
+def buscar(lista, elemento):
     lista_origen = []
     lista_origen.extend(lista)
     contador = 0
@@ -83,12 +114,17 @@ def buscar(lista,elemento):
         posiciones.append(posicion)
 
         lista_origen[posicion] = 0
-        contador +=1
-        
-            
-    return contador,posiciones
+        contador += 1
 
-        
+    return contador, posiciones
+
+def buscar_por_id(lista, id_buscado):
+    for i, cliente in enumerate(lista):
+        if cliente != ELIMINADO and cliente["id"] == id_buscado:
+            return i
+    return -2
+    
+
 
 def obtener_entero(texto, minimo, maximo):
     valor_invalido = True
@@ -125,34 +161,31 @@ def busqueda_por_codigo(lista, codigo):
     else:
         return -1
 
-# def busqueda_por_codigo(lista, codigo):
-#     i = 0
-#     while i < len(lista) and lista[i][PRODUCTOS_CODIGO] != codigo:
-#         i += 1
-#     if i < len(lista):
-#         return i
-#     else:
-#         return -1
-
 
 def ordenar_por_codigo():
-    ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO])
-    ancho = 96
+    ordenados_codigo = sorted(
+        productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO]
+    )
+    ancho = 109
     print("-" * ancho)
     for i in ordenados_codigo:
+        descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
+            f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
         )
     print("-" * ancho)
 
 
 def ordenar_alfabeticamente():
-    ordenados_codigo = sorted(productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE])
-    ancho = 96
+    ordenados_codigo = sorted(
+        productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE]
+    )
+    ancho = 109
     print("-" * ancho)
     for i in ordenados_codigo:
+        descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
-            f"{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {i[PRODUCTOS_DESCUENTO]:<15}"
+            f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
         )
     print("-" * ancho)
 
@@ -168,11 +201,28 @@ def lista_cabeza_productos():
     list.append(codigo), list.append(nombre), list.append(tipo), list.append(
         precio
     ), list.append(stock), list.append(descuento)
-    ancho = 96
+    ancho = 109
     print("-" * ancho)
     print(
-        f"{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
+        f"|{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
     )
-    
+
     print("-" * ancho)
 
+
+def lista_cabeza_clientes():
+    list = []
+    codigo = "ID"
+    nombre = "Nombre"
+    dni = "DNI"
+    telefono = "TELEFONO"
+    email = "EMAIL"
+    
+    list.append(codigo), list.append(nombre), list.append(dni), list.append(telefono), list.append(email)
+    ancho = 120
+    print("-" * ancho)
+    print(
+        f"|{list[0]:<20} | {list[1]:<20} | {list[2]:<20} | {list[3]:<20} | {list[4]:<20}"
+    )
+
+    print("-" * ancho)
