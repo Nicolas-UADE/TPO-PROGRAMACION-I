@@ -137,4 +137,57 @@ def baja_clientes():
 def modificar_clientes():
     texto = "MODIFICAR CLIENTES"
     inicio(texto)
+    pregunta_codigo = obtener_entero(
+            "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        )
+    
+    while pregunta_codigo == 0:
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        )
+
+    if pregunta_codigo == -1:
+        return
+
+    esta = buscar_por_id(lista_clientes,pregunta_codigo)
+    while esta == -2:
+        print("Cliente inexistente.")
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        )
+        if pregunta_codigo == -1:
+            return
+        esta = buscar_por_id(lista_clientes,pregunta_codigo)
+
+    nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+    dni = obtener_entero("DNI:\n.",1000000,99999999)
+    telefono = obtener_entero("Telefono:\n.",1000000000,9999999999)
+    email = obtener_caracter("Email:\n.").lower()
+
+    el_dni = str(dni)
+    el_telefono = str(telefono)
+    pregunta_seguridad = obtener_caracter(
+            f"\nEsta seguro de modificar al cliente {pregunta_codigo}? Y/N\n."
+        ).upper()
+    
+    if pregunta_seguridad == "Y":
+
+        lista_clientes[esta] = {
+        "id": pregunta_codigo,
+        "nombre": nombre,
+        "dni": el_dni,
+        "telefono": el_telefono,
+        "email": email,
+    }
+
+        print("Cliente modificado correctamente.")
+
+    else:
+        print("\nModificacion de cliente cancelada.")
+    texto = ""
+    inicio(texto)
+        
+
+
+
 
