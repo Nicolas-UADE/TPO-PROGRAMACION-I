@@ -1,6 +1,6 @@
 from listas import PRODUCTOS_DESCUENTO,PRODUCTOS,PRODUCTOS_CODIGO,PRODUCTOS_CATEGORIA,PRODUCTOS_NOMBRE,PRODUCTOS_PRECIO,PRODUCTOS_STOCK,productos_id_individual,productos_nombre_individual,ELIMINADO
 from Funciones.funciones import obtener_caracter,obtener_entero,ordenar_por_codigo,ordenar_alfabeticamente,busqueda_secuencial
-from Funciones.funciones import buscar,lista_cabeza_productos,generador_de_id,productos_activos,inicio,productos_nombres_activos
+from Funciones.funciones import buscar,lista_cabeza_productos,generador_de_id,productos_activos,inicio,productos_nombres_activos,calcular_descuentos
 import listas
 
 def productos():
@@ -9,9 +9,9 @@ def productos():
     
     if listas.ADMIN == True:
         ask = obtener_entero(
-            "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto...",
+            "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto\n5.Ver precios con descuentos",
             0,
-            4,
+            5,
         )
         match ask:
             case 0:
@@ -24,6 +24,8 @@ def productos():
                 alta_producto()
             case 4:
                 modificar_producto()
+            case 5:
+                mostrar_precios_con_descuento()
     else:
         ask = obtener_entero("0. Retroceder\n1. Listado de producto\n", 0, 1)
         match ask:
@@ -232,5 +234,16 @@ def listar_productos():
                 i += 1
             texto = ""
             inicio(texto)
-                
-            
+
+def mostrar_precios_con_descuento():
+    texto = "PRECIOS CON DESCUENTO"
+    inicio(texto)
+
+    activos = productos_activos()
+    precios = calcular_descuentos(activos)
+
+    for i in range(len(activos)):
+        producto = activos[i]
+        precio = precios[i]
+        nombre = producto[PRODUCTOS_NOMBRE]
+        print(f"{nombre}: {precio}")

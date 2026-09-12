@@ -47,7 +47,16 @@ def rango(inicio, hasta, valor):
 
 def redondeo(numero):
     return f'$ {numero:,.2f}'
-    
+
+def calcular_descuentos(PRECIOS):
+    precios_finales=[]
+
+    for PRODUCTO in PRECIOS:
+        precio = PRODUCTO[PRODUCTOS_PRECIO]
+        descuento = PRODUCTO[PRODUCTOS_DESCUENTO]
+        precio_con_descuento = precio * (1 - descuento / 100)
+        precios_finales.append(redondeo(precio_con_descuento))
+    return precios_finales
 
 def coincidencia(pregunta_usu,pregunta_code):
     ADMIN = False
