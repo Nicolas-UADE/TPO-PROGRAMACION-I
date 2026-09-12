@@ -33,6 +33,6 @@ while opcion != 0:
         case 1:
             productos()
         case 2:
-            clientes()
+            clientess()
         case 3:
             ventas()

@@ -1,25 +1,26 @@
+from Funciones.funciones import inicio,obtener_caracter,obtener_entero
+import listas
+
 clientes = [
-    {
-        "id": 1,
-        "nombre": "Juan",
-        "apellido": "Perez",
-        "dni": "40123456",
-        "telefono": "1123456789",
-        "email": "juan@gmail.com"
-    },
-    {
-        "id": 2,
-        "nombre": "Maria",
-        "apellido": "Gomez",
-        "dni": "42345678",
-        "telefono": "1145678910",
-        "email": "maria@gmail.com"
-    }
+    {"id": 1, "nombre": "Juan Pérez", "dni": "30111222", "telefono": "1145678901"},
+    {"id": 2, "nombre": "Ana Gómez", "dni": "28555666", "telefono": "1156789012"},
+    {"id": 3, "nombre": "Carlos Fernández", "dni": "32444555", "telefono": "1167890123"},
+    {"id": 4, "nombre": "Lucía Martínez", "dni": "35222333", "telefono": "1178901234"},
+    {"id": 5, "nombre": "Diego Rodríguez", "dni": "27888999", "telefono": "1189012345"},
+    {"id": 6, "nombre": "Sofía López", "dni": "33666777", "telefono": "1190123456"},
+    {"id": 7, "nombre": "Martín Sánchez", "dni": "29999000", "telefono": "1101234567"},
+    {"id": 8, "nombre": "Valentina Torres", "dni": "31777888", "telefono": "1112345678"},
+    {"id": 9, "nombre": "Federico Díaz", "dni": "26333444", "telefono": "1123456789"},
+    {"id": 10, "nombre": "Camila Romero", "dni": "34111222", "telefono": "1134567890"},
 ]
+    
 
 
-def agregar_cliente():
-    print("\n--- AGREGAR CLIENTE ---")
+
+def alta_clientes():
+    texto = "ALTA DE CLIENTES"
+    inicio(texto)
+    
 
     nombre = input("Nombre: ").strip()
     apellido = input("Apellido: ").strip()
@@ -43,8 +44,9 @@ def agregar_cliente():
     print("Cliente agregado correctamente.")
 
 
-def mostrar_clientes():
-    print("\n--- LISTA DE CLIENTES ---")
+def listado_clientes():
+    texto = "LISTADO CLIENTES"
+    inicio(texto)
 
     for cliente in clientes:
         print("ID:", cliente["id"])
@@ -56,28 +58,36 @@ def mostrar_clientes():
         print("------------------------")
 
 
-def menu_clientes():
-    opcion = 0
+def clientess():
+    texto = "CLIENTES"
+    inicio(texto)
+    if listas.ADMIN == True:
+        ask = obtener_entero(
+            "0. Retroceder\n1. Listado de clientes\n2. Baja de clientes\n3.Alta de clientes\n4.Modificar clientes...",
+            0,
+            4,
+        )
+        match ask:
+            case 0:
+                return
+            case 1:
+                listado_clientes()
+            case 2:
+                baja_clientes()
+            case 3:
+                alta_clientes()
+            case 4:
+                modificar_clientes()
+    else:
+        ask = obtener_entero("0. Retroceder\n1. Listado de clientes\n", 0, 1)
+        match ask:
+            case 0:
+                return
+            case 1:
+                listado_clientes()
+    
 
-    while opcion != 3:
-        print("\n===== MENU CLIENTES =====")
-        print("1. Agregar cliente")
-        print("2. Mostrar clientes")
-        print("3. Salir")
-
-        opcion = int(input("Ingrese una opcion: "))
-
-        if opcion == 1:
-            agregar_cliente()
-
-        elif opcion == 2:
-            mostrar_clientes()
-
-        elif opcion == 3:
-            print("Saliendo del menu...")
-
-        else:
-            print("Opcion invalida.")
-
-
-menu_clientes()
+def baja_clientes():
+    pass
+def modificar_clientes():
+    pass
