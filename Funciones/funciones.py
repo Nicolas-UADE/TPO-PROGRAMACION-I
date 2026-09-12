@@ -118,6 +118,13 @@ def buscar(lista, elemento):
 
     return contador, posiciones
 
+def buscar_por_id(lista, id_buscado):
+    for i, cliente in enumerate(lista):
+        if cliente != ELIMINADO and cliente["id"] == id_buscado:
+            return i
+    return -2
+    
+
 
 def obtener_entero(texto, minimo, maximo):
     valor_invalido = True
@@ -198,6 +205,24 @@ def lista_cabeza_productos():
     print("-" * ancho)
     print(
         f"|{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"
+    )
+
+    print("-" * ancho)
+
+
+def lista_cabeza_clientes():
+    list = []
+    codigo = "ID"
+    nombre = "Nombre"
+    dni = "DNI"
+    telefono = "TELEFONO"
+    email = "EMAIL"
+    
+    list.append(codigo), list.append(nombre), list.append(dni), list.append(telefono), list.append(email)
+    ancho = 120
+    print("-" * ancho)
+    print(
+        f"|{list[0]:<20} | {list[1]:<20} | {list[2]:<20} | {list[3]:<20} | {list[4]:<20}"
     )
 
     print("-" * ancho)
