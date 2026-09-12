@@ -119,10 +119,13 @@ def buscar(lista, elemento):
     return contador, posiciones
 
 def buscar_por_id(lista, id_buscado):
-    for i, cliente in enumerate(lista):
-        if cliente != ELIMINADO and cliente["id"] == id_buscado:
-            return i
+    for i in range(len(lista)):
+        cliente = lista[i]
+        if cliente != ELIMINADO:
+            if cliente["id"] == id_buscado:
+                return i
     return -2
+    
     
 
 
