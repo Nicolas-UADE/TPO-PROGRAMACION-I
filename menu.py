@@ -8,7 +8,7 @@ from crud.crud_ventas import ventas
 
 from Funciones.funciones import obtener_entero, inicio
 
-que_soy = obtener_entero("1.ADMIN. 2LECTOR.  ",1,2)
+que_soy = obtener_entero("1.ADMIN. 2LECTOR.  ", 1, 2)
 if que_soy == 1:
     listas.ADMIN = True
 else:

@@ -143,7 +143,7 @@ def baja_producto():
         productos_nombre_individual[pos] = ELIMINADO
 
         print("Producto eliminado correctamente.")
-        
+
     else:
         print("\nBaja de producto cancelada.")
     texto = ""
@@ -192,14 +192,14 @@ def modificar_producto():
             case 4:
                 nueva_categoria = "OTROS"
         precio = obtener_entero("Ingrese nuevo precio\n.", 1, 100000)
-            
+
         stock = obtener_entero("Ingrese nuevo stock\n.", 0, 1000000)
 
         descuento = obtener_entero("Ingrese nuevo descuento: ", 1, 100)
         pregunta_seguridad = obtener_caracter(
-                        f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                    ).upper()
-                
+            f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
+        ).upper()
+
         if pregunta_seguridad == "Y":
 
             PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
@@ -212,11 +212,10 @@ def modificar_producto():
             print("Producto modificado correctamente.")
             texto = ""
             inicio(texto)
-        else: 
+        else:
             print("Modificacion cancelada...")
             texto = ""
             inicio(texto)
-
 
 
 def listar_productos():
