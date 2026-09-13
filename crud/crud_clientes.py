@@ -48,9 +48,6 @@ def alta_clientes():
     inicio_alta(texto)
 
     nombre = obtener_caracter("Nombre y apellido:\n.").upper()
-    while nombre.isalpha() == False:
-        print("\nIngrese un nombre valido.\n")
-        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
 
     dni = obtener_entero("DNI:\n.", 1000000, 99999999)
 
@@ -130,11 +127,6 @@ def listado_clientes():
 
             if pregunta_nombre == "-1":
                 return
-            while pregunta_nombre.isalpha() == False:
-                print("\nIngrese un nombre valido.\n")
-                pregunta_nombre = obtener_caracter(
-                    "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
-                )
             esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
 
             while esta == -2:
@@ -254,9 +246,6 @@ def modificar_clientes():
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
     nombre = obtener_caracter("Nombre y apellido:\n.").upper()
-    while nombre.isalpha() == False:
-        print("\nIngrese un nombre valido.\n")
-        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
 
     dni = obtener_entero("DNI:\n.", 1000000, 99999999)
     telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)

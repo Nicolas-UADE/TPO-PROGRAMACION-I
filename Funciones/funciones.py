@@ -121,6 +121,10 @@ def obtener_caracter(texto):
     while len(ask) == 0:
         print("Debe ingresar un caracter")
         ask = input(texto).upper()
+    while ask.isalpha() == False:
+            print("\nIngrese un valor valido.\n")
+            ask = input(texto).upper()
+
     return ask
 
 
