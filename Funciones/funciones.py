@@ -61,17 +61,21 @@ def productos_nombres_activos():
 def inicio(texto):
     print(texto.center(118, "-"))
 
+
 def inicio_alta(texto):
     linea = texto.center(118, "-")
     print(f"\033[32m{linea}\033[0m")
+
 
 def inicio_baja(texto):
     linea = texto.center(118, "-")
     print(f"\033[31m{linea}\033[0m")
 
+
 def inicio_modificar(texto):
     linea = texto.center(118, "-")
     print(f"\033[34m{linea}\033[0m")
+
 
 def inicio_listado(texto):
     linea = texto.center(118, "-")
@@ -134,6 +138,7 @@ def buscar(lista, elemento):
 
     return contador, posiciones
 
+
 def buscar_por_id(lista, id_buscado):
     for i in range(len(lista)):
         cliente = lista[i]
@@ -141,8 +146,15 @@ def buscar_por_id(lista, id_buscado):
             if cliente["id"] == id_buscado:
                 return i
     return -2
-    
-    
+
+
+def buscar_por_nombre(lista, nombre):
+    for i in range(len(lista)):
+        cliente = lista[i]
+        if cliente != ELIMINADO:
+            if cliente["nombre"] == nombre:
+                return i
+    return -2
 
 
 def obtener_entero(texto, minimo, maximo):
@@ -236,8 +248,10 @@ def lista_cabeza_clientes():
     dni = "DNI"
     telefono = "TELEFONO"
     email = "EMAIL"
-    
-    list.append(codigo), list.append(nombre), list.append(dni), list.append(telefono), list.append(email)
+
+    list.append(codigo), list.append(nombre), list.append(dni), list.append(
+        telefono
+    ), list.append(email)
     ancho = 120
     print("-" * ancho)
     print(
