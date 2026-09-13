@@ -264,8 +264,7 @@ def listar_productos():
                 if producto[PRODUCTOS_CODIGO] != ELIMINADO:
                     print(f"\n{producto}\n")
                 i += 1
-            texto = ""
-            inicio_listado(texto)
+            
 
     if pregunta_orden == 4:
         pregunta = obtener_entero("\nIngrese codigo del producto\n.", 100000, 1000000)
@@ -281,5 +280,5 @@ def listar_productos():
                     print(f"\nProducto encontrado...{cuenta_busqueda}\n")
                     print(f"\n{producto}\n")
                 i += 1
-            texto = ""
-            inicio_listado(texto)
+    texto = ""
+    inicio_listado(texto)
