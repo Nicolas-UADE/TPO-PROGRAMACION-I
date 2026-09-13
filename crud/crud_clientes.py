@@ -1,0 +1,215 @@
+from Funciones.funciones import (
+    inicio,
+    obtener_caracter,
+    obtener_entero,
+    lista_cabeza_clientes,
+    buscar_por_id,
+    inicio_alta,
+    inicio_baja,
+    inicio_modificar,
+    inicio_listado,
+)
+import listas
+from listas import ELIMINADO, lista_clientes
+
+
+def clientes():
+    texto = "CLIENTES"
+    inicio(texto)
+    if listas.ADMIN == True:
+        ask = obtener_entero(
+            "0. Retroceder\n1. Listado de clientes\n2. Baja de clientes\n3.Alta de clientes\n4.Modificar clientes\n.",
+            0,
+            4,
+        )
+        match ask:
+            case 0:
+                return
+            case 1:
+                listado_clientes()
+            case 2:
+                baja_clientes()
+            case 3:
+                alta_clientes()
+            case 4:
+                modificar_clientes()
+    else:
+        ask = obtener_entero("0. Retroceder\n1. Listado de clientes\n", 0, 1)
+        match ask:
+            case 0:
+                return
+            case 1:
+                listado_clientes()
+
+
+def alta_clientes():
+    texto = "ALTA DE CLIENTES"
+    inicio_alta(texto)
+
+    nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+    while nombre.isalpha() == False:
+        print("\nIngrese un nombre valido.\n")
+        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+
+    dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+
+    telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
+
+    email = obtener_caracter("Email:\n.").lower()
+
+    while (
+        email.endswith("@gmail.com") == False
+        and email.endswith("@hotmail.com") == False
+        and email.endswith("@outlook.com") == False
+        and email.endswith("@yahoo.com") == False
+    ):
+        print("\nIngrese un mail valido.\n")
+        email = obtener_caracter("Email:\n.").lower()
+
+    el_dni = str(dni)
+    el_telefono = str(telefono)
+
+    nuevo_id = len(lista_clientes) + 1
+
+    cliente = {
+        "id": nuevo_id,
+        "nombre": nombre,
+        "dni": el_dni,
+        "telefono": el_telefono,
+        "email": email,
+    }
+    pregunta_seguridad = obtener_caracter(
+        f"\nEsta seguro de agregar al cliente? Y/N\n."
+    ).upper()
+
+    if pregunta_seguridad == "Y":
+        lista_clientes.append(cliente)
+        print("\n\033[32mCliente agregado correctamente.\033[0m")
+
+    else:
+        print("\n\033[31mAlta de cliente cancelada.\033[0m")
+
+    texto = ""
+    inicio_alta(texto)
+
+
+def listado_clientes():
+    texto = "LISTADO CLIENTES"
+    inicio_listado(texto)
+    lista_cabeza_clientes()
+
+    for cliente in lista_clientes:
+        if cliente != ELIMINADO:
+            print(
+                f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
+            )
+    texto = ""
+    inicio_listado(texto)
+
+
+def baja_clientes():
+    texto = "BAJA DE CLIENTES"
+    inicio_baja(texto)
+
+    pregunta_codigo = obtener_entero(
+        "\n\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+    )
+
+    while pregunta_codigo == 0:
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+        )
+
+    if pregunta_codigo == -1:
+        return
+
+    esta = buscar_por_id(lista_clientes, pregunta_codigo)
+    while esta == -2:
+        print("Cliente inexistente.")
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+        )
+        if pregunta_codigo == -1:
+            return
+        esta = buscar_por_id(lista_clientes, pregunta_codigo)
+
+    pregunta_seguridad = obtener_caracter(
+        f"\nEsta seguro de eliminar al cliente {pregunta_codigo}? Y/N\n."
+    ).upper()
+
+    if pregunta_seguridad == "Y":
+
+        lista_clientes[esta] = ELIMINADO
+
+        print("\n\033[32mCliente eliminado correctamente.\033[0m")
+
+    else:
+        print("\n\033[31mBaja de cliente cancelada.\033[0m")
+    texto = ""
+    inicio_baja(texto)
+
+
+def modificar_clientes():
+    texto = "MODIFICAR CLIENTES"
+    inicio_modificar(texto)
+    pregunta_codigo = obtener_entero(
+        "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+    )
+
+    while pregunta_codigo == 0:
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        )
+
+    if pregunta_codigo == -1:
+        return
+
+    esta = buscar_por_id(lista_clientes, pregunta_codigo)
+    while esta == -2:
+        print("Cliente inexistente.")
+        pregunta_codigo = obtener_entero(
+            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        )
+        if pregunta_codigo == -1:
+            return
+        esta = buscar_por_id(lista_clientes, pregunta_codigo)
+
+    nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+    while nombre.isalpha() == False:
+        print("\nIngrese un nombre valido.\n")
+        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+
+    dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+    telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
+    email = obtener_caracter("Email:\n.").lower()
+    while (
+        email.endswith("@gmail.com") == False
+        and email.endswith("@hotmail.com") == False
+        and email.endswith("@outlook.com") == False
+        and email.endswith("@yahoo.com") == False
+    ):
+        print("\nIngrese un mail valido.\n")
+        email = obtener_caracter("Email:\n.").lower()
+
+    el_dni = str(dni)
+    el_telefono = str(telefono)
+    pregunta_seguridad = obtener_caracter(
+        f"\nEsta seguro de modificar al cliente {pregunta_codigo}? Y/N\n."
+    ).upper()
+
+    if pregunta_seguridad == "Y":
+
+        lista_clientes[esta] = {
+            "id": pregunta_codigo,
+            "nombre": nombre,
+            "dni": el_dni,
+            "telefono": el_telefono,
+            "email": email,
+        }
+
+        print("\n\033[32mCliente modificado correctamente.\033[0m")
+
+    else:
+        print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+    texto = ""
+    inicio_modificar(texto)
