@@ -10,80 +10,7 @@ from Funciones.funciones import (
     inicio_listado,
 )
 import listas
-from listas import ELIMINADO
-
-lista_clientes = [
-    {
-        "id": 1,
-        "nombre": "JUAN PÉREZ",
-        "dni": "30111222",
-        "telefono": "1145678901",
-        "email": "juan.perez@gmail.com",
-    },
-    {
-        "id": 2,
-        "nombre": "ANA GÓMEZ",
-        "dni": "28555666",
-        "telefono": "1156789012",
-        "email": "ana.gomez@gmail.com",
-    },
-    {
-        "id": 3,
-        "nombre": "CARLOS FERNÁNDEZ",
-        "dni": "32444555",
-        "telefono": "1167890123",
-        "email": "carlos.fernandez@yahoo.com",
-    },
-    {
-        "id": 4,
-        "nombre": "LUCÍA MARTÍNEZ",
-        "dni": "35222333",
-        "telefono": "1178901234",
-        "email": "lucia.martinez@hotmail.com",
-    },
-    {
-        "id": 5,
-        "nombre": "DIEGO RODRÍGUEZ",
-        "dni": "27888999",
-        "telefono": "1189012345",
-        "email": "diego.rodriguez@yahoo.com",
-    },
-    {
-        "id": 6,
-        "nombre": "SOFÍA LÓPEZ",
-        "dni": "33666777",
-        "telefono": "1190123456",
-        "email": "sofia.lopez@hotmail.com",
-    },
-    {
-        "id": 7,
-        "nombre": "MARTÍN SÁNCHEZ",
-        "dni": "29999000",
-        "telefono": "1101234567",
-        "email": "martin.sanchez@gmail.com",
-    },
-    {
-        "id": 8,
-        "nombre": "VALENTINA TORRES",
-        "dni": "31777888",
-        "telefono": "1112345678",
-        "email": "valentina.torres@hotmail.com",
-    },
-    {
-        "id": 9,
-        "nombre": "FEDERICO DÍAZ",
-        "dni": "26333444",
-        "telefono": "1123456789",
-        "email": "federico.diaz@yahoo.com",
-    },
-    {
-        "id": 10,
-        "nombre": "CAMILA ROMERO",
-        "dni": "34111222",
-        "telefono": "1134567890",
-        "email": "camila.romero@gmail.com",
-    },
-]
+from listas import ELIMINADO, lista_clientes
 
 
 def clientes():
@@ -120,13 +47,24 @@ def alta_clientes():
     inicio_alta(texto)
 
     nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+    while nombre.isalpha() == False:
+        print("\nIngrese un nombre valido.\n")
+        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+
     dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+
     telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
+
     email = obtener_caracter("Email:\n.").lower()
-    while email.endswith("@gmail.com")  == False and email.endswith("@hotmail.com") == False and email.endswith("@outlook.com") == False and email.endswith("@yahoo.com") == False:
+
+    while (
+        email.endswith("@gmail.com") == False
+        and email.endswith("@hotmail.com") == False
+        and email.endswith("@outlook.com") == False
+        and email.endswith("@yahoo.com") == False
+    ):
         print("\nIngrese un mail valido.\n")
         email = obtener_caracter("Email:\n.").lower()
-        
 
     el_dni = str(dni)
     el_telefono = str(telefono)
@@ -237,9 +175,21 @@ def modificar_clientes():
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
     nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+    while nombre.isalpha() == False:
+        print("\nIngrese un nombre valido.\n")
+        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+
     dni = obtener_entero("DNI:\n.", 1000000, 99999999)
     telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
     email = obtener_caracter("Email:\n.").lower()
+    while (
+        email.endswith("@gmail.com") == False
+        and email.endswith("@hotmail.com") == False
+        and email.endswith("@outlook.com") == False
+        and email.endswith("@yahoo.com") == False
+    ):
+        print("\nIngrese un mail valido.\n")
+        email = obtener_caracter("Email:\n.").lower()
 
     el_dni = str(dni)
     el_telefono = str(telefono)
