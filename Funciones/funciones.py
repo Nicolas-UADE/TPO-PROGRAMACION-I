@@ -59,7 +59,23 @@ def productos_nombres_activos():
 
 
 def inicio(texto):
-    print(texto.center(109, "-"))
+    print(texto.center(118, "-"))
+
+def inicio_alta(texto):
+    linea = texto.center(118, "-")
+    print(f"\033[32m{linea}\033[0m")
+
+def inicio_baja(texto):
+    linea = texto.center(118, "-")
+    print(f"\033[31m{linea}\033[0m")
+
+def inicio_modificar(texto):
+    linea = texto.center(118, "-")
+    print(f"\033[34m{linea}\033[0m")
+
+def inicio_listado(texto):
+    linea = texto.center(118, "-")
+    print(f"\033[36m{linea}\033[0m")
 
 
 def rango(inicio, hasta, valor):
@@ -169,7 +185,7 @@ def ordenar_por_codigo():
     ordenados_codigo = sorted(
         productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO]
     )
-    ancho = 109
+    ancho = 118
     print("-" * ancho)
     for i in ordenados_codigo:
         descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
@@ -183,7 +199,7 @@ def ordenar_alfabeticamente():
     ordenados_codigo = sorted(
         productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE]
     )
-    ancho = 109
+    ancho = 118
     print("-" * ancho)
     for i in ordenados_codigo:
         descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
@@ -204,7 +220,7 @@ def lista_cabeza_productos():
     list.append(codigo), list.append(nombre), list.append(tipo), list.append(
         precio
     ), list.append(stock), list.append(descuento)
-    ancho = 109
+    ancho = 118
     print("-" * ancho)
     print(
         f"|{list[0]:<15} | {list[1]:<15} | {list[2]:<15} | {list[3]:<15} | {list[4]:<15} | {list[5]:<15}"

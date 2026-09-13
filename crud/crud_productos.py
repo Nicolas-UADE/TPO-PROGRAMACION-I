@@ -15,7 +15,7 @@ from Funciones.funciones import (
     obtener_entero,
     ordenar_por_codigo,
     ordenar_alfabeticamente,
-    busqueda_secuencial,
+    busqueda_secuencial,inicio_alta,inicio_modificar,inicio_baja,inicio_listado
 )
 from Funciones.funciones import (
     buscar,
@@ -59,7 +59,7 @@ def productos():
 
 def alta_producto():
     texto = "ALTA DE PRODUCTOS"
-    inicio(texto)
+    inicio_alta(texto)
     pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
 
     while pregunta_nombre in productos_nombres_activos():
@@ -101,13 +101,13 @@ def alta_producto():
     else:
         print("\n\033[31mAlta de producto cancelada.\033[0m")
     texto = ""
-    inicio(texto)
+    inicio_alta(texto)
 
 
 def baja_producto():
 
     texto = "BAJA DE PRODUCTOS"
-    inicio(texto)
+    inicio_baja(texto)
 
     pregunta_codigo = obtener_entero(
         "\n\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
@@ -147,12 +147,12 @@ def baja_producto():
     else:
         print("\n\033[31mBaja de producto cancelada.\033[0m")
     texto = ""
-    inicio(texto)
+    inicio_baja(texto)
 
 
 def modificar_producto():
     texto = "MODIFICACION DE PRODUCTOS"
-    inicio(texto)
+    inicio_modificar(texto)
 
     pregunta_codigo = obtener_entero(
         "\nIngrese código del producto... -1 Para salir\n.", -1, 1000000
@@ -214,13 +214,13 @@ def modificar_producto():
         else:
             print("\n\033[31mModificacion de producto cancelada.\033[0m")
         texto = ""
-        inicio(texto)
+        inicio_modificar(texto)
 
 
 def listar_productos():
 
     texto = "LISTA DE PRODUCTOS"
-    inicio(texto)
+    inicio_listado(texto)
     pregunta_orden = obtener_entero(
         "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
         -1,
@@ -261,7 +261,7 @@ def listar_productos():
                     print(f"\n{producto}\n")
                 i += 1
             texto = ""
-            inicio(texto)
+            inicio_listado(texto)
 
     if pregunta_orden == 4:
         pregunta = obtener_entero("\nIngrese codigo del producto\n.", 100000, 1000000)

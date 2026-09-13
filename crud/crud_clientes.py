@@ -1,4 +1,4 @@
-from Funciones.funciones import inicio,obtener_caracter,obtener_entero,lista_cabeza_clientes,buscar_por_id
+from Funciones.funciones import inicio,obtener_caracter,obtener_entero,lista_cabeza_clientes,buscar_por_id,inicio_alta,inicio_baja,inicio_modificar,inicio_listado
 import listas
 from listas import ELIMINADO
 lista_clientes = [
@@ -46,7 +46,7 @@ def clientes():
 
 def alta_clientes():
     texto = "ALTA DE CLIENTES"
-    inicio(texto)
+    inicio_alta(texto)
     
 
     nombre = obtener_caracter("Nombre y apellido:\n.").upper()
@@ -78,22 +78,21 @@ def alta_clientes():
         print("\n\033[31mAlta de cliente cancelada.\033[0m")
 
     texto = ""
-    inicio(texto)
+    inicio_alta(texto)
     
     
 
 
 def listado_clientes():
     texto = "LISTADO CLIENTES"
-    inicio(texto)
+    inicio_listado(texto)
     lista_cabeza_clientes()
 
     for cliente in lista_clientes:
         if cliente != ELIMINADO:
             print(f'|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}')
-        
-    ancho = 120
-    print("-" * ancho)
+    texto = ""   
+    inicio_listado(texto)
 
 
 
@@ -101,7 +100,7 @@ def listado_clientes():
 
 def baja_clientes():
     texto = "BAJA DE CLIENTES"
-    inicio(texto)
+    inicio_baja(texto)
 
     pregunta_codigo = obtener_entero(
         "\n\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
@@ -140,12 +139,12 @@ def baja_clientes():
     else:
         print("\n\033[31mBaja de cliente cancelada.\033[0m")
     texto = ""
-    inicio(texto)
+    inicio_baja(texto)
 
 
 def modificar_clientes():
     texto = "MODIFICAR CLIENTES"
-    inicio(texto)
+    inicio_modificar(texto)
     pregunta_codigo = obtener_entero(
             "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
         )
@@ -194,7 +193,7 @@ def modificar_clientes():
     else:
         print("\n\033[31mModificacion de cliente cancelada.\033[0m")
     texto = ""
-    inicio(texto)
+    inicio_modificar(texto)
         
 
 
