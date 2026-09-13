@@ -123,7 +123,7 @@ def alta_clientes():
     dni = obtener_entero("DNI:\n.", 1000000, 99999999)
     telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
     email = obtener_caracter("Email:\n.").lower()
-    while email.endswith("@gmail.com")  == False and email.endswith("@hotmail.com") == False and email.endswith("@gmail.com") == False and email.endswith("@yahoo.com") == False:
+    while email.endswith("@gmail.com")  == False and email.endswith("@hotmail.com") == False and email.endswith("@outlook.com") == False and email.endswith("@yahoo.com") == False:
         print("\nIngrese un mail valido.\n")
         email = obtener_caracter("Email:\n.").lower()
         
