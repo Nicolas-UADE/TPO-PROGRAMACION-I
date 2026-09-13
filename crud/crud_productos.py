@@ -278,4 +278,4 @@ def listar_productos():
                     print(f"\n{producto}\n")
                 i += 1
             texto = ""
-            inicio(texto)
+            inicio_listado(texto)
