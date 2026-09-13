@@ -85,49 +85,49 @@ descuentos_individual = [5, 0, 10, 13, 9, 20, 0, 0, 5, 15]
 lista_clientes = [
     {
         "id": 1,
-        "nombre": "JUAN PÉREZ",
+        "nombre": "JUAN PEREZ",
         "dni": "30111222",
         "telefono": "1145678901",
         "email": "juan.perez@gmail.com",
     },
     {
         "id": 2,
-        "nombre": "ANA GÓMEZ",
+        "nombre": "ANA GOMEZ",
         "dni": "28555666",
         "telefono": "1156789012",
         "email": "ana.gomez@gmail.com",
     },
     {
         "id": 3,
-        "nombre": "CARLOS FERNÁNDEZ",
+        "nombre": "CARLOS FERNANDEZ",
         "dni": "32444555",
         "telefono": "1167890123",
         "email": "carlos.fernandez@yahoo.com",
     },
     {
         "id": 4,
-        "nombre": "LUCÍA MARTÍNEZ",
+        "nombre": "LUCIA MARTINEZ",
         "dni": "35222333",
         "telefono": "1178901234",
         "email": "lucia.martinez@hotmail.com",
     },
     {
         "id": 5,
-        "nombre": "DIEGO RODRÍGUEZ",
+        "nombre": "DIEGO RODRIGUEZ",
         "dni": "27888999",
         "telefono": "1189012345",
         "email": "diego.rodriguez@yahoo.com",
     },
     {
         "id": 6,
-        "nombre": "SOFÍA LÓPEZ",
+        "nombre": "SOFIA LOPEZ",
         "dni": "33666777",
         "telefono": "1190123456",
         "email": "sofia.lopez@hotmail.com",
     },
     {
         "id": 7,
-        "nombre": "MARTÍN SÁNCHEZ",
+        "nombre": "MARTIN SANCHEZ",
         "dni": "29999000",
         "telefono": "1101234567",
         "email": "martin.sanchez@gmail.com",
@@ -141,7 +141,7 @@ lista_clientes = [
     },
     {
         "id": 9,
-        "nombre": "FEDERICO DÍAZ",
+        "nombre": "FEDERICO DIAZ",
         "dni": "26333444",
         "telefono": "1123456789",
         "email": "federico.diaz@yahoo.com",
@@ -153,35 +153,4 @@ lista_clientes = [
         "telefono": "1134567890",
         "email": "camila.romero@gmail.com",
     },
-]
-
-
-
-
-#VENTAS
-
-VENTAS_ID = 0
-VENTAS_CLIENTE = 1
-VENTAS_PRODUCTO = 2
-VENTAS_CATEGORIA = 3
-VENTAS_FECHA = 4
-VENTAS_CANTIDAD = 5
-VENTAS_PRECIO_UNITARIO = 6
-VENTAS_IMPORTE = 7
-
-
-VENTAS = [
-    [100001, 1, 935164, "ALIMENTOS", "01/09/2026", 2, 1800, 3600],
-    [100001, 1, 267914, "BEBIDAS", "01/09/2026", 1, 2380, 2380],
-    [100002, 2, 519348, "LIMPIEZA", "02/09/2026", 2, 1330, 2660],
-    [100003, 3, 271853, "ALIMENTOS", "03/09/2026", 2, 1080, 2160],
-    [100003, 3, 482719, "OTROS", "03/09/2026", 1, 1425, 1425],
-    [100004, 4, 841672, "BEBIDAS", "04/09/2026", 1, 5500, 5500],
-    [100005, 5, 604927, "ALIMENTOS", "05/09/2026", 1, 3045, 3045],
-    [100005, 5, 158436, "ALIMENTOS", "05/09/2026", 2, 1183, 2366],
-    [100006, 6, 793205, "ALIMENTOS", "06/09/2026", 1, 3360, 3360],
-    [100007, 7, 326581, "ALIMENTOS", "07/09/2026", 3, 1600, 4800],
-    [100008, 8, 267914, "BEBIDAS", "08/09/2026", 2, 2380, 4760],
-    [100009, 9, 519348, "LIMPIEZA", "09/09/2026", 1, 1330, 1330],
-    [100010, 10, 482719, "OTROS", "10/09/2026", 2, 1425, 2850]
 ]

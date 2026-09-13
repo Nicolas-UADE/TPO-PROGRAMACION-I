@@ -8,6 +8,7 @@ from Funciones.funciones import (
     inicio_baja,
     inicio_modificar,
     inicio_listado,
+    buscar_por_nombre,
 )
 import listas
 from listas import ELIMINADO, lista_clientes
@@ -96,13 +97,87 @@ def alta_clientes():
 def listado_clientes():
     texto = "LISTADO CLIENTES"
     inicio_listado(texto)
-    lista_cabeza_clientes()
-
-    for cliente in lista_clientes:
-        if cliente != ELIMINADO:
-            print(
-                f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
+    pregunta_orden = obtener_entero(
+        "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
+        -1,
+        4,
+    )
+    match pregunta_orden:
+        case -1:
+            return
+        case 0:
+            pregunta_orden = obtener_entero(
+                "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
+                -1,
+                4,
             )
+        case 1:
+            lista_cabeza_clientes()
+
+            for cliente in lista_clientes:
+                if cliente != ELIMINADO:
+                    print(
+                        f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
+                    )
+
+        case 2:
+            pass
+
+        case 3:
+            pregunta_nombre = obtener_caracter(
+                "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
+            )
+
+            if pregunta_nombre == "-1":
+                return
+            while pregunta_nombre.isalpha() == False:
+                print("\nIngrese un nombre valido.\n")
+                pregunta_nombre = obtener_caracter(
+                    "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
+                )
+            esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
+
+            while esta == -2:
+                print("Cliente inexistente.")
+                pregunta_nombre = obtener_caracter(
+                    "\nIngrese código del cliente a buscar. -1 Para salir\n."
+                )
+                if pregunta_codigo == "-1":
+                    return
+                esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
+            print(lista_clientes[esta])
+
+        case 4:
+
+            pregunta_codigo = obtener_entero(
+                "\n\nIngrese código del cliente a buscar. -1 Para salir\n.", -1, 1000000
+            )
+
+            match pregunta_codigo:
+                case 0:
+                    pregunta_codigo = obtener_entero(
+                        "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                        -1,
+                        1000000,
+                    )
+
+                case -1:
+                    return
+
+            esta = buscar_por_id(lista_clientes, pregunta_codigo)
+
+            while esta == -2:
+                print("Cliente inexistente.")
+                pregunta_codigo = obtener_entero(
+                    "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                    -1,
+                    1000000,
+                )
+                if pregunta_codigo == -1:
+                    return
+                esta = buscar_por_id(lista_clientes, pregunta_codigo)
+            print(lista_clientes[esta])
+
     texto = ""
     inicio_listado(texto)
 
@@ -115,13 +190,14 @@ def baja_clientes():
         "\n\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
     )
 
-    while pregunta_codigo == 0:
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
-        )
+    match pregunta_codigo:
+        case 0:
+            pregunta_codigo = obtener_entero(
+                "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+            )
 
-    if pregunta_codigo == -1:
-        return
+        case -1:
+            return
 
     esta = buscar_por_id(lista_clientes, pregunta_codigo)
     while esta == -2:
@@ -156,13 +232,16 @@ def modificar_clientes():
         "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
     )
 
-    while pregunta_codigo == 0:
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
-        )
+    match pregunta_codigo:
+        case 0:
+            pregunta_codigo = obtener_entero(
+                "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                -1,
+                1000000,
+            )
 
-    if pregunta_codigo == -1:
-        return
+        case -1:
+            return
 
     esta = buscar_por_id(lista_clientes, pregunta_codigo)
     while esta == -2:
