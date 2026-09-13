@@ -14,10 +14,6 @@ if que_soy == 1:
 else:
     listas.ADMIN = False
 
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 def menu_principal():
     texto = "MENU PRINCIPAL"
     inicio(texto)
@@ -39,8 +35,4 @@ while opcion != 0:
         case 2:
             clientes()
         case 3:
-<<<<<<< HEAD
             ventas()
-=======
-            ventas()
->>>>>>> main
