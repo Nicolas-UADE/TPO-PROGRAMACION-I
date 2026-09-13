@@ -66,11 +66,20 @@ def alta_clientes():
         "telefono": el_telefono,
         "email": email
     }
-    lista_clientes.append(cliente)
+    pregunta_seguridad = obtener_caracter(
+            f"\nEsta seguro de agregar al cliente? Y/N\n."
+        ).upper()
+    
+    if pregunta_seguridad == "Y":
+        lista_clientes.append(cliente)
+        print("\n\033[32mCliente agregado correctamente.\033[0m")
+    
+    else:
+        print("\n\033[31mAlta de cliente cancelada.\033[0m")
 
-    print("Cliente agregado correctamente.")
     texto = ""
     inicio(texto)
+    
     
 
 
@@ -126,10 +135,10 @@ def baja_clientes():
 
         lista_clientes[esta] = ELIMINADO
 
-        print("Cliente eliminado correctamente.")
+        print("\n\033[32mCliente eliminado correctamente.\033[0m")
 
     else:
-        print("\nBaja de cliente cancelada.")
+        print("\n\033[31mBaja de cliente cancelada.\033[0m")
     texto = ""
     inicio(texto)
 
@@ -180,10 +189,10 @@ def modificar_clientes():
         "email": email,
     }
 
-        print("Cliente modificado correctamente.")
+        print("\n\033[32mCliente modificado correctamente.\033[0m")
 
     else:
-        print("\nModificacion de cliente cancelada.")
+        print("\n\033[31mModificacion de cliente cancelada.\033[0m")
     texto = ""
     inicio(texto)
         

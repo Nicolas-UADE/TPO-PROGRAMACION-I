@@ -67,7 +67,7 @@ def alta_producto():
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
 
     categoria = obtener_entero(
-        "Ingrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros\n.", 1, 4
+        "\nIngrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros\n.", 1, 4
     )
 
     match categoria:
@@ -97,9 +97,9 @@ def alta_producto():
         PRODUCTOS.append([codigo, pregunta_nombre, categoria, precio, stock, descuento])
         productos_id_individual.append(codigo)
         productos_nombre_individual.append(pregunta_nombre)
-        print("\n\nProducto agregado correctamente.\n\n")
+        print("\n\033[32mProducto agregado correctamente.\033[0m")
     else:
-        print("Alta de producto cancelada...\n Volviendo al menu principal...")
+        print("\n\033[31mAlta de producto cancelada.\033[0m")
     texto = ""
     inicio(texto)
 
@@ -142,10 +142,10 @@ def baja_producto():
         productos_id_individual[pos] = ELIMINADO
         productos_nombre_individual[pos] = ELIMINADO
 
-        print("Producto eliminado correctamente.")
+        print("\n\033[32mProductos eliminado correctamente.\033[0m")
 
     else:
-        print("\nBaja de producto cancelada.")
+        print("\n\033[31mBaja de producto cancelada.\033[0m")
     texto = ""
     inicio(texto)
 
@@ -209,13 +209,12 @@ def modificar_producto():
             PRODUCTOS[pos][PRODUCTOS_PRECIO] = precio
 
             PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
-            print("Producto modificado correctamente.")
-            texto = ""
-            inicio(texto)
+            print("\n\033[32mProducto modificado correctamente.\033[0m")
+            
         else:
-            print("Modificacion cancelada...")
-            texto = ""
-            inicio(texto)
+            print("\n\033[31mModificacion de producto cancelada.\033[0m")
+        texto = ""
+        inicio(texto)
 
 
 def listar_productos():
