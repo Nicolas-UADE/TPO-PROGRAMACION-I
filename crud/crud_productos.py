@@ -65,6 +65,9 @@ def alta_producto():
     texto = "ALTA DE PRODUCTOS"
     inicio_alta(texto)
     pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
+    while pregunta_nombre.isalpha() == False:
+        print("\nIngrese un nombre valido.\n")
+        pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
 
     while pregunta_nombre in productos_nombres_activos():
         print("Poducto ya vigente...")
@@ -177,6 +180,9 @@ def modificar_producto():
     else:
         #
         nuevo_nombre = obtener_caracter("Ingrese nuevo nombre\n.")
+        while nuevo_nombre.isalpha() == False:
+            print("\nIngrese un nombre valido.\n")
+            nuevo_nombre = obtener_caracter("Ingrese nuevo nombre\n.")
         PRODUCTOS[pos][PRODUCTOS_NOMBRE] = nuevo_nombre
         productos_nombre_individual[pos] = nuevo_nombre
 
@@ -264,7 +270,6 @@ def listar_productos():
                 if producto[PRODUCTOS_CODIGO] != ELIMINADO:
                     print(f"\n{producto}\n")
                 i += 1
-            
 
     if pregunta_orden == 4:
         pregunta = obtener_entero("\nIngrese codigo del producto\n.", 100000, 1000000)
