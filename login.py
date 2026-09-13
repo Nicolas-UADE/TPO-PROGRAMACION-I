@@ -42,4 +42,5 @@ ADMIN, LECTOR, INGRESO = login()
 
 print(ADMIN, LECTOR, INGRESO)
 if INGRESO == True:
-    print("Ingreso exitoso")
+    print("\033[1;34mBienvenido al sistema\033[0m")
+
