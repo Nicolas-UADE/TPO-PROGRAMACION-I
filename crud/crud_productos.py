@@ -15,7 +15,11 @@ from Funciones.funciones import (
     obtener_entero,
     ordenar_por_codigo,
     ordenar_alfabeticamente,
-    busqueda_secuencial,inicio_alta,inicio_modificar,inicio_baja,inicio_listado
+    busqueda_secuencial,
+    inicio_alta,
+    inicio_modificar,
+    inicio_baja,
+    inicio_listado,
 )
 from Funciones.funciones import (
     buscar,
@@ -210,7 +214,7 @@ def modificar_producto():
 
             PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
             print("\n\033[32mProducto modificado correctamente.\033[0m")
-            
+
         else:
             print("\n\033[31mModificacion de producto cancelada.\033[0m")
         texto = ""
