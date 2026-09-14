@@ -13,6 +13,8 @@ from Funciones.funciones import (
 import listas
 from listas import ELIMINADO, lista_clientes
 
+#from login import ADMIN
+
 
 def clientes():
     texto = "CLIENTES"

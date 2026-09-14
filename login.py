@@ -1,10 +1,11 @@
 from Funciones.funciones import obtener_caracter, obtener_entero, coincidencia
+INGRESO = False
+ADMIN = False
+LECTOR = False
 
 
 def login():
-    INGRESO = False
-    ADMIN = False
-    LECTOR = False
+    
     print("==========\nBIENVENIDO\n==========")
     maximo_intentos = 4
     ask_usuario = obtener_caracter("Ingrese usuario\n.")
@@ -43,3 +44,5 @@ ADMIN, LECTOR, INGRESO = login()
 print(ADMIN, LECTOR, INGRESO)
 if INGRESO == True:
     print("\033[1;34mBienvenido al sistema\033[0m")
+    from menu import menu_principal
+    menu_principal()

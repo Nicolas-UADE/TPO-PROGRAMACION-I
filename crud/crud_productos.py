@@ -30,6 +30,8 @@ from Funciones.funciones import (
 )
 import listas
 
+#from login import ADMIN
+
 
 def productos():
     texto = "PRODUCTOS"

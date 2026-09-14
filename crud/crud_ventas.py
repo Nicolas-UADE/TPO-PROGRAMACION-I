@@ -38,6 +38,8 @@ from Funciones.estadisticas_ventas import (
 )
 
 
+#from login import ADMIN
+
 def ventas():
     texto = "VENTAS"
     inicio(texto)
