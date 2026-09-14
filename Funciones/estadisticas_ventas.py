@@ -16,18 +16,28 @@ from listas import (
 redondear_precio = lambda numero: round(numero, 2)
 
 
+def obtener_ventas_activas():
+    """Devuelve las ventas que no fueron eliminadas."""
+    ventas_activas = list(
+        filter(
+            lambda venta: venta[VENTAS_ID] != ELIMINADO,
+            VENTAS,
+        )
+    )
+
+    return ventas_activas
+
+
 
 def obtener_ids_ventas():
 
     ids_ventas = []
 
-    for fila in VENTAS:
+    for fila in obtener_ventas_activas():
 
-        if fila[VENTAS_ID] != ELIMINADO:
+        if fila[VENTAS_ID] not in ids_ventas:
 
-            if fila[VENTAS_ID] not in ids_ventas:
-
-                ids_ventas.append(fila[VENTAS_ID])
+            ids_ventas.append(fila[VENTAS_ID])
 
     return ids_ventas
 
