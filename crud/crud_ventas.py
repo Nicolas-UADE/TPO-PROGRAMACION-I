@@ -36,7 +36,13 @@ from Funciones.funciones import (
     recortar_texto,
 )
 
-from Funciones.estadisticas_ventas import resumen_estadistico, redondear_precio
+from Funciones.estadisticas_ventas import (
+    resumen_estadistico,
+    redondear_precio,
+    obtener_categorias,
+    mostrar_estadisticas_categoria,
+    total_venta,
+)
 
 
 def ventas():
@@ -63,7 +69,7 @@ def ventas():
             case 4:
                 modificar_venta()
             case 5:
-                resumen_estadistico()
+                menu_estadisticas_ventas()
     else:
         opcion = obtener_entero(
             "0. Retroceder\n1. Listado de ventas\n2. Estadisticas\n.", 0, 2
@@ -75,7 +81,54 @@ def ventas():
             case 1:
                 listar_ventas()
             case 2:
-                resumen_estadistico()
+                menu_estadisticas_ventas()
+
+
+def menu_estadisticas_ventas():
+    opcion = obtener_entero(
+        "0. Retroceder\n1. Resumen completo\n"
+        "2. Estadisticas por categoria\n3. Total de una venta\n.",
+        0,
+        3,
+    )
+
+    match opcion:
+        case 0:
+            return
+        case 1:
+            resumen_estadistico()
+        case 2:
+            categorias = obtener_categorias()
+
+            if len(categorias) == 0:
+                print("\n\033[31mNo hay ventas registradas.\033[0m")
+                return
+
+            print("\nCATEGORIAS")
+
+            for posicion in range(len(categorias)):
+                print(f"{posicion + 1}. {categorias[posicion]}")
+
+            opcion_categoria = obtener_entero(
+                "Seleccione una categoria\n.", 1, len(categorias)
+            )
+            categoria = categorias[opcion_categoria - 1]
+            mostrar_estadisticas_categoria(categoria)
+        case 3:
+            id_venta = obtener_entero(
+                "Ingrese ID de venta. -1 Para salir\n.", -1, 999999
+            )
+
+            if id_venta == -1:
+                return
+
+            posiciones = buscar_venta(VENTAS, id_venta)
+
+            if len(posiciones) == 0:
+                print("\n\033[31mVenta inexistente.\033[0m")
+            else:
+                total = total_venta(id_venta)
+                print(f"\nTotal de la venta {id_venta}: ${total:,.2f}")
 
 
 def buscar_posicion_producto(codigo):
