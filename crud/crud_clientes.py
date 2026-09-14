@@ -9,6 +9,7 @@ from Funciones.funciones import (
     inicio_modificar,
     inicio_listado,
     buscar_por_nombre,
+    validar_email,
 )
 import listas
 from listas import ELIMINADO, lista_clientes
@@ -57,12 +58,7 @@ def alta_clientes():
 
     email = obtener_caracter("Email:\n.").lower()
 
-    while (
-        email.endswith("@gmail.com") == False
-        and email.endswith("@hotmail.com") == False
-        and email.endswith("@outlook.com") == False
-        and email.endswith("@yahoo.com") == False
-    ):
+    while validar_email(email) == False:
         print("\nIngrese un mail valido.\n")
         email = obtener_caracter("Email:\n.").lower()
 
@@ -315,12 +311,7 @@ def modificar_clientes():
 
         case 4:
             email = obtener_caracter("Email:\n.").lower()
-            while (
-                email.endswith("@gmail.com") == False
-                and email.endswith("@hotmail.com") == False
-                and email.endswith("@outlook.com") == False
-                and email.endswith("@yahoo.com") == False
-            ):
+            while validar_email(email) == False:
                 print("\nIngrese un mail valido.\n")
                 email = obtener_caracter("Email:\n.").lower()
 

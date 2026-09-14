@@ -1,4 +1,5 @@
 import random
+import re
 from listas import (
     PRODUCTOS_CODIGO,
     PRODUCTOS_NOMBRE,
@@ -16,17 +17,73 @@ from listas import (
     USUARIOS_ADMIN,
     CONTRASENIAS_ADMIN,
     CONTRASENIAS_LECTORES,
+    VENTAS_ID,
 )
 
 
 def generador_de_id(lista):
-    nuevo_id = random.randint(100000, 1000000)
+    nuevo_id = random.randint(100000, 999999)
 
-    while nuevo_id in lista == True:
-        nuevo_id = random.randint(100000, 1000000)
-    lista.append(nuevo_id)
+    while nuevo_id in lista:
+        nuevo_id = random.randint(100000, 999999)
 
     return nuevo_id
+
+
+def generar_id_venta(matriz_ventas):
+    ids_ventas = []
+
+    for venta in matriz_ventas:
+        if venta[VENTAS_ID] != ELIMINADO:
+            ids_ventas.append(venta[VENTAS_ID])
+
+    return generador_de_id(ids_ventas)
+
+
+def buscar_venta(matriz_ventas, id_venta):
+    posiciones = []
+
+    for posicion in range(len(matriz_ventas)):
+        if matriz_ventas[posicion][VENTAS_ID] == id_venta:
+            posiciones.append(posicion)
+
+    return posiciones
+
+
+def pedir_fecha():
+    patron_fecha = r"^[0-9]{2}/[0-9]{2}/[0-9]{4}$"
+    fecha_valida = False
+
+    while fecha_valida == False:
+        fecha = input("Ingrese fecha DD/MM/AAAA\n.").strip()
+
+        if re.match(patron_fecha, fecha) != None:
+            partes_fecha = fecha.split("/")
+            dia = int(partes_fecha[0])
+            mes = int(partes_fecha[1])
+            anio = int(partes_fecha[2])
+
+            if dia >= 1 and dia <= 31 and mes >= 1 and mes <= 12 and anio >= 2000:
+                fecha_valida = True
+
+        if fecha_valida == False:
+            print("\nFecha invalida. Use el formato DD/MM/AAAA.\n")
+
+    return fecha
+
+
+def validar_email(email):
+    patron_email = r"^[a-zA-Z0-9._-]+@(gmail|hotmail|outlook|yahoo)\.com$"
+    return re.match(patron_email, email) != None
+
+
+def recortar_texto(texto, ancho_maximo):
+    texto = str(texto).strip()
+
+    if len(texto) > ancho_maximo:
+        texto = texto[: ancho_maximo - 3] + "..."
+
+    return texto
 
 
 def positivo(valor):
@@ -127,15 +184,22 @@ def coincidencia(pregunta_usu, pregunta_code):
 
 
 def obtener_caracter(texto):
-    ask = input(texto).upper()
+    ask = input(texto).strip().upper()
     while len(ask) == 0:
-        print("Debe ingresar un caracter")
-        ask = input(texto).upper()
-    while ask.isalpha() == False:
-            print("\nIngrese un valor valido.\n")
-            ask = input(texto).upper()
+        print("Debe ingresar un valor.")
+        ask = input(texto).strip().upper()
 
     return ask
+
+
+def obtener_respuesta(texto):
+    respuesta = obtener_caracter(texto)
+
+    while respuesta != "Y" and respuesta != "N":
+        print("Ingrese Y para confirmar o N para cancelar.")
+        respuesta = obtener_caracter(texto)
+
+    return respuesta
 
 
 def buscar(lista, elemento):
@@ -174,16 +238,22 @@ def buscar_por_nombre(lista, nombre):
 def obtener_entero(texto, minimo, maximo):
     valor_invalido = True
     while valor_invalido == True:
-        valor_str = input(texto)
-        while len(valor_str) == 0:
-            print("Valor invalido.")
-            valor_str = input(texto)
+        valor_str = input(texto).strip()
 
-        valor = int(valor_str)
-        if not rango(minimo, maximo, valor):
-            print("Valor no valido.")
+        es_entero = valor_str.isdigit()
+
+        if valor_str.startswith("-") and len(valor_str) > 1:
+            es_entero = valor_str[1:].isdigit()
+
+        if es_entero == False:
+            print("Debe ingresar un numero entero.")
         else:
-            valor_invalido = False
+            valor = int(valor_str)
+
+            if not rango(minimo, maximo, valor):
+                print("Valor no valido.")
+            else:
+                valor_invalido = False
     return valor
 
 
