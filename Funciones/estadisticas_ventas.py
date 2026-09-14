@@ -28,6 +28,18 @@ def obtener_ventas_activas():
     return ventas_activas
 
 
+def obtener_importes_ventas():
+    """Devuelve los importes de todas las ventas activas."""
+    importes_ventas = list(
+        map(
+            lambda venta: venta[VENTAS_IMPORTE],
+            obtener_ventas_activas(),
+        )
+    )
+
+    return importes_ventas
+
+
 
 def obtener_ids_ventas():
 
@@ -116,9 +128,11 @@ def promedio_ventas():
 
     suma_total = 0
 
-    for id_venta in ids_ventas:
+    importes_ventas = obtener_importes_ventas()
 
-        suma_total = (suma_total+ total_venta(id_venta))
+    for importe in importes_ventas:
+
+        suma_total = suma_total + importe
 
     if len(ids_ventas) > 0:
 
