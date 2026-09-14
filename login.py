@@ -1,48 +1,28 @@
 from Funciones.funciones import obtener_caracter, obtener_entero, coincidencia
-INGRESO = False
-ADMIN = False
-LECTOR = False
 
 
 def login():
-    
     print("==========\nBIENVENIDO\n==========")
-    maximo_intentos = 4
-    ask_usuario = obtener_caracter("Ingrese usuario\n.")
+    intentos_restantes = 4
 
-    ask_code = obtener_entero("Ingrese contrasenia (Numerica)\n.", 0, 1000)
+    while intentos_restantes > 0:
+        usuario = obtener_caracter("Ingrese usuario\n.")
+        contrasenia = obtener_entero("Ingrese contrasenia (Numerica)\n.", 0, 1000)
 
-    ADMIN, LECTOR = coincidencia(ask_usuario, ask_code)
+        admin, lector = coincidencia(usuario, contrasenia)
 
-    while ADMIN == False and LECTOR == False and maximo_intentos > 0:
-        print(
-            "Usuario o contrasenia incorrectas.",
-            maximo_intentos,
-            "cantidad de intentos restantes",
-        )
+        if admin == True or lector == True:
+            print("\n\033[1;34mBienvenido al sistema\033[0m")
+            return admin, lector, True
 
-        maximo_intentos -= 1
+        intentos_restantes -= 1
 
-        ask_usuario = obtener_caracter("Ingrese usuario\n.")
+        if intentos_restantes > 0:
+            print(
+                "Usuario o contrasenia incorrectas.",
+                intentos_restantes,
+                "intentos restantes.",
+            )
 
-        ask_code = obtener_entero("Ingrese contrasenia (Numerica)\n.", 0, 1000)
-
-        ADMIN, LECTOR = coincidencia(ask_usuario, ask_code)
-
-    if maximo_intentos == 0:
-        print("Maximo de intentos exedido\n Acceso denegado...")
-        INGRESO = False
-        return ADMIN, LECTOR, INGRESO
-    else:
-        INGRESO = True
-
-    return ADMIN, LECTOR, INGRESO
-
-
-ADMIN, LECTOR, INGRESO = login()
-
-print(ADMIN, LECTOR, INGRESO)
-if INGRESO == True:
-    print("\033[1;34mBienvenido al sistema\033[0m")
-    from menu import menu_principal
-    menu_principal()
+    print("Maximo de intentos excedido.\nAcceso denegado...")
+    return False, False, False
