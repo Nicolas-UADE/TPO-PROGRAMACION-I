@@ -27,9 +27,7 @@ def obtener_ids_ventas():
 
             if fila[VENTAS_ID] not in ids_ventas:
 
-                ids_ventas.append(
-                    fila[VENTAS_ID]
-                )
+                ids_ventas.append(fila[VENTAS_ID])
 
     return ids_ventas
 
@@ -44,9 +42,7 @@ def obtener_categorias():
 
         if producto[PRODUCTOS_CODIGO] != ELIMINADO:
 
-            categoria = producto[
-                PRODUCTOS_CATEGORIA
-            ]
+            categoria = producto[PRODUCTOS_CATEGORIA]
 
             if categoria not in categorias:
 
@@ -67,10 +63,7 @@ def total_venta(id_venta):
 
         if fila[VENTAS_ID] == id_venta:
 
-            total = (
-                total
-                + fila[VENTAS_IMPORTE]
-            )
+            total = (total + fila[VENTAS_IMPORTE])
 
     return total
 
@@ -96,19 +89,11 @@ def contar_ventas_categoria(categoria):
 
         if fila[VENTAS_ID] != ELIMINADO:
 
-            if (
-                fila[VENTAS_CATEGORIA]
-                == categoria
-            ):
+            if (fila[VENTAS_CATEGORIA] == categoria):
 
-                if (
-                    fila[VENTAS_ID]
-                    not in ids_ventas
-                ):
+                if (fila[VENTAS_ID] not in ids_ventas):
 
-                    ids_ventas.append(
-                        fila[VENTAS_ID]
-                    )
+                    ids_ventas.append(fila[VENTAS_ID])
 
     return len(ids_ventas)
 
@@ -123,16 +108,11 @@ def promedio_ventas():
 
     for id_venta in ids_ventas:
 
-        suma_total = (
-            suma_total
-            + total_venta(id_venta)
-        )
+        suma_total = (suma_total+ total_venta(id_venta))
 
     if len(ids_ventas) > 0:
 
-        promedio = (
-            suma_total
-            / len(ids_ventas)
+        promedio = ( suma_total / len(ids_ventas)
         )
 
     else:
