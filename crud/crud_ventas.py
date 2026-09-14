@@ -428,13 +428,62 @@ def modificar_venta():
     inicio_modificar("")
 
 
+def consultar_cliente_y_ventas():
+    """Muestra los datos de un cliente y todas las ventas que realizo."""
+    id_cliente = pedir_cliente(
+        "Ingrese ID del cliente. -1 Para salir\n."
+    )
+
+    if id_cliente == -1:
+        return
+
+    posicion_cliente = buscar_por_id(
+        lista_clientes,
+        id_cliente,
+    )
+    cliente = lista_clientes[posicion_cliente]
+
+    print("\nDATOS DEL CLIENTE")
+    print("-" * 30)
+    print(f"ID: {cliente['id']}")
+    print(f"Nombre: {cliente['nombre']}")
+    print(f"DNI: {cliente['dni']}")
+    print(f"Telefono: {cliente['telefono']}")
+    print(f"Email: {cliente['email']}")
+
+    ventas_cliente = []
+    total_comprado = 0
+
+    for venta in VENTAS:
+        if (
+            venta[VENTAS_ID] != ELIMINADO
+            and venta[VENTAS_CLIENTE] == id_cliente
+        ):
+            ventas_cliente.append(venta)
+            total_comprado += venta[VENTAS_IMPORTE]
+
+    if len(ventas_cliente) == 0:
+        print(
+            "\n\033[31m"
+            "El cliente no tiene ventas registradas."
+            "\033[0m"
+        )
+    else:
+        print("\nVENTAS DEL CLIENTE")
+        mostrar_listado_ventas(ventas_cliente)
+        print(
+            f"\nTotal comprado por el cliente: "
+            f"${redondear_precio(total_comprado):.2f}"
+        )
+
+
 def listar_ventas():
     texto = "LISTA DE VENTAS"
     inicio_listado(texto)
 
     opcion = obtener_entero(
         "1. Todas las ventas\n2. Buscar por ID\n"
-        "3. Buscar por cliente\n-1. Salir\n.",
+        "3. Consultar cliente y sus ventas\n-1. Salir\n.",
         -1,
         3,
     )
@@ -458,14 +507,8 @@ def listar_ventas():
                 ventas_encontradas.append(VENTAS[posicion])
 
         case 3:
-            id_cliente = obtener_entero("Ingrese ID del cliente\n.", 1, 1000000)
-
-            for venta in VENTAS:
-                if (
-                    venta[VENTAS_ID] != ELIMINADO
-                    and venta[VENTAS_CLIENTE] == id_cliente
-                ):
-                    ventas_encontradas.append(venta)
+            consultar_cliente_y_ventas()
+            return
 
     if len(ventas_encontradas) == 0:
         print("\n\033[31mNo se encontraron ventas.\033[0m")
