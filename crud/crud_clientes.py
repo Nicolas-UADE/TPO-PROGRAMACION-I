@@ -104,7 +104,7 @@ def listado_clientes():
             return
         case 0:
             pregunta_orden = obtener_entero(
-                "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
+                "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
                 -1,
                 4,
             )
@@ -117,10 +117,10 @@ def listado_clientes():
                         f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
                     )
 
-        case 2:
-            pass
+        
+        
 
-        case 3:
+        case 2:
             pregunta_nombre = obtener_caracter(
                 "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
             )
@@ -139,7 +139,7 @@ def listado_clientes():
                 esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
             print(lista_clientes[esta])
 
-        case 4:
+        case 3:
 
             pregunta_codigo = obtener_entero(
                 "\n\nIngrese código del cliente a buscar. -1 Para salir\n.", -1, 1000000
