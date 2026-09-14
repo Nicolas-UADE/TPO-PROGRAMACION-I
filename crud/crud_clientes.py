@@ -245,7 +245,7 @@ def modificar_clientes():
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
     pregunta_eleccion = obtener_entero(
-        "Que quieres modificar. \n1.Nombre\n 2.DNI\n3.Telefono\n4.Email.\n.", 1, 4
+        "Que quieres modificar.\n1.Nombre\n 2.DNI\n3.Telefono\n4.Email.\n.", 1, 4
     )
     match pregunta_eleccion:
         case 1:

@@ -178,7 +178,7 @@ def modificar_producto():
 
     else:
         pregunta_eleccion = obtener_entero(
-            "Que quieres modificar. \n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",
+            "Que quieres modificar.\n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",
             1,
             5,
         )
