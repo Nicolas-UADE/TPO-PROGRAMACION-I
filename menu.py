@@ -8,6 +8,8 @@ from crud.crud_ventas import ventas
 
 from Funciones.funciones import obtener_entero, inicio
 
+#from login import ADMIN
+
 que_soy = obtener_entero("1.ADMIN. 2LECTOR.  ", 1, 2)
 if que_soy == 1:
     listas.ADMIN = True
