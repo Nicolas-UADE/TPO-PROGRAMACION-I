@@ -88,7 +88,7 @@ def generar_id_venta():
 def buscar_venta(id_venta):
     posiciones = []
 
-    for i in range(len(VENTAS)):
+    for i in VENTAS:
         if VENTAS[i][VENTAS_ID] == id_venta:
             posiciones.append(i)
 
