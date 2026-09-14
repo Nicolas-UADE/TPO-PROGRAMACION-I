@@ -30,7 +30,7 @@ from Funciones.funciones import (
 )
 import listas
 
-#from login import ADMIN
+# from login import ADMIN
 
 
 def productos():
@@ -177,20 +177,26 @@ def modificar_producto():
         print("Producto inexistente.")
 
     else:
-        pregunta_eleccion = obtener_entero("Que quieres modificar. \n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",1,5)
+        pregunta_eleccion = obtener_entero(
+            "Que quieres modificar. \n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",
+            1,
+            5,
+        )
         match pregunta_eleccion:
             case 1:
                 nuevo_nombre = obtener_caracter("\nIngrese nuevo nombre.\n.")
                 pregunta_seguridad = obtener_caracter(
-                            f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                        ).upper()
-                
+                    f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
+                ).upper()
+
                 if pregunta_seguridad == "Y":
 
                     PRODUCTOS[pos][PRODUCTOS_NOMBRE] = nuevo_nombre
                     productos_nombre_individual[pos] = nuevo_nombre
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
-                    pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
                     if pregunta_eleccion_otra == "Y":
                         texto = ""
                         inicio_modificar(texto)
@@ -202,98 +208,92 @@ def modificar_producto():
                 precio = obtener_entero("\nIngrese nuevo precio.\n.", 1, 100000)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                    ).upper()
-                                
+                ).upper()
+
                 if pregunta_seguridad == "Y":
                     PRODUCTOS[pos][PRODUCTOS_PRECIO] = precio
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
-                    pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
                     if pregunta_eleccion_otra == "Y":
                         texto = ""
                         inicio_modificar(texto)
                         modificar_producto()
                 else:
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
-                    
-                    
 
             case 4:
                 stock = obtener_entero("\nIngrese nuevo stock.\n.", 0, 1000000)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                    ).upper()
-                                
+                ).upper()
+
                 if pregunta_seguridad == "Y":
                     PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
-                    pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
                     if pregunta_eleccion_otra == "Y":
                         texto = ""
                         inicio_modificar(texto)
                         modificar_producto()
                 else:
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
-                    
-                
-                
 
             case 5:
                 descuento = obtener_entero("\nIngrese nuevo descuento.\n.", 1, 100)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                    ).upper()
-                                                
+                ).upper()
+
                 if pregunta_seguridad == "Y":
                     PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
-                    pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
                     if pregunta_eleccion_otra == "Y":
                         texto = ""
                         inicio_modificar(texto)
                         modificar_producto()
                 else:
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
-                    
-                
-                    
 
             case 2:
-                    nueva_categoria = obtener_entero(
+                nueva_categoria = obtener_entero(
                     "\nIngrese nueva categoría... \n1. Alimentos\n2. Limpieza\n3. Bebidas\n4.Otros\n.",
-                        1,
-                     4,
-                     )
-                    match nueva_categoria:
-                        case 1:
-                            nueva_categoria = "ALIMENTOS"
-                        case 2:
-                            nueva_categoria = "LIMPIEZA"
-                        case 3:
-                            nueva_categoria = "BEBIDAS"
-                        case 4:
-                            nueva_categoria = "OTROS"
-                    pregunta_seguridad = obtener_caracter(
+                    1,
+                    4,
+                )
+                match nueva_categoria:
+                    case 1:
+                        nueva_categoria = "ALIMENTOS"
+                    case 2:
+                        nueva_categoria = "LIMPIEZA"
+                    case 3:
+                        nueva_categoria = "BEBIDAS"
+                    case 4:
+                        nueva_categoria = "OTROS"
+                pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
-                    ).upper()
-                                                
-                    if pregunta_seguridad == "Y":
-                        PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = nueva_categoria
+                ).upper()
 
-                        print("\n\033[32mProducto modificado correctamente.\033[0m")
+                if pregunta_seguridad == "Y":
+                    PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = nueva_categoria
 
-                        pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
-                        if pregunta_eleccion_otra == "Y":
-                            texto = ""
-                            inicio_modificar(texto)
-                            modificar_producto()
-                    else:
-                        print("\n\033[31mModificacion de producto cancelada.\033[0m")
-                        
-                    
+                    print("\n\033[32mProducto modificado correctamente.\033[0m")
 
-        
-            
-        
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
+                    if pregunta_eleccion_otra == "Y":
+                        texto = ""
+                        inicio_modificar(texto)
+                        modificar_producto()
+                else:
+                    print("\n\033[31mModificacion de producto cancelada.\033[0m")
 
 
 def listar_productos():

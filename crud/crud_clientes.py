@@ -13,7 +13,7 @@ from Funciones.funciones import (
 import listas
 from listas import ELIMINADO, lista_clientes
 
-#from login import ADMIN
+# from login import ADMIN
 
 
 def clientes():
@@ -118,9 +118,6 @@ def listado_clientes():
                     print(
                         f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
                     )
-
-        
-        
 
         case 2:
             pregunta_nombre = obtener_caracter(
@@ -247,104 +244,104 @@ def modificar_clientes():
             return
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
-    pregunta_eleccion = obtener_entero("Que quieres modificar. \n1.Nombre\n 2.DNI\n3.Telefono\n4.Email.\n.",1,4)
+    pregunta_eleccion = obtener_entero(
+        "Que quieres modificar. \n1.Nombre\n 2.DNI\n3.Telefono\n4.Email.\n.", 1, 4
+    )
     match pregunta_eleccion:
         case 1:
             nombre = obtener_caracter("Nombre y apellido:\n.").upper()
             pregunta_seguridad = obtener_caracter(
-                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-                ).upper()
+                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+            ).upper()
 
             if pregunta_seguridad == "Y":
                 lista_clientes[esta]["nombre"] = nombre
-    
-                    
+
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                pregunta_eleccion_otra = obtener_caracter(
+                    "Desea hacer otra modificacion? Y/N\n"
+                )
                 if pregunta_eleccion_otra == "Y":
                     texto = ""
                     inicio_modificar(texto)
                     modificar_clientes()
             else:
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
 
         case 2:
 
             dni = obtener_entero("DNI:\n.", 1000000, 99999999)
 
-            
             pregunta_seguridad = obtener_caracter(
-                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-                ).upper()
+                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+            ).upper()
 
             if pregunta_seguridad == "Y":
                 el_dni = str(dni)
                 lista_clientes[esta]["dni"] = el_dni
-                
-    
-     
+
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                pregunta_eleccion_otra = obtener_caracter(
+                    "Desea hacer otra modificacion? Y/N\n"
+                )
                 if pregunta_eleccion_otra == "Y":
                     texto = ""
                     inicio_modificar(texto)
                     modificar_clientes()
             else:
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
 
         case 3:
             telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
             pregunta_seguridad = obtener_caracter(
-                                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-                            ).upper()
-            
+                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+            ).upper()
+
             if pregunta_seguridad == "Y":
                 el_telefono = str(telefono)
 
-                
                 lista_clientes[esta]["telefono"] = el_telefono
-                
-    
-        
+
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                pregunta_eleccion_otra = obtener_caracter(
+                    "Desea hacer otra modificacion? Y/N\n"
+                )
                 if pregunta_eleccion_otra == "Y":
                     texto = ""
                     inicio_modificar(texto)
                     modificar_clientes()
             else:
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
 
         case 4:
             email = obtener_caracter("Email:\n.").lower()
             while (
-                    email.endswith("@gmail.com") == False
-                    and email.endswith("@hotmail.com") == False
-                    and email.endswith("@outlook.com") == False
-                    and email.endswith("@yahoo.com") == False
-                ):
-                    print("\nIngrese un mail valido.\n")
-                    email = obtener_caracter("Email:\n.").lower()
+                email.endswith("@gmail.com") == False
+                and email.endswith("@hotmail.com") == False
+                and email.endswith("@outlook.com") == False
+                and email.endswith("@yahoo.com") == False
+            ):
+                print("\nIngrese un mail valido.\n")
+                email = obtener_caracter("Email:\n.").lower()
 
             pregunta_seguridad = obtener_caracter(
-                                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-                            ).upper()
-            
+                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+            ).upper()
+
             if pregunta_seguridad == "Y":
-                         
+
                 lista_clientes[esta]["email"] = email
-                
+
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                pregunta_eleccion_otra = obtener_caracter("Desea hacer otra modificacion? Y/N\n")
+                pregunta_eleccion_otra = obtener_caracter(
+                    "Desea hacer otra modificacion? Y/N\n"
+                )
                 if pregunta_eleccion_otra == "Y":
                     texto = ""
                     inicio_modificar(texto)
                     modificar_clientes()
             else:
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-    
+
     texto = ""
     inicio_modificar(texto)
