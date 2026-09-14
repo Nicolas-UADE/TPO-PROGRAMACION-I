@@ -1,3 +1,5 @@
+from functools import reduce
+
 from listas import (
     VENTAS,
     VENTAS_ID,
@@ -38,6 +40,21 @@ def obtener_importes_ventas():
     )
 
     return importes_ventas
+
+
+def sumar_importes_ventas():
+    """Suma los importes de las ventas activas usando reduce."""
+    importes_ventas = obtener_importes_ventas()
+
+    if len(importes_ventas) == 0:
+        return 0
+
+    suma_total = reduce(
+        lambda acumulado, importe: acumulado + importe,
+        importes_ventas,
+    )
+
+    return suma_total
 
 
 
@@ -126,13 +143,7 @@ def promedio_ventas():
 
     ids_ventas = obtener_ids_ventas()
 
-    suma_total = 0
-
-    importes_ventas = obtener_importes_ventas()
-
-    for importe in importes_ventas:
-
-        suma_total = suma_total + importe
+    suma_total = sumar_importes_ventas()
 
     if len(ids_ventas) > 0:
 
