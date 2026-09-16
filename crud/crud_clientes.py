@@ -99,7 +99,7 @@ def listado_clientes():
     pregunta_orden = obtener_entero(
         "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
         -1,
-        4,
+        3,
     )
     match pregunta_orden:
         case -1:
@@ -108,7 +108,7 @@ def listado_clientes():
             pregunta_orden = obtener_entero(
                 "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
                 -1,
-                4,
+                3,
             )
         case 1:
             lista_cabeza_clientes()
