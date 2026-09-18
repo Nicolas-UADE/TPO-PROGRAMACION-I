@@ -1,4 +1,3 @@
-import re
 import listas
 
 from listas import (
@@ -9,6 +8,7 @@ from listas import (
     PRODUCTOS_STOCK,
     PRODUCTOS_DESCUENTO,
     productos_id_individual,
+    lista_clientes,
     ELIMINADO,
     VENTAS,
     VENTAS_ID,
@@ -22,34 +22,42 @@ from listas import (
 )
 
 from Funciones.funciones import (
-    obtener_caracter,
     obtener_entero,
-    busqueda_secuencial,
+    obtener_respuesta,
     inicio_alta,
     inicio_modificar,
     inicio_baja,
     inicio_listado,
     inicio,
+    generar_id_venta,
+    buscar_venta,
+    pedir_fecha,
+    buscar_por_id,
+    recortar_texto,
 )
 
 from Funciones.estadisticas_ventas import (
     resumen_estadistico,
     redondear_precio,
+    obtener_categorias,
+    mostrar_estadisticas_categoria,
+    total_venta,
 )
 
-
-#from login import ADMIN
 
 def ventas():
     texto = "VENTAS"
     inicio(texto)
 
     if listas.ADMIN == True:
-        ask = obtener_entero(
-            "0. Retroceder\n1. Listado de ventas\n2. Baja de venta\n3. Alta de venta\n4. Modificar venta\n5. Estadisticas\n.",
-            0, 5,)
+        opcion = obtener_entero(
+            "0. Retroceder\n1. Listado de ventas\n2. Baja de venta\n"
+            "3. Alta de venta\n4. Modificar venta\n5. Estadisticas\n.",
+            0,
+            5,
+        )
 
-        match ask:
+        match opcion:
             case 0:
                 return
             case 1:
@@ -61,114 +69,225 @@ def ventas():
             case 4:
                 modificar_venta()
             case 5:
-                resumen_estadistico()
-
+                menu_estadisticas_ventas()
     else:
-        ask = obtener_entero(
-            "0. Retroceder\n1. Listado de ventas\n2. Estadisticas\n.", 0, 2,)
+        opcion = obtener_entero(
+            "0. Retroceder\n1. Listado de ventas\n2. Estadisticas\n.", 0, 2
+        )
 
-        match ask:
+        match opcion:
             case 0:
                 return
             case 1:
                 listar_ventas()
             case 2:
-                resumen_estadistico()
+                menu_estadisticas_ventas()
 
 
-def generar_id_venta():
-    mayor = 100000
+def menu_estadisticas_ventas():
+    opcion = obtener_entero(
+        "0. Retroceder\n1. Resumen completo\n"
+        "2. Estadisticas por categoria\n3. Total de una venta\n.",
+        0,
+        3,
+    )
 
-    for venta in VENTAS:
-        if venta[VENTAS_ID] != ELIMINADO:
-            if venta[VENTAS_ID] > mayor:
-                mayor = venta[VENTAS_ID]
+    match opcion:
+        case 0:
+            return
+        case 1:
+            resumen_estadistico()
+        case 2:
+            categorias = obtener_categorias()
 
-    return mayor + 1
+            if len(categorias) == 0:
+                print("\n\033[31mNo hay ventas registradas.\033[0m")
+                return
+
+            print("\nCATEGORIAS")
+
+            for posicion in range(len(categorias)):
+                print(f"{posicion + 1}. {categorias[posicion]}")
+
+            opcion_categoria = obtener_entero(
+                "Seleccione una categoria\n.", 1, len(categorias)
+            )
+            categoria = categorias[opcion_categoria - 1]
+            mostrar_estadisticas_categoria(categoria)
+        case 3:
+            id_venta = obtener_entero(
+                "Ingrese ID de venta. -1 Para salir\n.", -1, 999999
+            )
+
+            if id_venta == -1:
+                return
+
+            posiciones = buscar_venta(VENTAS, id_venta)
+
+            if len(posiciones) == 0:
+                print("\n\033[31mVenta inexistente.\033[0m")
+            else:
+                total = total_venta(id_venta)
+                print(f"\nTotal de la venta {id_venta}: ${total:,.2f}")
 
 
-def buscar_venta(id_venta):
-    posiciones = []
+def buscar_posicion_producto(codigo):
+    if codigo in productos_id_individual:
+        return productos_id_individual.index(codigo)
 
-    for i in VENTAS:
-        if VENTAS[i][VENTAS_ID] == id_venta:
-            posiciones.append(i)
-
-    return posiciones
+    return -1
 
 
-def pedir_fecha():
-    patron = r"^[0-9]{2}/[0-9]{2}/[0-9]{4}$"
+def obtener_nombre_cliente(id_cliente):
+    posicion = buscar_por_id(lista_clientes, id_cliente)
 
-    fecha = obtener_caracter("Ingrese fecha DD/MM/AAAA\n.")
+    if posicion == -2:
+        return f"CLIENTE ELIMINADO ({id_cliente})"
 
-    while re.match(patron, fecha) == None:
-        print("Fecha invalida.")
-        fecha = obtener_caracter("Ingrese fecha DD/MM/AAAA\n.")
+    return f"{lista_clientes[posicion]['nombre']} ({id_cliente})"
 
-    return fecha
+
+def obtener_nombre_producto(codigo):
+    posicion = buscar_posicion_producto(codigo)
+
+    if posicion == -1:
+        return "ELIMINADO"
+
+    return PRODUCTOS[posicion][PRODUCTOS_NOMBRE]
+
+
+def mostrar_listado_ventas(ventas_a_mostrar):
+    ancho = 120
+    print("-" * ancho)
+    print(
+        f"| {'ID':<6} | {'CLIENTE (ID)':<16} | {'PRODUCTO':<10} | "
+        f"{'CATEGORIA':<9} | {'FECHA':<10} | {'CANT':<4} | "
+        f"{'PRECIO':<9} | {'DESC.':<6} | {'P.FINAL':<9} | {'IMPORTE':<10} |"
+    )
+    print("-" * ancho)
+
+    for venta in ventas_a_mostrar:
+        posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
+        cliente = recortar_texto(
+            obtener_nombre_cliente(venta[VENTAS_CLIENTE]), 16
+        )
+        producto = recortar_texto(
+            obtener_nombre_producto(venta[VENTAS_PRODUCTO]), 10
+        )
+        categoria = recortar_texto(venta[VENTAS_CATEGORIA], 9)
+
+        if posicion_producto == -1:
+            precio_original = "-"
+            descuento = "-"
+        else:
+            precio_original = f"${PRODUCTOS[posicion_producto][PRODUCTOS_PRECIO]:.2f}"
+            descuento = f"{PRODUCTOS[posicion_producto][PRODUCTOS_DESCUENTO]}%"
+
+        precio_final = f"${venta[VENTAS_PRECIO_UNITARIO]:.2f}"
+        importe = f"${venta[VENTAS_IMPORTE]:.2f}"
+
+        print(
+            f"| {venta[VENTAS_ID]:<6} | {cliente:<16} | {producto:<10} | "
+            f"{categoria:<9} | {venta[VENTAS_FECHA]:<10} | "
+            f"{venta[VENTAS_CANTIDAD]:<4} | {precio_original:<9} | "
+            f"{descuento:<6} | {precio_final:<9} | {importe:<10} |"
+        )
+
+    print("-" * ancho)
+
+
+def pedir_cliente(mensaje):
+    id_cliente = obtener_entero(mensaje, -1, 1000000)
+
+    while id_cliente != -1 and buscar_por_id(lista_clientes, id_cliente) == -2:
+        print("\n\033[31mCliente inexistente.\033[0m\n")
+        id_cliente = obtener_entero(mensaje, -1, 1000000)
+
+    return id_cliente
 
 
 def alta_venta():
     texto = "ALTA DE VENTAS"
     inicio_alta(texto)
 
-    id_cliente = obtener_entero("Ingrese ID del cliente. -1 Para salir\n.", -1, 1000000,)
+    id_cliente = pedir_cliente("Ingrese ID del cliente. -1 Para salir\n.")
 
     if id_cliente == -1:
         return
 
-    id_venta = generar_id_venta()
-    fecha = pedir_fecha()
+    print(f"Cliente seleccionado: {obtener_nombre_cliente(id_cliente)}")
 
+    id_venta = generar_id_venta(VENTAS)
+    fecha = pedir_fecha()
     venta_temporal = []
     seguir = "Y"
 
     while seguir == "Y":
-
-        codigo = obtener_entero("Ingrese codigo del producto. -1 Para cancelar\n.", -1, 1000000,)
+        codigo = obtener_entero(
+            "Ingrese codigo del producto. -1 Para cancelar\n.", -1, 1000000
+        )
 
         if codigo == -1:
             return
 
-        pos = busqueda_secuencial(productos_id_individual, codigo,)
+        posicion_producto = buscar_posicion_producto(codigo)
 
-        if pos == -1:
-            print("Producto inexistente.")
-
-        elif PRODUCTOS[pos][PRODUCTOS_STOCK] == 0:
-            print("Producto sin stock.")
-
+        if posicion_producto == -1:
+            print("\n\033[31mProducto inexistente.\033[0m\n")
         else:
-            cantidad = obtener_entero("Ingrese cantidad\n.", 1,PRODUCTOS[pos][PRODUCTOS_STOCK],)
+            cantidad_reservada = 0
 
-            precio = PRODUCTOS[pos][PRODUCTOS_PRECIO]
-            descuento = PRODUCTOS[pos][PRODUCTOS_DESCUENTO]
+            for venta in venta_temporal:
+                if venta[VENTAS_PRODUCTO] == codigo:
+                    cantidad_reservada += venta[VENTAS_CANTIDAD]
 
-            precio_final = precio - precio * descuento / 100
-            precio_final = redondear_precio(precio_final)
-
-            importe = precio_final * cantidad
-            importe = redondear_precio(importe)
-
-            venta_temporal.append([
-                id_venta,
-                id_cliente,
-                codigo,
-                PRODUCTOS[pos][PRODUCTOS_CATEGORIA],
-                fecha,
-                cantidad,
-                precio_final,
-                importe,
-            ])
-
-            print(
-                f"\nProducto: {PRODUCTOS[pos][PRODUCTOS_NOMBRE]}"
-                f"\nCantidad: {cantidad}"
-                f"\nImporte: ${importe}\n"
+            stock_disponible = (
+                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] - cantidad_reservada
             )
 
-        seguir = obtener_caracter("Desea agregar otro producto? Y/N\n.").upper()
+            if stock_disponible == 0:
+                print("\n\033[31mProducto sin stock disponible.\033[0m\n")
+            else:
+                cantidad = obtener_entero(
+                    "Ingrese cantidad\n.", 1, stock_disponible
+                )
+                precio_original = PRODUCTOS[posicion_producto][PRODUCTOS_PRECIO]
+                descuento_producto = PRODUCTOS[posicion_producto][
+                    PRODUCTOS_DESCUENTO
+                ]
+                descuento_importe = precio_original * descuento_producto / 100
+                precio_final = precio_original - descuento_importe
+                precio_final = redondear_precio(precio_final)
+                importe = redondear_precio(precio_final * cantidad)
+                categoria_producto = PRODUCTOS[posicion_producto][
+                    PRODUCTOS_CATEGORIA
+                ]
+
+                venta_temporal.append(
+                    [
+                        id_venta,
+                        id_cliente,
+                        codigo,
+                        categoria_producto,
+                        fecha,
+                        cantidad,
+                        precio_final,
+                        importe,
+                    ]
+                )
+
+                print(
+                    f"\nProducto: {PRODUCTOS[posicion_producto][PRODUCTOS_NOMBRE]}"
+                    f"\nCategoria del producto: {categoria_producto}"
+                    f"\nPrecio original del producto: ${precio_original:.2f}"
+                    f"\nDescuento del producto: {descuento_producto}%"
+                    f"\nImporte descontado por unidad: ${descuento_importe:.2f}"
+                    f"\nPrecio final por unidad: ${precio_final:.2f}"
+                    f"\nCantidad: {cantidad}"
+                    f"\nImporte del producto: ${importe:.2f}\n"
+                )
+
+        seguir = obtener_respuesta("Desea agregar otro producto? Y/N\n.")
 
     if len(venta_temporal) == 0:
         print("No se agregaron productos.")
@@ -177,89 +296,97 @@ def alta_venta():
     total = 0
 
     for venta in venta_temporal:
-        total = total + venta[VENTAS_IMPORTE]
+        total += venta[VENTAS_IMPORTE]
 
-    print(f"\nTotal de la venta: ${redondear_precio(total)}")
+    print(f"\nID de la nueva venta: {id_venta}")
+    print(f"Total final de la venta: ${redondear_precio(total):.2f}")
+    mostrar_listado_ventas(venta_temporal)
 
-    pregunta_seguridad = obtener_caracter("Esta seguro de agregar esta venta? Y/N\n.").upper()
+    confirmacion = obtener_respuesta(
+        "Esta seguro de agregar esta venta? Y/N\n."
+    )
 
-    if pregunta_seguridad == "Y":
-
+    if confirmacion == "Y":
         for venta in venta_temporal:
-
             VENTAS.append(venta)
-
-            pos = busqueda_secuencial(productos_id_individual,venta[VENTAS_PRODUCTO],)
-
-            PRODUCTOS[pos][PRODUCTOS_STOCK] = (PRODUCTOS[pos][PRODUCTOS_STOCK] - venta[VENTAS_CANTIDAD])
+            posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
+            PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= venta[
+                VENTAS_CANTIDAD
+            ]
 
         print("\n\033[32mVenta agregada correctamente.\033[0m")
-
     else:
         print("\n\033[31mAlta de venta cancelada.\033[0m")
 
-    texto = ""
-    inicio_alta(texto)
+    inicio_alta("")
 
 
 def baja_venta():
     texto = "BAJA DE VENTAS"
     inicio_baja(texto)
 
-    id_venta = obtener_entero("Ingrese ID de venta a eliminar. -1 Para salir\n.",-1, 1000000,)
+    id_venta = obtener_entero(
+        "Ingrese ID de venta a eliminar. -1 Para salir\n.", -1, 999999
+    )
 
     if id_venta == -1:
         return
 
-    posiciones = buscar_venta(id_venta)
+    posiciones = buscar_venta(VENTAS, id_venta)
 
     if len(posiciones) == 0:
-        print("Venta inexistente.")
+        print("\n\033[31mVenta inexistente.\033[0m")
         return
 
-    pregunta_seguridad = obtener_caracter(f"Esta seguro de eliminar la venta {id_venta}? Y/N\n.").upper()
+    ventas_encontradas = []
 
-    if pregunta_seguridad == "Y":
+    for posicion in posiciones:
+        ventas_encontradas.append(VENTAS[posicion])
 
-        for pos_venta in posiciones:
+    mostrar_listado_ventas(ventas_encontradas)
+    confirmacion = obtener_respuesta(
+        f"Esta seguro de eliminar la venta {id_venta}? Y/N\n."
+    )
 
-            codigo = VENTAS[pos_venta][VENTAS_PRODUCTO]
-            cantidad = VENTAS[pos_venta][VENTAS_CANTIDAD]
+    if confirmacion == "Y":
+        for posicion_venta in posiciones:
+            codigo = VENTAS[posicion_venta][VENTAS_PRODUCTO]
+            cantidad = VENTAS[posicion_venta][VENTAS_CANTIDAD]
+            posicion_producto = buscar_posicion_producto(codigo)
 
-            pos_producto = busqueda_secuencial(productos_id_individual, codigo,)
+            if posicion_producto != -1:
+                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] += cantidad
 
-            if pos_producto != -1:
-                PRODUCTOS[pos_producto][PRODUCTOS_STOCK] = (PRODUCTOS[pos_producto][PRODUCTOS_STOCK] + cantidad)
-
-            VENTAS[pos_venta][VENTAS_ID] = ELIMINADO
+            VENTAS[posicion_venta][VENTAS_ID] = ELIMINADO
 
         print("\n\033[32mVenta eliminada correctamente.\033[0m")
-
     else:
         print("\n\033[31mBaja de venta cancelada.\033[0m")
 
-    texto = ""
-    inicio_baja(texto)
+    inicio_baja("")
 
 
 def modificar_venta():
     texto = "MODIFICACION DE VENTAS"
     inicio_modificar(texto)
 
-    id_venta = obtener_entero(
-        "Ingrese ID de venta. -1 Para salir\n.",
-        -1,
-        1000000,
-    )
+    id_venta = obtener_entero("Ingrese ID de venta. -1 Para salir\n.", -1, 999999)
 
     if id_venta == -1:
         return
 
-    posiciones = buscar_venta(id_venta)
+    posiciones = buscar_venta(VENTAS, id_venta)
 
     if len(posiciones) == 0:
-        print("Venta inexistente.")
+        print("\n\033[31mVenta inexistente.\033[0m")
         return
+
+    ventas_encontradas = []
+
+    for posicion in posiciones:
+        ventas_encontradas.append(VENTAS[posicion])
+
+    mostrar_listado_ventas(ventas_encontradas)
 
     opcion = obtener_entero(
         "1. Modificar cliente\n2. Modificar fecha\n3. Modificar cantidad\n.",
@@ -267,145 +394,178 @@ def modificar_venta():
         3,
     )
 
-    if opcion == 1:
-
-        nuevo_cliente = obtener_entero(
-            "Ingrese nuevo ID del cliente\n.",
-            1,
-            1000000,
-        )
-
-        for pos in posiciones:
-            VENTAS[pos][VENTAS_CLIENTE] = nuevo_cliente
-
-        print("\n\033[32mCliente modificado correctamente.\033[0m")
-
-    if opcion == 2:
-
-        nueva_fecha = pedir_fecha()
-
-        for pos in posiciones:
-            VENTAS[pos][VENTAS_FECHA] = nueva_fecha
-
-        print("\n\033[32mFecha modificada correctamente.\033[0m")
-
-    if opcion == 3:
-
-        for pos in posiciones:
-            print(
-                f"Codigo: {VENTAS[pos][VENTAS_PRODUCTO]} "
-                f"Cantidad: {VENTAS[pos][VENTAS_CANTIDAD]}"
+    match opcion:
+        case 1:
+            nuevo_cliente = pedir_cliente(
+                "Ingrese nuevo ID del cliente. -1 Para salir\n."
             )
 
-        codigo = obtener_entero( "Ingrese codigo del producto\n.", 1, 1000000,)
+            if nuevo_cliente == -1:
+                return
 
-        pos_venta = -1
+            print(f"Nuevo cliente: {obtener_nombre_cliente(nuevo_cliente)}")
+            confirmacion = obtener_respuesta(
+                "Esta seguro de modificar el cliente de la venta? Y/N\n."
+            )
 
-        for pos in posiciones:
-            if VENTAS[pos][VENTAS_PRODUCTO] == codigo:
-                pos_venta = pos
+            if confirmacion == "Y":
+                for posicion in posiciones:
+                    VENTAS[posicion][VENTAS_CLIENTE] = nuevo_cliente
 
-        if pos_venta == -1:
-            print("Producto inexistente en esta venta.")
-            return
+                print("\n\033[32mCliente modificado correctamente.\033[0m")
+            else:
+                print("\n\033[31mModificacion cancelada.\033[0m")
 
-        pos_producto = busqueda_secuencial(productos_id_individual, codigo,)
+        case 2:
+            nueva_fecha = pedir_fecha()
+            confirmacion = obtener_respuesta(
+                f"Cambiar la fecha a {nueva_fecha}? Y/N\n."
+            )
 
-        cantidad_anterior = VENTAS[pos_venta][VENTAS_CANTIDAD]
+            if confirmacion == "Y":
+                for posicion in posiciones:
+                    VENTAS[posicion][VENTAS_FECHA] = nueva_fecha
 
-        maximo = (PRODUCTOS[pos_producto][PRODUCTOS_STOCK] + cantidad_anterior)
+                print("\n\033[32mFecha modificada correctamente.\033[0m")
+            else:
+                print("\n\033[31mModificacion cancelada.\033[0m")
 
-        nueva_cantidad = obtener_entero("Ingrese nueva cantidad\n.", 1, maximo,)
+        case 3:
+            codigo = obtener_entero(
+                "Ingrese codigo del producto. -1 Para salir\n.", -1, 999999
+            )
 
-        diferencia = nueva_cantidad - cantidad_anterior
+            if codigo == -1:
+                return
 
-        PRODUCTOS[pos_producto][PRODUCTOS_STOCK] = (PRODUCTOS[pos_producto][PRODUCTOS_STOCK] - diferencia)
+            posicion_venta = -1
 
-        VENTAS[pos_venta][VENTAS_CANTIDAD] = nueva_cantidad
+            for posicion in posiciones:
+                if VENTAS[posicion][VENTAS_PRODUCTO] == codigo:
+                    posicion_venta = posicion
 
-        VENTAS[pos_venta][VENTAS_IMPORTE] = (nueva_cantidad * VENTAS[pos_venta][VENTAS_PRECIO_UNITARIO])
+            if posicion_venta == -1:
+                print("\n\033[31mProducto inexistente en esta venta.\033[0m")
+                return
 
-        print("\n\033[32mCantidad modificada correctamente.\033[0m")
+            posicion_producto = buscar_posicion_producto(codigo)
 
-    texto = ""
-    inicio_modificar(texto)
+            if posicion_producto == -1:
+                print("\n\033[31mEl producto fue eliminado.\033[0m")
+                return
+
+            cantidad_anterior = VENTAS[posicion_venta][VENTAS_CANTIDAD]
+            cantidad_maxima = (
+                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK]
+                + cantidad_anterior
+            )
+            nueva_cantidad = obtener_entero(
+                "Ingrese nueva cantidad\n.", 1, cantidad_maxima
+            )
+            confirmacion = obtener_respuesta(
+                f"Cambiar la cantidad de {cantidad_anterior} a {nueva_cantidad}? Y/N\n."
+            )
+
+            if confirmacion == "Y":
+                diferencia = nueva_cantidad - cantidad_anterior
+                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= diferencia
+                VENTAS[posicion_venta][VENTAS_CANTIDAD] = nueva_cantidad
+                VENTAS[posicion_venta][VENTAS_IMPORTE] = redondear_precio(
+                    nueva_cantidad
+                    * VENTAS[posicion_venta][VENTAS_PRECIO_UNITARIO]
+                )
+                print("\n\033[32mCantidad modificada correctamente.\033[0m")
+            else:
+                print("\n\033[31mModificacion cancelada.\033[0m")
+
+    inicio_modificar("")
+
+
+def consultar_cliente_y_ventas():
+    """Muestra los datos de un cliente y todas las ventas que realizo."""
+    id_cliente = pedir_cliente(
+        "Ingrese ID del cliente. -1 Para salir\n."
+    )
+
+    if id_cliente == -1:
+        return
+
+    posicion_cliente = buscar_por_id(
+        lista_clientes,
+        id_cliente,
+    )
+    cliente = lista_clientes[posicion_cliente]
+
+    print("\nDATOS DEL CLIENTE")
+    print("-" * 30)
+    print(f"ID: {cliente['id']}")
+    print(f"Nombre: {cliente['nombre']}")
+    print(f"DNI: {cliente['dni']}")
+    print(f"Telefono: {cliente['telefono']}")
+    print(f"Email: {cliente['email']}")
+
+    ventas_cliente = []
+    total_comprado = 0
+
+    for venta in VENTAS:
+        if (
+            venta[VENTAS_ID] != ELIMINADO
+            and venta[VENTAS_CLIENTE] == id_cliente
+        ):
+            ventas_cliente.append(venta)
+            total_comprado += venta[VENTAS_IMPORTE]
+
+    if len(ventas_cliente) == 0:
+        print(
+            "\n\033[31m"
+            "El cliente no tiene ventas registradas."
+            "\033[0m"
+        )
+    else:
+        print("\nVENTAS DEL CLIENTE")
+        mostrar_listado_ventas(ventas_cliente)
+        print(
+            f"\nTotal comprado por el cliente: "
+            f"${redondear_precio(total_comprado):.2f}"
+        )
 
 
 def listar_ventas():
     texto = "LISTA DE VENTAS"
     inicio_listado(texto)
 
-    opcion = obtener_entero("1. Todas las ventas\n2. Buscar por ID\n3. Buscar por cliente\n-1. Salir\n.", -1, 3,)
+    opcion = obtener_entero(
+        "1. Todas las ventas\n2. Buscar por ID\n"
+        "3. Consultar cliente y sus ventas\n-1. Salir\n.",
+        -1,
+        3,
+    )
 
     if opcion == -1:
         return
 
-    if opcion == 1:
+    ventas_encontradas = []
 
-        for venta in VENTAS:
+    match opcion:
+        case 1:
+            for venta in VENTAS:
+                if venta[VENTAS_ID] != ELIMINADO:
+                    ventas_encontradas.append(venta)
 
-            if venta[VENTAS_ID] != ELIMINADO:
+        case 2:
+            id_venta = obtener_entero("Ingrese ID de venta\n.", 1, 999999)
+            posiciones = buscar_venta(VENTAS, id_venta)
 
-                pos = busqueda_secuencial( productos_id_individual, venta[VENTAS_PRODUCTO],)
+            for posicion in posiciones:
+                ventas_encontradas.append(VENTAS[posicion])
 
-                print(
-                    f"\nID Venta: {venta[VENTAS_ID]}"
-                    f"\nCliente: {venta[VENTAS_CLIENTE]}"
-                    f"\nProducto: {PRODUCTOS[pos][PRODUCTOS_NOMBRE]}"
-                    f"\nFecha: {venta[VENTAS_FECHA]}"
-                    f"\nCantidad: {venta[VENTAS_CANTIDAD]}"
-                    f"\nImporte: ${venta[VENTAS_IMPORTE]}\n"
-                )
+        case 3:
+            consultar_cliente_y_ventas()
+            return
 
-    if opcion == 2:
+    if len(ventas_encontradas) == 0:
+        print("\n\033[31mNo se encontraron ventas.\033[0m")
+    else:
+        mostrar_listado_ventas(ventas_encontradas)
 
-        id_venta = obtener_entero("Ingrese ID de venta\n.", 1, 1000000,)
-
-        posiciones = buscar_venta(id_venta)
-
-        if len(posiciones) == 0:
-            print("Venta no encontrada.")
-
-        else:
-            for pos_venta in posiciones:
-
-                venta = VENTAS[pos_venta]
-
-                pos_producto = busqueda_secuencial( productos_id_individual, venta[VENTAS_PRODUCTO],)
-
-                print(
-                    f"\nID Venta: {venta[VENTAS_ID]}"
-                    f"\nCliente: {venta[VENTAS_CLIENTE]}"
-                    f"\nProducto: {PRODUCTOS[pos_producto][PRODUCTOS_NOMBRE]}"
-                    f"\nFecha: {venta[VENTAS_FECHA]}"
-                    f"\nCantidad: {venta[VENTAS_CANTIDAD]}"
-                    f"\nImporte: ${venta[VENTAS_IMPORTE]}\n"
-                )
-
-    if opcion == 3:
-
-        id_cliente = obtener_entero( "Ingrese ID del cliente\n.", 1, 1000000,)
-
-        encontrado = False
-
-        for venta in VENTAS:
-
-            if (venta[VENTAS_ID] != ELIMINADO and venta[VENTAS_CLIENTE] == id_cliente ):
-
-                encontrado = True
-
-                pos = busqueda_secuencial( productos_id_individual, venta[VENTAS_PRODUCTO],)
-
-                print(
-                    f"\nID Venta: {venta[VENTAS_ID]}"
-                    f"\nProducto: {PRODUCTOS[pos][PRODUCTOS_NOMBRE]}"
-                    f"\nFecha: {venta[VENTAS_FECHA]}"
-                    f"\nCantidad: {venta[VENTAS_CANTIDAD]}"
-                    f"\nImporte: ${venta[VENTAS_IMPORTE]}\n"
-                )
-
-        if encontrado == False:
-            print("No hay ventas para ese cliente.")
-
-    texto = ""
-    inicio_listado(texto)
+    inicio_listado("")
