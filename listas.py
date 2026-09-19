@@ -1,7 +1,14 @@
+# Variables globales de estado de sesion. Se van pisando desde el login.
 INGRESO = False
 ADMIN = False
 LECTOR = False
+
+# Valor que se usa como "marca" para indicar que un elemento fue dado de baja,
+# en vez de borrarlo de la lista (asi no se rompen los indices de otras listas relacionadas).
 ELIMINADO = -1
+
+# Usuarios y contraseñas validos para el login. Las tuplas de usuario y contraseña
+# se relacionan por posicion: USUARIOS_ADMIN[i] usa CONTRASENIAS_ADMIN[i].
 USUARIOS_ADMIN = (
     "MARTIN",
     "LUCAS",
@@ -32,6 +39,9 @@ USUARIOS_LECTORES = (
     "PAULA",
 )
 
+# Constantes con la posicion de cada dato dentro de cada fila de PRODUCTOS.
+# Se usan en vez de numeros sueltos para que el codigo sea mas facil de leer
+# (ej: producto[PRODUCTOS_PRECIO] en vez de producto[3]).
 PRODUCTOS_CODIGO = 0
 PRODUCTOS_NOMBRE = 1
 PRODUCTOS_CATEGORIA = 2
@@ -40,6 +50,8 @@ PRODUCTOS_STOCK = 4
 PRODUCTOS_DESCUENTO = 5
 
 
+# Lista principal de productos. Cada producto es una lista con:
+# [codigo, nombre, categoria, precio, stock, descuento]
 PRODUCTOS = [
     [482719, "PILAS", "OTROS", 1500, 25, 5],
     [935164, "ARROZ", "ALIMENTOS", 1800, 18, 0],
@@ -52,6 +64,9 @@ PRODUCTOS = [
     [519348, "JABON", "LIMPIEZA", 1400, 35, 5],
     [267914, "PEPSI", "BEBIDAS", 2800, 16, 15],
 ]
+
+# Listas auxiliares que van en paralelo a PRODUCTOS (misma posicion = mismo producto).
+# Sirven para buscar mas rapido por nombre o por id sin recorrer toda la matriz PRODUCTOS.
 productos_nombre_individual = [
     "PILAS",
     "ARROZ",
@@ -77,11 +92,15 @@ productos_id_individual = [
     519348,
     267914,
 ]
+
+# Nota: esta lista no se termina usando en ningun lado (el descuento ya esta en PRODUCTOS).
 descuentos_individual = [5, 0, 10, 13, 9, 20, 0, 0, 5, 15]
 
 
 #############################################
 # CLIENTES#
+# Lista de clientes. A diferencia de productos, cada cliente es un diccionario
+# (mas facil de leer que una lista de listas, porque se accede por nombre de clave).
 lista_clientes = [
     {
         "id": 1,
@@ -156,11 +175,9 @@ lista_clientes = [
 ]
 
 
-
-
-
 #VENTAS
 
+# Constantes con la posicion de cada dato dentro de cada fila de VENTAS.
 VENTAS_ID = 0
 VENTAS_CLIENTE = 1
 VENTAS_PRODUCTO = 2
@@ -171,6 +188,9 @@ VENTAS_PRECIO_UNITARIO = 6
 VENTAS_IMPORTE = 7
 
 
+# Lista de ventas. Cada fila es un producto vendido dentro de una venta:
+# [id_venta, id_cliente, codigo_producto, categoria, fecha, cantidad, precio_unitario, importe]
+# Notar que una misma venta (mismo id) puede tener varias filas si se compraron varios productos juntos.
 VENTAS = [
     [100001, 1, 935164, "ALIMENTOS", "01/09/2026", 2, 1800, 3600],
     [100001, 1, 267914, "BEBIDAS", "01/09/2026", 1, 2380, 2380],
