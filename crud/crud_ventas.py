@@ -46,10 +46,12 @@ from Funciones.estadisticas_ventas import (
 
 
 def ventas():
+    # Menu principal del modulo ventas. Cambia segun si el usuario es admin o no.
     texto = "VENTAS"
     inicio(texto)
 
     if listas.ADMIN == True:
+        # Admin ve todas las opciones: listar, dar de baja, dar de alta, modificar y estadisticas.
         opcion = obtener_entero(
             "0. Retroceder\n1. Listado de ventas\n2. Baja de venta\n"
             "3. Alta de venta\n4. Modificar venta\n5. Estadisticas\n.",
@@ -71,6 +73,7 @@ def ventas():
             case 5:
                 menu_estadisticas_ventas()
     else:
+        # Usuario normal solo puede ver el listado y las estadisticas.
         opcion = obtener_entero(
             "0. Retroceder\n1. Listado de ventas\n2. Estadisticas\n.", 0, 2
         )
@@ -85,6 +88,7 @@ def ventas():
 
 
 def menu_estadisticas_ventas():
+    # Submenu para ver distintos tipos de estadisticas sobre las ventas.
     opcion = obtener_entero(
         "0. Retroceder\n1. Resumen completo\n"
         "2. Estadisticas por categoria\n3. Total de una venta\n.",
@@ -96,8 +100,10 @@ def menu_estadisticas_ventas():
         case 0:
             return
         case 1:
+            # Muestra un resumen general de todas las ventas.
             resumen_estadistico()
         case 2:
+            # Muestra estadisticas filtradas por una categoria elegida.
             categorias = obtener_categorias()
 
             if len(categorias) == 0:
@@ -115,6 +121,7 @@ def menu_estadisticas_ventas():
             categoria = categorias[opcion_categoria - 1]
             mostrar_estadisticas_categoria(categoria)
         case 3:
+            # Muestra el total de una venta puntual buscandola por su id.
             id_venta = obtener_entero(
                 "Ingrese ID de venta. -1 Para salir\n.", -1, 999999
             )
@@ -132,6 +139,7 @@ def menu_estadisticas_ventas():
 
 
 def buscar_posicion_producto(codigo):
+    # Devuelve la posicion de un producto segun su codigo, o -1 si no existe.
     if codigo in productos_id_individual:
         return productos_id_individual.index(codigo)
 
@@ -139,6 +147,7 @@ def buscar_posicion_producto(codigo):
 
 
 def obtener_nombre_cliente(id_cliente):
+    # Devuelve el nombre del cliente junto a su id, o un aviso si ya fue eliminado.
     posicion = buscar_por_id(lista_clientes, id_cliente)
 
     if posicion == -2:
@@ -148,6 +157,7 @@ def obtener_nombre_cliente(id_cliente):
 
 
 def obtener_nombre_producto(codigo):
+    # Devuelve el nombre del producto, o "ELIMINADO" si ya no existe.
     posicion = buscar_posicion_producto(codigo)
 
     if posicion == -1:
@@ -157,6 +167,7 @@ def obtener_nombre_producto(codigo):
 
 
 def mostrar_listado_ventas(ventas_a_mostrar):
+    # Imprime una tabla con los datos de las ventas que se le pasen.
     ancho = 120
     print("-" * ancho)
     print(
@@ -176,6 +187,7 @@ def mostrar_listado_ventas(ventas_a_mostrar):
         )
         categoria = recortar_texto(venta[VENTAS_CATEGORIA], 9)
 
+        # Si el producto ya no existe, se muestra "-" en vez del precio y descuento original.
         if posicion_producto == -1:
             precio_original = "-"
             descuento = "-"
@@ -197,6 +209,7 @@ def mostrar_listado_ventas(ventas_a_mostrar):
 
 
 def pedir_cliente(mensaje):
+    # Pide un id de cliente y no avanza hasta que exista o se cancele con -1.
     id_cliente = obtener_entero(mensaje, -1, 1000000)
 
     while id_cliente != -1 and buscar_por_id(lista_clientes, id_cliente) == -2:
@@ -207,6 +220,7 @@ def pedir_cliente(mensaje):
 
 
 def alta_venta():
+    # Carga una venta nueva. Permite agregar varios productos antes de confirmar.
     texto = "ALTA DE VENTAS"
     inicio_alta(texto)
 
@@ -222,6 +236,7 @@ def alta_venta():
     venta_temporal = []
     seguir = "Y"
 
+    # Loop para ir agregando productos a la venta hasta que el usuario diga que no quiere mas.
     while seguir == "Y":
         codigo = obtener_entero(
             "Ingrese codigo del producto. -1 Para cancelar\n.", -1, 1000000
@@ -235,6 +250,8 @@ def alta_venta():
         if posicion_producto == -1:
             print("\n\033[31mProducto inexistente.\033[0m\n")
         else:
+            # Se suma la cantidad ya reservada de ese producto en esta misma venta
+            # para no vender mas stock del que hay disponible.
             cantidad_reservada = 0
 
             for venta in venta_temporal:
@@ -251,6 +268,7 @@ def alta_venta():
                 cantidad = obtener_entero(
                     "Ingrese cantidad\n.", 1, stock_disponible
                 )
+                # Calcula el precio final aplicando el descuento del producto.
                 precio_original = PRODUCTOS[posicion_producto][PRODUCTOS_PRECIO]
                 descuento_producto = PRODUCTOS[posicion_producto][
                     PRODUCTOS_DESCUENTO
@@ -263,6 +281,7 @@ def alta_venta():
                     PRODUCTOS_CATEGORIA
                 ]
 
+                # Se guarda el producto en una lista temporal hasta confirmar toda la venta.
                 venta_temporal.append(
                     [
                         id_venta,
@@ -293,6 +312,7 @@ def alta_venta():
         print("No se agregaron productos.")
         return
 
+    # Suma el importe de todos los productos cargados para mostrar el total final.
     total = 0
 
     for venta in venta_temporal:
@@ -307,6 +327,7 @@ def alta_venta():
     )
 
     if confirmacion == "Y":
+        # Recien aca se guarda de verdad en VENTAS y se descuenta el stock.
         for venta in venta_temporal:
             VENTAS.append(venta)
             posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
@@ -322,6 +343,7 @@ def alta_venta():
 
 
 def baja_venta():
+    # Elimina una venta (o todos los productos de esa venta si tiene varios items).
     texto = "BAJA DE VENTAS"
     inicio_baja(texto)
 
@@ -349,6 +371,7 @@ def baja_venta():
     )
 
     if confirmacion == "Y":
+        # Al eliminar la venta, se le devuelve el stock a cada producto involucrado.
         for posicion_venta in posiciones:
             codigo = VENTAS[posicion_venta][VENTAS_PRODUCTO]
             cantidad = VENTAS[posicion_venta][VENTAS_CANTIDAD]
@@ -367,6 +390,7 @@ def baja_venta():
 
 
 def modificar_venta():
+    # Permite modificar el cliente, la fecha o la cantidad de un producto de una venta.
     texto = "MODIFICACION DE VENTAS"
     inicio_modificar(texto)
 
@@ -396,6 +420,7 @@ def modificar_venta():
 
     match opcion:
         case 1:
+            # Cambia el cliente en todos los items de esa venta.
             nuevo_cliente = pedir_cliente(
                 "Ingrese nuevo ID del cliente. -1 Para salir\n."
             )
@@ -417,6 +442,7 @@ def modificar_venta():
                 print("\n\033[31mModificacion cancelada.\033[0m")
 
         case 2:
+            # Cambia la fecha en todos los items de esa venta.
             nueva_fecha = pedir_fecha()
             confirmacion = obtener_respuesta(
                 f"Cambiar la fecha a {nueva_fecha}? Y/N\n."
@@ -431,6 +457,7 @@ def modificar_venta():
                 print("\n\033[31mModificacion cancelada.\033[0m")
 
         case 3:
+            # Cambia la cantidad de un producto puntual dentro de la venta y ajusta el stock.
             codigo = obtener_entero(
                 "Ingrese codigo del producto. -1 Para salir\n.", -1, 999999
             )
@@ -438,6 +465,7 @@ def modificar_venta():
             if codigo == -1:
                 return
 
+            # Busca cual de los items de la venta corresponde a ese codigo de producto.
             posicion_venta = -1
 
             for posicion in posiciones:
@@ -455,6 +483,7 @@ def modificar_venta():
                 return
 
             cantidad_anterior = VENTAS[posicion_venta][VENTAS_CANTIDAD]
+            # El maximo permitido es el stock actual mas lo que ya estaba reservado en esta venta.
             cantidad_maxima = (
                 PRODUCTOS[posicion_producto][PRODUCTOS_STOCK]
                 + cantidad_anterior
@@ -467,6 +496,7 @@ def modificar_venta():
             )
 
             if confirmacion == "Y":
+                # Ajusta el stock segun la diferencia entre la cantidad vieja y la nueva.
                 diferencia = nueva_cantidad - cantidad_anterior
                 PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= diferencia
                 VENTAS[posicion_venta][VENTAS_CANTIDAD] = nueva_cantidad
@@ -496,6 +526,7 @@ def consultar_cliente_y_ventas():
     )
     cliente = lista_clientes[posicion_cliente]
 
+    # Muestra los datos personales del cliente.
     print("\nDATOS DEL CLIENTE")
     print("-" * 30)
     print(f"ID: {cliente['id']}")
@@ -504,6 +535,7 @@ def consultar_cliente_y_ventas():
     print(f"Telefono: {cliente['telefono']}")
     print(f"Email: {cliente['email']}")
 
+    # Junta todas las ventas activas de ese cliente y suma el total gastado.
     ventas_cliente = []
     total_comprado = 0
 
@@ -531,6 +563,7 @@ def consultar_cliente_y_ventas():
 
 
 def listar_ventas():
+    # Muestra el listado de ventas, con distintas formas de filtrarlas.
     texto = "LISTA DE VENTAS"
     inicio_listado(texto)
 
@@ -548,11 +581,13 @@ def listar_ventas():
 
     match opcion:
         case 1:
+            # Junta todas las ventas que no fueron eliminadas.
             for venta in VENTAS:
                 if venta[VENTAS_ID] != ELIMINADO:
                     ventas_encontradas.append(venta)
 
         case 2:
+            # Busca los items que pertenecen a un id de venta puntual.
             id_venta = obtener_entero("Ingrese ID de venta\n.", 1, 999999)
             posiciones = buscar_venta(VENTAS, id_venta)
 
@@ -560,6 +595,7 @@ def listar_ventas():
                 ventas_encontradas.append(VENTAS[posicion])
 
         case 3:
+            # Muestra los datos del cliente junto con todas sus ventas.
             consultar_cliente_y_ventas()
             return
 
