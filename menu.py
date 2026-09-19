@@ -16,7 +16,7 @@ listas.LECTOR = lector
 listas.INGRESO = ingreso
 
 def menu_principal():
-    # Muestra el menu principal y devuelve la opcion elegida.
+    """Muestra el menu principal y devuelve la opcion elegida."""
     texto = "MENU PRINCIPAL"
     inicio(texto)
     ask_menu = obtener_entero("0. Salir\n1. Productos\n2. Clientes\n3.Ventas\n.", 0, 3)

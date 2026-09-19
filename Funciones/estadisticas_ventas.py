@@ -10,8 +10,6 @@ from listas import (
 )
 
 
-
-
 redondear_precio = lambda numero: round(numero, 2)
 
 
@@ -54,10 +52,8 @@ def sumar_importes_ventas():
     return suma_total
 
 
-
 def obtener_ids_ventas():
     """Devuelve los ID de las ventas activas sin repetirlos."""
-
     ids_ventas = []
 
     for fila in obtener_ventas_activas():
@@ -69,11 +65,8 @@ def obtener_ids_ventas():
     return ids_ventas
 
 
-
-
 def obtener_categorias():
     """Devuelve las categorias que aparecen en las ventas activas."""
-
     categorias = []
 
     for venta in obtener_ventas_activas():
@@ -89,11 +82,8 @@ def obtener_categorias():
     return categorias
 
 
-
-
 def total_venta(id_venta):
     """Devuelve el importe total de una venta activa."""
-
     total = 0
 
     for fila in obtener_ventas_activas():
@@ -105,21 +95,15 @@ def total_venta(id_venta):
     return total
 
 
-
-
 def contar_ventas():
     """Devuelve la cantidad de ventas activas sin repetir sus ID."""
-
     ids_ventas = obtener_ids_ventas()
 
     return len(ids_ventas)
 
 
-
-
 def contar_ventas_categoria(categoria):
     """Cuenta los registros de productos vendidos en una categoria."""
-
     cantidad = 0
 
     categoria = categoria.upper()
@@ -133,11 +117,8 @@ def contar_ventas_categoria(categoria):
     return cantidad
 
 
-
-
 def promedio_ventas():
     """Devuelve el importe promedio por venta."""
-
     ids_ventas = obtener_ids_ventas()
 
     suma_total = sumar_importes_ventas()
@@ -154,11 +135,8 @@ def promedio_ventas():
     return promedio
 
 
-
-
 def promedio_ventas_categoria(categoria):
     """Devuelve el importe promedio por registro de una categoria."""
-
     categoria = categoria.upper()
 
     total_categoria = 0
@@ -182,11 +160,8 @@ def promedio_ventas_categoria(categoria):
     return promedio
 
 
-
-
 def porcentaje_ventas_categoria(categoria):
     """Devuelve el porcentaje de registros de una categoria."""
-
     total = len(obtener_ventas_activas())
 
     cantidad_categoria = (contar_ventas_categoria(categoria))
@@ -202,11 +177,8 @@ def porcentaje_ventas_categoria(categoria):
     return porcentaje
 
 
-
-
 def total_productos_vendidos():
     """Devuelve la cantidad total de unidades vendidas."""
-
     cantidad_total = 0
 
     for fila in obtener_ventas_activas():
@@ -216,11 +188,8 @@ def total_productos_vendidos():
     return cantidad_total
 
 
-
-
 def mayor_menor_venta():
     """Devuelve los ID e importes de la mayor y la menor venta."""
-
     ids_ventas = obtener_ids_ventas()
 
     if len(ids_ventas) == 0:
@@ -266,10 +235,8 @@ def mostrar_estadisticas_categoria(categoria):
     )
 
 
-
 def resumen_estadistico():
     """Muestra un resumen general y por categoria de las ventas."""
-
     cantidad_ventas = contar_ventas()
 
     importe_total = redondear_precio(sumar_importes_ventas())

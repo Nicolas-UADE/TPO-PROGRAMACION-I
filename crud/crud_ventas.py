@@ -46,7 +46,7 @@ from Funciones.estadisticas_ventas import (
 
 
 def ventas():
-    # Menu principal del modulo ventas. Cambia segun si el usuario es admin o no.
+    """Menu principal del modulo ventas. Cambia segun si el usuario es admin o no."""
     texto = "VENTAS"
     inicio(texto)
 
@@ -88,7 +88,7 @@ def ventas():
 
 
 def menu_estadisticas_ventas():
-    # Submenu para ver distintos tipos de estadisticas sobre las ventas.
+    """Submenu para ver distintos tipos de estadisticas sobre las ventas."""
     opcion = obtener_entero(
         "0. Retroceder\n1. Resumen completo\n"
         "2. Estadisticas por categoria\n3. Total de una venta\n.",
@@ -139,7 +139,7 @@ def menu_estadisticas_ventas():
 
 
 def buscar_posicion_producto(codigo):
-    # Devuelve la posicion de un producto segun su codigo, o -1 si no existe.
+    """Devuelve la posicion de un producto segun su codigo, o -1 si no existe."""
     if codigo in productos_id_individual:
         return productos_id_individual.index(codigo)
 
@@ -147,7 +147,7 @@ def buscar_posicion_producto(codigo):
 
 
 def obtener_nombre_cliente(id_cliente):
-    # Devuelve el nombre del cliente junto a su id, o un aviso si ya fue eliminado.
+    """Devuelve el nombre del cliente junto a su id, o un aviso si ya fue eliminado."""
     posicion = buscar_por_id(lista_clientes, id_cliente)
 
     if posicion == -2:
@@ -157,7 +157,7 @@ def obtener_nombre_cliente(id_cliente):
 
 
 def obtener_nombre_producto(codigo):
-    # Devuelve el nombre del producto, o "ELIMINADO" si ya no existe.
+    """Devuelve el nombre del producto, o "ELIMINADO" si ya no existe."""
     posicion = buscar_posicion_producto(codigo)
 
     if posicion == -1:
@@ -167,7 +167,7 @@ def obtener_nombre_producto(codigo):
 
 
 def mostrar_listado_ventas(ventas_a_mostrar):
-    # Imprime una tabla con los datos de las ventas que se le pasen.
+    """Imprime una tabla con los datos de las ventas que se le pasen."""
     ancho = 120
     print("-" * ancho)
     print(
@@ -209,7 +209,7 @@ def mostrar_listado_ventas(ventas_a_mostrar):
 
 
 def pedir_cliente(mensaje):
-    # Pide un id de cliente y no avanza hasta que exista o se cancele con -1.
+    """Pide un id de cliente y no avanza hasta que exista o se cancele con -1."""
     id_cliente = obtener_entero(mensaje, -1, 1000000)
 
     while id_cliente != -1 and buscar_por_id(lista_clientes, id_cliente) == -2:
@@ -220,7 +220,7 @@ def pedir_cliente(mensaje):
 
 
 def alta_venta():
-    # Carga una venta nueva. Permite agregar varios productos antes de confirmar.
+    """Carga una venta nueva. Permite agregar varios productos antes de confirmar."""
     texto = "ALTA DE VENTAS"
     inicio_alta(texto)
 
@@ -343,7 +343,7 @@ def alta_venta():
 
 
 def baja_venta():
-    # Elimina una venta (o todos los productos de esa venta si tiene varios items).
+    """Elimina una venta (o todos los productos de esa venta si tiene varios items)."""
     texto = "BAJA DE VENTAS"
     inicio_baja(texto)
 
@@ -390,7 +390,7 @@ def baja_venta():
 
 
 def modificar_venta():
-    # Permite modificar el cliente, la fecha o la cantidad de un producto de una venta.
+    """Permite modificar el cliente, la fecha o la cantidad de un producto de una venta."""
     texto = "MODIFICACION DE VENTAS"
     inicio_modificar(texto)
 
@@ -563,7 +563,7 @@ def consultar_cliente_y_ventas():
 
 
 def listar_ventas():
-    # Muestra el listado de ventas, con distintas formas de filtrarlas.
+    """Muestra el listado de ventas, con distintas formas de filtrarlas."""
     texto = "LISTA DE VENTAS"
     inicio_listado(texto)
 

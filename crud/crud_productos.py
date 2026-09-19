@@ -30,16 +30,14 @@ from Funciones.funciones import (
 )
 import listas
 
-# from login import ADMIN
 
 
 def productos():
-    # Menu principal del modulo productos. Cambia segun si el usuario es admin o no.
+    """Muestra el menu del modulo productos y sus opciones segun el tipo de usuario."""
     texto = "PRODUCTOS"
     inicio(texto)
 
     if listas.ADMIN == True:
-        # Admin ve todas las opciones: listar, dar de baja, dar de alta y modificar.
         ask = obtener_entero(
             "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto\n.",
             0,
@@ -57,7 +55,6 @@ def productos():
             case 4:
                 modificar_producto()
     else:
-        # Usuario normal solo puede ver el listado.
         ask = obtener_entero("0. Retroceder\n1. Listado de producto\n", 0, 1)
         match ask:
             case 0:
@@ -67,12 +64,11 @@ def productos():
 
 
 def alta_producto():
-    # Carga un producto nuevo pidiendo sus datos uno por uno.
+    """Permite cargar un producto nuevo con sus datos."""
     texto = "ALTA DE PRODUCTOS"
     inicio_alta(texto)
     pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
 
-    # No deja cargar un producto si ya existe uno activo con ese mismo nombre.
     while pregunta_nombre in productos_nombres_activos():
         print("Poducto ya vigente...")
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
@@ -81,7 +77,6 @@ def alta_producto():
         "\nIngrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros\n.", 1, 4
     )
 
-    # Convierte el numero elegido en el texto de la categoria.
     match categoria:
         case 1:
             categoria = "ALIMENTOS"
@@ -98,17 +93,13 @@ def alta_producto():
 
     descuento = obtener_entero("Ingrese descuento: 1-100 (%)\n.", 1, 100)
 
-    # aca hacer funcion de porcentaje y restarle el descuento al valor inicial del producto
 
-    # Genera un codigo unico para el producto nuevo.
     codigo = generador_de_id(productos_id_individual)
 
-    # Confirmacion antes de guardar el producto.
     pregunta_seguridad = obtener_caracter(
         "Esta seguro de agregar este producto? Y/N\n."
     ).upper()
     if pregunta_seguridad == "Y":
-        # Se guarda tanto en la lista principal de productos como en las listas auxiliares de id y nombre.
         PRODUCTOS.append([codigo, pregunta_nombre, categoria, precio, stock, descuento])
         productos_id_individual.append(codigo)
         productos_nombre_individual.append(pregunta_nombre)
@@ -120,7 +111,7 @@ def alta_producto():
 
 
 def baja_producto():
-    # Elimina un producto (lo marca como ELIMINADO en las 3 listas relacionadas).
+    """Permite dar de baja un producto existente."""
     texto = "BAJA DE PRODUCTOS"
     inicio_baja(texto)
 
@@ -128,7 +119,6 @@ def baja_producto():
         "\n\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
     )
 
-    # Si ingresa 0 (no es una opcion valida), se lo vuelve a pedir.
     while pregunta_codigo == 0:
         pregunta_codigo = obtener_entero(
             "\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
@@ -139,7 +129,6 @@ def baja_producto():
 
     pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
 
-    # Si el codigo no existe, se lo vuelve a pedir hasta encontrar uno valido o salir.
     while pos == -1:
         print("Producto inexistente.")
         pregunta_codigo = obtener_entero(
@@ -149,13 +138,11 @@ def baja_producto():
             return
         pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
 
-    # Confirmacion antes de borrar.
     pregunta_seguridad = obtener_caracter(
         f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N\n."
     ).upper()
 
     if pregunta_seguridad == "Y":
-        # Se marca como eliminado en las 3 listas para mantenerlas sincronizadas.
         PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
         productos_id_individual[pos] = ELIMINADO
         productos_nombre_individual[pos] = ELIMINADO
@@ -169,7 +156,7 @@ def baja_producto():
 
 
 def modificar_producto():
-    # Permite modificar un dato puntual de un producto ya existente.
+    """Permite modificar los datos de un producto."""
     texto = "MODIFICACION DE PRODUCTOS"
     inicio_modificar(texto)
 
@@ -190,7 +177,6 @@ def modificar_producto():
         print("Producto inexistente.")
 
     else:
-        # Pregunta que campo se quiere modificar.
         pregunta_eleccion = obtener_entero(
             "Que quieres modificar.\n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",
             1,
@@ -198,14 +184,12 @@ def modificar_producto():
         )
         match pregunta_eleccion:
             case 1:
-                # Modificar nombre.
                 nuevo_nombre = obtener_caracter("\nIngrese nuevo nombre.\n.")
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    # Se actualiza en la lista principal y tambien en la lista auxiliar de nombres.
                     PRODUCTOS[pos][PRODUCTOS_NOMBRE] = nuevo_nombre
                     productos_nombre_individual[pos] = nuevo_nombre
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
@@ -213,7 +197,6 @@ def modificar_producto():
                         "Desea hacer otra modificacion? Y/N\n"
                     )
                     if pregunta_eleccion_otra == "Y":
-                        # Si quiere seguir modificando, arranca todo el proceso de nuevo.
                         texto = ""
                         inicio_modificar(texto)
                         modificar_producto()
@@ -221,7 +204,6 @@ def modificar_producto():
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
 
             case 3:
-                # Modificar precio.
                 precio = obtener_entero("\nIngrese nuevo precio.\n.", 1, 100000)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
@@ -241,7 +223,6 @@ def modificar_producto():
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
 
             case 4:
-                # Modificar stock.
                 stock = obtener_entero("\nIngrese nuevo stock.\n.", 0, 1000000)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
@@ -261,7 +242,6 @@ def modificar_producto():
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
 
             case 5:
-                # Modificar descuento.
                 descuento = obtener_entero("\nIngrese nuevo descuento.\n.", 1, 100)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el producto {pregunta_codigo}? Y/N\n."
@@ -281,7 +261,6 @@ def modificar_producto():
                     print("\n\033[31mModificacion de producto cancelada.\033[0m")
 
             case 2:
-                # Modificar categoria.
                 nueva_categoria = obtener_entero(
                     "\nIngrese nueva categoría... \n1. Alimentos\n2. Limpieza\n3. Bebidas\n4.Otros\n.",
                     1,
@@ -317,7 +296,7 @@ def modificar_producto():
 
 
 def listar_productos():
-    # Muestra el listado de productos, con distintas formas de ordenar o buscar.
+    """Muestra los productos y permite ordenarlos o buscarlos."""
     texto = "LISTA DE PRODUCTOS"
     inicio_listado(texto)
     pregunta_orden = obtener_entero(
@@ -328,7 +307,6 @@ def listar_productos():
     if pregunta_orden == -1:
         return
     if pregunta_orden == 0:
-        # Vuelve a preguntar si ingreso 0 (no es una opcion valida del menu).
         pregunta_orden = obtener_entero(
             "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
             -1,
@@ -336,18 +314,15 @@ def listar_productos():
         )
 
     if pregunta_orden == 1:
-        # Lista todos los productos ordenados por codigo.
         lista_cabeza_productos()
         print()
         ordenar_por_codigo()
     if pregunta_orden == 2:
-        # Lista todos los productos ordenados alfabeticamente.
         lista_cabeza_productos()
         print()
         ordenar_alfabeticamente()
 
     if pregunta_orden == 3:
-        # Busca uno o varios productos por nombre (puede haber nombres repetidos).
         pregunta = obtener_caracter("\nIngrese nombre del producto\n.").upper()
         cuenta_busqueda, busqueda_posiciones = buscar(
             productos_nombre_individual, pregunta
@@ -365,7 +340,6 @@ def listar_productos():
                 i += 1
 
     if pregunta_orden == 4:
-        # Busca un producto puntual por codigo.
         pregunta = obtener_entero("\nIngrese codigo del producto\n.", 100000, 1000000)
         cuenta_busqueda, busqueda_posiciones = buscar(productos_id_individual, pregunta)
         if cuenta_busqueda == 0:
