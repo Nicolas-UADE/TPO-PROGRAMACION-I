@@ -18,9 +18,11 @@ from listas import ELIMINADO, lista_clientes
 
 
 def clientes():
+    # Menu principal del modulo clientes. Cambia segun si el usuario es admin o no.
     texto = "CLIENTES"
     inicio(texto)
     if listas.ADMIN == True:
+        # Admin ve todas las opciones: listar, dar de baja, dar de alta y modificar.
         ask = obtener_entero(
             "0. Retroceder\n1. Listado de clientes\n2. Baja de clientes\n3.Alta de clientes\n4.Modificar clientes\n.",
             0,
@@ -38,6 +40,7 @@ def clientes():
             case 4:
                 modificar_clientes()
     else:
+        # Usuario normal solo puede ver el listado.
         ask = obtener_entero("0. Retroceder\n1. Listado de clientes\n", 0, 1)
         match ask:
             case 0:
@@ -47,6 +50,7 @@ def clientes():
 
 
 def alta_clientes():
+    # Carga un cliente nuevo pidiendo sus datos uno por uno.
     texto = "ALTA DE CLIENTES"
     inicio_alta(texto)
 
@@ -58,13 +62,16 @@ def alta_clientes():
 
     email = obtener_caracter("Email:\n.").lower()
 
+    # Repite hasta que el email tenga un dominio valido.
     while validar_email(email) == False:
         print("\nIngrese un mail valido.\n")
         email = obtener_caracter("Email:\n.").lower()
 
+    # Se guardan dni y telefono como texto para que no den problemas al mostrarlos.
     el_dni = str(dni)
     el_telefono = str(telefono)
 
+    # El id nuevo es simplemente la cantidad de clientes + 1.
     nuevo_id = len(lista_clientes) + 1
 
     cliente = {
@@ -74,6 +81,8 @@ def alta_clientes():
         "telefono": el_telefono,
         "email": email,
     }
+
+    # Confirmacion antes de guardar el cliente en la lista.
     pregunta_seguridad = obtener_caracter(
         f"\nEsta seguro de agregar al cliente? Y/N\n."
     ).upper()
@@ -90,6 +99,7 @@ def alta_clientes():
 
 
 def listado_clientes():
+    # Muestra el listado de clientes, con distintas formas de buscarlos.
     texto = "LISTADO CLIENTES"
     inicio_listado(texto)
     pregunta_orden = obtener_entero(
@@ -101,12 +111,14 @@ def listado_clientes():
         case -1:
             return
         case 0:
+            # Vuelve a preguntar si el usuario ingreso 0 (no es una opcion valida del menu).
             pregunta_orden = obtener_entero(
                 "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
                 -1,
                 3,
             )
         case 1:
+            # Lista todos los clientes que no fueron eliminados, ordenados por id.
             lista_cabeza_clientes()
 
             for cliente in lista_clientes:
@@ -116,6 +128,7 @@ def listado_clientes():
                     )
 
         case 2:
+            # Busca un cliente puntual por nombre.
             pregunta_nombre = obtener_caracter(
                 "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
             )
@@ -124,6 +137,7 @@ def listado_clientes():
                 return
             esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
 
+            # Si no lo encuentra, vuelve a pedir el nombre hasta que exista o se salga.
             while esta == -2:
                 print("Cliente inexistente.")
                 pregunta_nombre = obtener_caracter(
@@ -135,7 +149,7 @@ def listado_clientes():
             print(lista_clientes[esta])
 
         case 3:
-
+            # Busca un cliente puntual por codigo (id).
             pregunta_codigo = obtener_entero(
                 "\n\nIngrese código del cliente a buscar. -1 Para salir\n.", -1, 1000000
             )
@@ -153,6 +167,7 @@ def listado_clientes():
 
             esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
+            # Si no existe ese codigo, vuelve a pedirlo hasta encontrar uno valido o salir.
             while esta == -2:
                 print("Cliente inexistente.")
                 pregunta_codigo = obtener_entero(
@@ -170,6 +185,7 @@ def listado_clientes():
 
 
 def baja_clientes():
+    # Elimina un cliente (en realidad lo reemplaza por el marcador ELIMINADO).
     texto = "BAJA DE CLIENTES"
     inicio_baja(texto)
 
@@ -187,6 +203,7 @@ def baja_clientes():
             return
 
     esta = buscar_por_id(lista_clientes, pregunta_codigo)
+    # Si el codigo no existe, se lo vuelve a pedir hasta que sea valido o se cancele.
     while esta == -2:
         print("Cliente inexistente.")
         pregunta_codigo = obtener_entero(
@@ -196,12 +213,13 @@ def baja_clientes():
             return
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
+    # Confirmacion antes de borrar.
     pregunta_seguridad = obtener_caracter(
         f"\nEsta seguro de eliminar al cliente {pregunta_codigo}? Y/N\n."
     ).upper()
 
     if pregunta_seguridad == "Y":
-
+        # No se borra realmente de la lista, se reemplaza por ELIMINADO para no romper los indices.
         lista_clientes[esta] = ELIMINADO
 
         print("\n\033[32mCliente eliminado correctamente.\033[0m")
@@ -213,6 +231,7 @@ def baja_clientes():
 
 
 def modificar_clientes():
+    # Permite modificar un dato puntual de un cliente ya existente.
     texto = "MODIFICAR CLIENTES"
     inicio_modificar(texto)
     pregunta_codigo = obtener_entero(
@@ -231,6 +250,7 @@ def modificar_clientes():
             return
 
     esta = buscar_por_id(lista_clientes, pregunta_codigo)
+    # Si no existe el codigo, se lo vuelve a pedir hasta que sea valido o se cancele.
     while esta == -2:
         print("Cliente inexistente.")
         pregunta_codigo = obtener_entero(
@@ -240,17 +260,20 @@ def modificar_clientes():
             return
         esta = buscar_por_id(lista_clientes, pregunta_codigo)
 
+    # Pregunta que campo se quiere modificar.
     pregunta_eleccion = obtener_entero(
         "Que quieres modificar.\n1.Nombre\n2.DNI\n3.Telefono\n4.Email\n.", 1, 4
     )
     match pregunta_eleccion:
         case 1:
+            # Modificar nombre.
             nombre = obtener_caracter("Nombre y apellido:\n.").upper()
             pregunta_seguridad = obtener_caracter(
                 f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
             ).upper()
 
             if pregunta_seguridad == "Y":
+                # Se actualiza solo ese campo, sin tocar el resto del cliente.
                 lista_clientes[esta]["nombre"] = nombre
 
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
@@ -258,6 +281,7 @@ def modificar_clientes():
                     "Desea hacer otra modificacion? Y/N\n"
                 )
                 if pregunta_eleccion_otra == "Y":
+                    # Si quiere seguir modificando, arranca todo el proceso de nuevo.
                     texto = ""
                     inicio_modificar(texto)
                     modificar_clientes()
@@ -265,7 +289,7 @@ def modificar_clientes():
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
 
         case 2:
-
+            # Modificar DNI.
             dni = obtener_entero("DNI:\n.", 1000000, 99999999)
 
             pregunta_seguridad = obtener_caracter(
@@ -288,6 +312,7 @@ def modificar_clientes():
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
 
         case 3:
+            # Modificar telefono.
             telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
             pregunta_seguridad = obtener_caracter(
                 f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
@@ -310,6 +335,7 @@ def modificar_clientes():
                 print("\n\033[31mModificacion de cliente cancelada.\033[0m")
 
         case 4:
+            # Modificar email, validando que el dominio sea correcto.
             email = obtener_caracter("Email:\n.").lower()
             while validar_email(email) == False:
                 print("\nIngrese un mail valido.\n")
