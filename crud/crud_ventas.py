@@ -34,14 +34,16 @@ from Funciones.funciones import (
     pedir_fecha,
     buscar_por_id,
     recortar_texto,
-)
-
-from Funciones.estadisticas_ventas import (
+    pedir_cliente,
+    total_venta,
     resumen_estadistico,
-    redondear_precio,
     obtener_categorias,
     mostrar_estadisticas_categoria,
-    total_venta,
+    obtener_nombre_cliente,
+    buscar_posicion_producto,
+    redondear_precio,
+    mostrar_listado_ventas,
+    consultar_cliente_y_ventas,
 )
 
 
@@ -138,87 +140,6 @@ def menu_estadisticas_ventas():
                 print(f"\nTotal de la venta {id_venta}: ${total:,.2f}")
 
 
-def buscar_posicion_producto(codigo):
-    """Devuelve la posicion de un producto segun su codigo, o -1 si no existe."""
-    if codigo in productos_id_individual:
-        return productos_id_individual.index(codigo)
-
-    return -1
-
-
-def obtener_nombre_cliente(id_cliente):
-    """Devuelve el nombre del cliente junto a su id, o un aviso si ya fue eliminado."""
-    posicion = buscar_por_id(lista_clientes, id_cliente)
-
-    if posicion == -2:
-        return f"CLIENTE ELIMINADO ({id_cliente})"
-
-    return f"{lista_clientes[posicion]['nombre']} ({id_cliente})"
-
-
-def obtener_nombre_producto(codigo):
-    """Devuelve el nombre del producto, o "ELIMINADO" si ya no existe."""
-    posicion = buscar_posicion_producto(codigo)
-
-    if posicion == -1:
-        return "ELIMINADO"
-
-    return PRODUCTOS[posicion][PRODUCTOS_NOMBRE]
-
-
-def mostrar_listado_ventas(ventas_a_mostrar):
-    """Imprime una tabla con los datos de las ventas que se le pasen."""
-    ancho = 120
-    print("-" * ancho)
-    print(
-        f"| {'ID':<6} | {'CLIENTE (ID)':<16} | {'PRODUCTO':<10} | "
-        f"{'CATEGORIA':<9} | {'FECHA':<10} | {'CANT':<4} | "
-        f"{'PRECIO':<9} | {'DESC.':<6} | {'P.FINAL':<9} | {'IMPORTE':<10} |"
-    )
-    print("-" * ancho)
-
-    for venta in ventas_a_mostrar:
-        posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
-        cliente = recortar_texto(
-            obtener_nombre_cliente(venta[VENTAS_CLIENTE]), 16
-        )
-        producto = recortar_texto(
-            obtener_nombre_producto(venta[VENTAS_PRODUCTO]), 10
-        )
-        categoria = recortar_texto(venta[VENTAS_CATEGORIA], 9)
-
-        # Si el producto ya no existe, se muestra "-" en vez del precio y descuento original.
-        if posicion_producto == -1:
-            precio_original = "-"
-            descuento = "-"
-        else:
-            precio_original = f"${PRODUCTOS[posicion_producto][PRODUCTOS_PRECIO]:.2f}"
-            descuento = f"{PRODUCTOS[posicion_producto][PRODUCTOS_DESCUENTO]}%"
-
-        precio_final = f"${venta[VENTAS_PRECIO_UNITARIO]:.2f}"
-        importe = f"${venta[VENTAS_IMPORTE]:.2f}"
-
-        print(
-            f"| {venta[VENTAS_ID]:<6} | {cliente:<16} | {producto:<10} | "
-            f"{categoria:<9} | {venta[VENTAS_FECHA]:<10} | "
-            f"{venta[VENTAS_CANTIDAD]:<4} | {precio_original:<9} | "
-            f"{descuento:<6} | {precio_final:<9} | {importe:<10} |"
-        )
-
-    print("-" * ancho)
-
-
-def pedir_cliente(mensaje):
-    """Pide un id de cliente y no avanza hasta que exista o se cancele con -1."""
-    id_cliente = obtener_entero(mensaje, -1, 1000000)
-
-    while id_cliente != -1 and buscar_por_id(lista_clientes, id_cliente) == -2:
-        print("\n\033[31mCliente inexistente.\033[0m\n")
-        id_cliente = obtener_entero(mensaje, -1, 1000000)
-
-    return id_cliente
-
-
 def alta_venta():
     """Carga una venta nueva. Permite agregar varios productos antes de confirmar."""
     texto = "ALTA DE VENTAS"
@@ -265,21 +186,15 @@ def alta_venta():
             if stock_disponible == 0:
                 print("\n\033[31mProducto sin stock disponible.\033[0m\n")
             else:
-                cantidad = obtener_entero(
-                    "Ingrese cantidad\n.", 1, stock_disponible
-                )
+                cantidad = obtener_entero("Ingrese cantidad\n.", 1, stock_disponible)
                 # Calcula el precio final aplicando el descuento del producto.
                 precio_original = PRODUCTOS[posicion_producto][PRODUCTOS_PRECIO]
-                descuento_producto = PRODUCTOS[posicion_producto][
-                    PRODUCTOS_DESCUENTO
-                ]
+                descuento_producto = PRODUCTOS[posicion_producto][PRODUCTOS_DESCUENTO]
                 descuento_importe = precio_original * descuento_producto / 100
                 precio_final = precio_original - descuento_importe
                 precio_final = redondear_precio(precio_final)
                 importe = redondear_precio(precio_final * cantidad)
-                categoria_producto = PRODUCTOS[posicion_producto][
-                    PRODUCTOS_CATEGORIA
-                ]
+                categoria_producto = PRODUCTOS[posicion_producto][PRODUCTOS_CATEGORIA]
 
                 # Se guarda el producto en una lista temporal hasta confirmar toda la venta.
                 venta_temporal.append(
@@ -322,18 +237,14 @@ def alta_venta():
     print(f"Total final de la venta: ${redondear_precio(total):.2f}")
     mostrar_listado_ventas(venta_temporal)
 
-    confirmacion = obtener_respuesta(
-        "Esta seguro de agregar esta venta? Y/N\n."
-    )
+    confirmacion = obtener_respuesta("Esta seguro de agregar esta venta? Y/N\n.")
 
     if confirmacion == "Y":
         # Recien aca se guarda de verdad en VENTAS y se descuenta el stock.
         for venta in venta_temporal:
             VENTAS.append(venta)
             posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
-            PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= venta[
-                VENTAS_CANTIDAD
-            ]
+            PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= venta[VENTAS_CANTIDAD]
 
         print("\n\033[32mVenta agregada correctamente.\033[0m")
     else:
@@ -485,8 +396,7 @@ def modificar_venta():
             cantidad_anterior = VENTAS[posicion_venta][VENTAS_CANTIDAD]
             # El maximo permitido es el stock actual mas lo que ya estaba reservado en esta venta.
             cantidad_maxima = (
-                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK]
-                + cantidad_anterior
+                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] + cantidad_anterior
             )
             nueva_cantidad = obtener_entero(
                 "Ingrese nueva cantidad\n.", 1, cantidad_maxima
@@ -501,65 +411,13 @@ def modificar_venta():
                 PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= diferencia
                 VENTAS[posicion_venta][VENTAS_CANTIDAD] = nueva_cantidad
                 VENTAS[posicion_venta][VENTAS_IMPORTE] = redondear_precio(
-                    nueva_cantidad
-                    * VENTAS[posicion_venta][VENTAS_PRECIO_UNITARIO]
+                    nueva_cantidad * VENTAS[posicion_venta][VENTAS_PRECIO_UNITARIO]
                 )
                 print("\n\033[32mCantidad modificada correctamente.\033[0m")
             else:
                 print("\n\033[31mModificacion cancelada.\033[0m")
 
     inicio_modificar("")
-
-
-def consultar_cliente_y_ventas():
-    """Muestra los datos de un cliente y todas las ventas que realizo."""
-    id_cliente = pedir_cliente(
-        "Ingrese ID del cliente. -1 Para salir\n."
-    )
-
-    if id_cliente == -1:
-        return
-
-    posicion_cliente = buscar_por_id(
-        lista_clientes,
-        id_cliente,
-    )
-    cliente = lista_clientes[posicion_cliente]
-
-    # Muestra los datos personales del cliente.
-    print("\nDATOS DEL CLIENTE")
-    print("-" * 30)
-    print(f"ID: {cliente['id']}")
-    print(f"Nombre: {cliente['nombre']}")
-    print(f"DNI: {cliente['dni']}")
-    print(f"Telefono: {cliente['telefono']}")
-    print(f"Email: {cliente['email']}")
-
-    # Junta todas las ventas activas de ese cliente y suma el total gastado.
-    ventas_cliente = []
-    total_comprado = 0
-
-    for venta in VENTAS:
-        if (
-            venta[VENTAS_ID] != ELIMINADO
-            and venta[VENTAS_CLIENTE] == id_cliente
-        ):
-            ventas_cliente.append(venta)
-            total_comprado += venta[VENTAS_IMPORTE]
-
-    if len(ventas_cliente) == 0:
-        print(
-            "\n\033[31m"
-            "El cliente no tiene ventas registradas."
-            "\033[0m"
-        )
-    else:
-        print("\nVENTAS DEL CLIENTE")
-        mostrar_listado_ventas(ventas_cliente)
-        print(
-            f"\nTotal comprado por el cliente: "
-            f"${redondear_precio(total_comprado):.2f}"
-        )
 
 
 def listar_ventas():
