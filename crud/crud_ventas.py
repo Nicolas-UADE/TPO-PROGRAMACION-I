@@ -53,7 +53,7 @@ def ventas():
         if listas.ADMIN == True:
             # Admin ve todas las opciones: listar, dar de baja, dar de alta, modificar y estadisticas.
             opcion = obtener_entero(
-                "[0] ◀️ Retroceder\n[1] 📝 Listado de ventas\n[2] 🚫 Baja de venta\n[3] ✅ Alta de venta\n[4] ✏️ Modificar venta\n[5] 📈 Estadisticas\n.",
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de ventas\n[2] 🚫 Baja de venta\n[3] ✅ Alta de venta\n[4] ✏️  Modificar venta\n[5] 📈 Estadisticas\n.",
                 0,
                 5,
             )
@@ -74,7 +74,7 @@ def ventas():
         else:
             # Usuario normal solo puede ver el listado y las estadisticas.
             opcion = obtener_entero(
-                "[0] ◀️ Retroceder\n[1] 📝 Listado de ventas\n[2] 📈 Estadisticas\n.", 0, 2
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de ventas\n[2] 📈 Estadisticas\n.", 0, 2
             )
 
             match opcion:
@@ -88,6 +88,8 @@ def ventas():
 
 def menu_estadisticas_ventas():
     """Submenu para ver distintos tipos de estadisticas sobre las ventas."""
+    texto = "ESTADISTICAS"
+    inicio(texto)
     opcion = obtener_entero(
         "[0] Retroceder\n[1] Resumen completo\n"
         "[2] Estadisticas por categoria\n[3] Total de una venta\n.",

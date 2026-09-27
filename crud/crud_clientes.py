@@ -31,7 +31,7 @@ def clientes():
         # Si es Admin tiene permiso para altas, bajas, modificaciones y consultas
         if listas.ADMIN == True:
             ask = obtener_entero(
-                "[0] ◀️ Retroceder\n[1] 📝 Listado de clientes\n[2] 🚫 Baja de clientes\n[3] ✅ Alta de clientes\n[4] ✏️ Modificar clientes\n.",
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de clientes\n[2] 🚫 Baja de clientes\n[3] ✅ Alta de clientes\n[4] ✏️  Modificar clientes\n.",
                 0,
                 4,
             )
@@ -48,7 +48,7 @@ def clientes():
                     modificar_clientes()
         else:
             # El usuario común solo puede consultar el listado
-            ask = obtener_entero("[0] ◀️ Retroceder\n[1] 📝 Listado de clientes\n.", 0, 1)
+            ask = obtener_entero("[0] ◀️  Retroceder\n[1] 📝 Listado de clientes\n.", 0, 1)
             match ask:
                 case 0:
                     seguir = False

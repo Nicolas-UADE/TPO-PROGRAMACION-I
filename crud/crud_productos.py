@@ -41,7 +41,7 @@ def productos():
 
         if listas.ADMIN == True:
             ask = obtener_entero(
-                "[0] ◀️ Retroceder\n[1] 📝 Listado de producto\n[2] 🚫 Baja de producto\n[3] ✅ Alta de producto\n[4] ✏️ Modificar producto\n.",
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de producto\n[2] 🚫 Baja de producto\n[3] ✅ Alta de producto\n[4] ✏️  Modificar producto\n.",
                 0,
                 4,
             )
@@ -57,7 +57,7 @@ def productos():
                 case 4:
                     modificar_producto()
         else:
-            ask = obtener_entero("[0] ◀️ Retroceder\n[1] 📝 Listado de producto\n.", 0, 1)
+            ask = obtener_entero("[0] ◀️  Retroceder\n[1] 📝 Listado de producto\n.", 0, 1)
             match ask:
                 case 0:
                     seguir = False
