@@ -7,14 +7,11 @@ from listas import (
     PRODUCTOS_PRECIO,
     PRODUCTOS_STOCK,
     PRODUCTOS_DESCUENTO,
-    productos_id_individual,
-    lista_clientes,
     ELIMINADO,
     VENTAS,
     VENTAS_ID,
     VENTAS_CLIENTE,
     VENTAS_PRODUCTO,
-    VENTAS_CATEGORIA,
     VENTAS_FECHA,
     VENTAS_CANTIDAD,
     VENTAS_PRECIO_UNITARIO,
@@ -32,8 +29,6 @@ from Funciones.funciones import (
     generar_id_venta,
     buscar_venta,
     pedir_fecha,
-    buscar_por_id,
-    recortar_texto,
     pedir_cliente,
     total_venta,
     resumen_estadistico,
@@ -49,51 +44,53 @@ from Funciones.funciones import (
 
 def ventas():
     """Menu principal del modulo ventas. Cambia segun si el usuario es admin o no."""
-    texto = "VENTAS"
-    inicio(texto)
+    seguir = True
 
-    if listas.ADMIN == True:
-        # Admin ve todas las opciones: listar, dar de baja, dar de alta, modificar y estadisticas.
-        opcion = obtener_entero(
-            "0. Retroceder\n1. Listado de ventas\n2. Baja de venta\n"
-            "3. Alta de venta\n4. Modificar venta\n5. Estadisticas\n.",
-            0,
-            5,
-        )
+    while seguir == True:
+        texto = "VENTAS"
+        inicio(texto)
 
-        match opcion:
-            case 0:
-                return
-            case 1:
-                listar_ventas()
-            case 2:
-                baja_venta()
-            case 3:
-                alta_venta()
-            case 4:
-                modificar_venta()
-            case 5:
-                menu_estadisticas_ventas()
-    else:
-        # Usuario normal solo puede ver el listado y las estadisticas.
-        opcion = obtener_entero(
-            "0. Retroceder\n1. Listado de ventas\n2. Estadisticas\n.", 0, 2
-        )
+        if listas.ADMIN == True:
+            # Admin ve todas las opciones: listar, dar de baja, dar de alta, modificar y estadisticas.
+            opcion = obtener_entero(
+                "[0] ◀️ Retroceder\n[1] 📝 Listado de ventas\n[2] 🚫 Baja de venta\n[3] ✅ Alta de venta\n[4] ✏️ Modificar venta\n[5] 📈 Estadisticas\n.",
+                0,
+                5,
+            )
 
-        match opcion:
-            case 0:
-                return
-            case 1:
-                listar_ventas()
-            case 2:
-                menu_estadisticas_ventas()
+            match opcion:
+                case 0:
+                    seguir = False
+                case 1:
+                    listar_ventas()
+                case 2:
+                    baja_venta()
+                case 3:
+                    alta_venta()
+                case 4:
+                    modificar_venta()
+                case 5:
+                    menu_estadisticas_ventas()
+        else:
+            # Usuario normal solo puede ver el listado y las estadisticas.
+            opcion = obtener_entero(
+                "[0] ◀️ Retroceder\n[1] 📝 Listado de ventas\n[2] 📈 Estadisticas\n.", 0, 2
+            )
+
+            match opcion:
+                case 0:
+                    seguir = False
+                case 1:
+                    listar_ventas()
+                case 2:
+                    menu_estadisticas_ventas()
 
 
 def menu_estadisticas_ventas():
     """Submenu para ver distintos tipos de estadisticas sobre las ventas."""
     opcion = obtener_entero(
-        "0. Retroceder\n1. Resumen completo\n"
-        "2. Estadisticas por categoria\n3. Total de una venta\n.",
+        "[0] Retroceder\n[1] Resumen completo\n"
+        "[2] Estadisticas por categoria\n[3] Total de una venta\n.",
         0,
         3,
     )
@@ -210,16 +207,16 @@ def alta_venta():
                     ]
                 )
 
-                print(
-                    f"\nProducto: {PRODUCTOS[posicion_producto][PRODUCTOS_NOMBRE]}"
-                    f"\nCategoria del producto: {categoria_producto}"
-                    f"\nPrecio original del producto: ${precio_original:.2f}"
-                    f"\nDescuento del producto: {descuento_producto}%"
-                    f"\nImporte descontado por unidad: ${descuento_importe:.2f}"
-                    f"\nPrecio final por unidad: ${precio_final:.2f}"
-                    f"\nCantidad: {cantidad}"
-                    f"\nImporte del producto: ${importe:.2f}\n"
-                )
+                print(f"""
+                        Producto: {PRODUCTOS[posicion_producto][PRODUCTOS_NOMBRE]}
+                        Categoria del producto: {categoria_producto}
+                        Precio original del producto: ${precio_original:.2f}
+                        Descuento del producto: {descuento_producto}%
+                        Importe descontado por unidad: ${descuento_importe:.2f}
+                        Precio final por unidad: ${precio_final:.2f}
+                        Cantidad: {cantidad}
+                        Importe del producto: ${importe:.2f}
+                        """)
 
         seguir = obtener_respuesta("Desea agregar otro producto? Y/N\n.")
 
@@ -324,7 +321,7 @@ def modificar_venta():
     mostrar_listado_ventas(ventas_encontradas)
 
     opcion = obtener_entero(
-        "1. Modificar cliente\n2. Modificar fecha\n3. Modificar cantidad\n.",
+        "[1] Modificar cliente\n[2] Modificar fecha\n[3] Modificar cantidad\n.",
         1,
         3,
     )
@@ -426,8 +423,7 @@ def listar_ventas():
     inicio_listado(texto)
 
     opcion = obtener_entero(
-        "1. Todas las ventas\n2. Buscar por ID\n"
-        "3. Consultar cliente y sus ventas\n-1. Salir\n.",
+        "[1] Todas las ventas\n[2] Buscar por ID\n[3] Consultar cliente y sus ventas\n-1. Salir\n.",
         -1,
         3,
     )

@@ -14,7 +14,7 @@ from Funciones.funciones import (
 import listas
 from listas import ELIMINADO, lista_clientes
 
-# from login import ADMIN
+
 
 
 def clientes():
@@ -22,35 +22,38 @@ def clientes():
     Menú principal del módulo de clientes.
     Muestra opciones según el rol: el admin tiene acceso completo y el usuario normal solo consulta.
     """
-    texto = "CLIENTES"
-    inicio(texto)
+    seguir = True
 
-    # Si es Admin tiene permiso para altas, bajas, modificaciones y consultas
-    if listas.ADMIN == True:
-        ask = obtener_entero(
-            "0. Retroceder\n1. Listado de clientes\n2. Baja de clientes\n3.Alta de clientes\n4.Modificar clientes\n.",
-            0,
-            4,
-        )
-        match ask:
-            case 0:
-                return
-            case 1:
-                listado_clientes()
-            case 2:
-                baja_clientes()
-            case 3:
-                alta_clientes()
-            case 4:
-                modificar_clientes()
-    else:
-        # El usuario común solo puede consultar el listado
-        ask = obtener_entero("0. Retroceder\n1. Listado de clientes\n", 0, 1)
-        match ask:
-            case 0:
-                return
-            case 1:
-                listado_clientes()
+    while seguir == True:
+        texto = "CLIENTES"
+        inicio(texto)
+
+        # Si es Admin tiene permiso para altas, bajas, modificaciones y consultas
+        if listas.ADMIN == True:
+            ask = obtener_entero(
+                "[0] ◀️ Retroceder\n[1] 📝 Listado de clientes\n[2] 🚫 Baja de clientes\n[3] ✅ Alta de clientes\n[4] ✏️ Modificar clientes\n.",
+                0,
+                4,
+            )
+            match ask:
+                case 0:
+                    seguir = False
+                case 1:
+                    listado_clientes()
+                case 2:
+                    baja_clientes()
+                case 3:
+                    alta_clientes()
+                case 4:
+                    modificar_clientes()
+        else:
+            # El usuario común solo puede consultar el listado
+            ask = obtener_entero("[0] ◀️ Retroceder\n[1] 📝 Listado de clientes\n.", 0, 1)
+            match ask:
+                case 0:
+                    seguir = False
+                case 1:
+                    listado_clientes()
 
 
 def alta_clientes():
@@ -109,9 +112,9 @@ def listado_clientes():
     """
     texto = "LISTADO CLIENTES"
     inicio_listado(texto)
-    
+
     pregunta_orden = obtener_entero(
-        "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
+        "\nElija metodo de ordenamiento. \n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo. -1 para salir\n.",
         -1,
         3,
     )
@@ -121,7 +124,7 @@ def listado_clientes():
         case 0:
             # Reintento rápido si selecciona una opción fuera del menú
             pregunta_orden = obtener_entero(
-                "\nElija metodo de ordenamiento. 1.ID  2.Buscar por nombre. 3.Buscar por codigo. -1 para salir\n.",
+                "\nElija metodo de ordenamiento.\n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo. -1 para salir\n.",
                 -1,
                 3,
             )
@@ -152,7 +155,12 @@ def listado_clientes():
                 if pregunta_nombre == "-1":
                     return
                 esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
-            print(lista_clientes[esta])
+
+            cliente_encontrado = lista_clientes[esta]
+
+            print(
+                f"|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
+            )
 
         case 3:
             # Búsqueda por ID (código) con reintento si no existe
@@ -182,7 +190,10 @@ def listado_clientes():
                 if pregunta_codigo == -1:
                     return
                 esta = buscar_por_id(lista_clientes, pregunta_codigo)
-            print(lista_clientes[esta])
+            cliente_encontrado = lista_clientes[esta]
+            print(
+                f"\n|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
+            )
 
     texto = ""
     inicio_listado(texto)
@@ -190,7 +201,7 @@ def listado_clientes():
 
 def baja_clientes():
     """
-    Aplica una baja lógica a un cliente reemplazándolo por la constante 'ELIMINADO' 
+    Aplica una baja lógica a un cliente reemplazándolo por la constante 'ELIMINADO'
     en la lista, preservando así la integridad de los índices.
     """
     texto = "BAJA DE CLIENTES"
@@ -230,7 +241,7 @@ def baja_clientes():
         print("\n\033[32mCliente eliminado correctamente.\033[0m")
     else:
         print("\n\033[31mBaja de cliente cancelada.\033[0m")
-        
+
     texto = ""
     inicio_baja(texto)
 
@@ -242,7 +253,7 @@ def modificar_clientes():
     """
     texto = "MODIFICAR CLIENTES"
     inicio_modificar(texto)
-    
+
     pregunta_codigo = obtener_entero(
         "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
     )
@@ -270,9 +281,9 @@ def modificar_clientes():
 
     # Selección de campo a modificar
     pregunta_eleccion = obtener_entero(
-        "Que quieres modificar.\n1.Nombre\n2.DNI\n3.Telefono\n4.Email\n.", 1, 4
+        "Que quieres modificar.\n[1] Nombre\n[2] DNI\n[3] Telefono\n[4] Email\n.", 1, 4
     )
-    
+
     match pregunta_eleccion:
         case 1:
             # Cambio de Nombre
@@ -284,7 +295,7 @@ def modificar_clientes():
             if pregunta_seguridad == "Y":
                 lista_clientes[esta]["nombre"] = nombre
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                
+
                 pregunta_eleccion_otra = obtener_caracter(
                     "Desea hacer otra modificacion? Y/N\n"
                 )
@@ -306,7 +317,7 @@ def modificar_clientes():
                 el_dni = str(dni)
                 lista_clientes[esta]["dni"] = el_dni
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                
+
                 pregunta_eleccion_otra = obtener_caracter(
                     "Desea hacer otra modificacion? Y/N\n"
                 )
@@ -328,7 +339,7 @@ def modificar_clientes():
                 el_telefono = str(telefono)
                 lista_clientes[esta]["telefono"] = el_telefono
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                
+
                 pregunta_eleccion_otra = obtener_caracter(
                     "Desea hacer otra modificacion? Y/N\n"
                 )
@@ -353,7 +364,7 @@ def modificar_clientes():
             if pregunta_seguridad == "Y":
                 lista_clientes[esta]["email"] = email
                 print("\n\033[32mCliente modificado correctamente.\033[0m")
-                
+
                 pregunta_eleccion_otra = obtener_caracter(
                     "Desea hacer otra modificacion? Y/N\n"
                 )

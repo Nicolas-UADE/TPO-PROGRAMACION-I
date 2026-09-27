@@ -31,36 +31,38 @@ from Funciones.funciones import (
 import listas
 
 
-
 def productos():
     """Muestra el menu del modulo productos y sus opciones segun el tipo de usuario."""
-    texto = "PRODUCTOS"
-    inicio(texto)
+    seguir = True
 
-    if listas.ADMIN == True:
-        ask = obtener_entero(
-            "0. Retroceder\n1. Listado de producto\n2. Baja de producto\n3.Alta de producto\n4.Modificar producto\n.",
-            0,
-            4,
-        )
-        match ask:
-            case 0:
-                return
-            case 1:
-                listar_productos()
-            case 2:
-                baja_producto()
-            case 3:
-                alta_producto()
-            case 4:
-                modificar_producto()
-    else:
-        ask = obtener_entero("0. Retroceder\n1. Listado de producto\n", 0, 1)
-        match ask:
-            case 0:
-                return
-            case 1:
-                listar_productos()
+    while seguir == True:
+        texto = "PRODUCTOS"
+        inicio(texto)
+
+        if listas.ADMIN == True:
+            ask = obtener_entero(
+                "[0] ◀️ Retroceder\n[1] 📝 Listado de producto\n[2] 🚫 Baja de producto\n[3] ✅ Alta de producto\n[4] ✏️ Modificar producto\n.",
+                0,
+                4,
+            )
+            match ask:
+                case 0:
+                    seguir = False
+                case 1:
+                    listar_productos()
+                case 2:
+                    baja_producto()
+                case 3:
+                    alta_producto()
+                case 4:
+                    modificar_producto()
+        else:
+            ask = obtener_entero("[0] ◀️ Retroceder\n[1] 📝 Listado de producto\n.", 0, 1)
+            match ask:
+                case 0:
+                    seguir = False
+                case 1:
+                    listar_productos()
 
 
 def alta_producto():
@@ -74,7 +76,9 @@ def alta_producto():
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
 
     categoria = obtener_entero(
-        "\nIngrese categoría...  \n1.Alimentos\n2.Limpieza\n3.Bebidas\n4.Otros\n.", 1, 4
+        "\nIngrese categoría...  \n[1] Alimentos\n[2] Limpieza\n[3] Bebidas\n[4] Otros\n.",
+        1,
+        4,
     )
 
     match categoria:
@@ -92,7 +96,6 @@ def alta_producto():
     stock = obtener_entero("Ingrese stock\n.", 0, 100000)
 
     descuento = obtener_entero("Ingrese descuento: 1-100 (%)\n.", 1, 100)
-
 
     codigo = generador_de_id(productos_id_individual)
 
@@ -178,7 +181,7 @@ def modificar_producto():
 
     else:
         pregunta_eleccion = obtener_entero(
-            "Que quieres modificar.\n1.Nombre\n2.Categoria\n3.Precio\n4.Stock\n5.Descuento\n.",
+            "Que quieres modificar.\n[1] Nombre\n[2] Categoria\n[3] Precio\n[4] Stock\n[5] Descuento\n.",
             1,
             5,
         )
@@ -262,7 +265,7 @@ def modificar_producto():
 
             case 2:
                 nueva_categoria = obtener_entero(
-                    "\nIngrese nueva categoría... \n1. Alimentos\n2. Limpieza\n3. Bebidas\n4.Otros\n.",
+                    "\nIngrese nueva categoría... \n[1] Alimentos\n[2] Limpieza\n[3] Bebidas\n[4] Otros\n.",
                     1,
                     4,
                 )
@@ -300,7 +303,7 @@ def listar_productos():
     texto = "LISTA DE PRODUCTOS"
     inicio_listado(texto)
     pregunta_orden = obtener_entero(
-        "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
+        "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo. -1 para salir\n.",
         -1,
         4,
     )
@@ -308,7 +311,7 @@ def listar_productos():
         return
     if pregunta_orden == 0:
         pregunta_orden = obtener_entero(
-            "\nElija metodo de ordenamiento. 1.ID  2.ALFABETICAMENTE 3.Buscar por nombre. 4.Buscar por codigo. -1 para salir\n.",
+            "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo. -1 para salir\n.",
             -1,
             4,
         )

@@ -1,5 +1,4 @@
 # Variables globales de estado de sesion. Se van pisando desde el login.
-INGRESO = False
 ADMIN = False
 LECTOR = False
 

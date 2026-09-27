@@ -3,7 +3,6 @@ from Funciones.funciones import obtener_caracter, obtener_entero, coincidencia
 
 def login():
     # Pantalla de acceso al sistema. Da 4 intentos para ingresar usuario y contraseña.
-    print("==========\nBIENVENIDO\n==========")
     intentos_restantes = 4
 
     while intentos_restantes > 0:
@@ -15,7 +14,7 @@ def login():
 
         if admin == True or lector == True:
             print("\n\033[1;34mBienvenido al sistema\033[0m")
-            return admin, lector, True
+            return admin, lector
 
         # Si no coincide ninguno de los dos, se resta un intento.
         intentos_restantes -= 1
@@ -29,4 +28,4 @@ def login():
 
     # Se agotaron los intentos, no se deja entrar al sistema.
     print("Maximo de intentos excedido.\nAcceso denegado...")
-    return False, False, False
+    return False, False
