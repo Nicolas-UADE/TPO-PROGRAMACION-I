@@ -1,4 +1,4 @@
-from Funciones.funciones import inicio,obtener_entero
+from Funciones.funciones_uni import inicio,obtener_entero
 import listas
 from Funciones.funciones_productos import listar_productos,baja_producto,alta_producto,modificar_producto
 
