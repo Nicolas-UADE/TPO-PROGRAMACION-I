@@ -1,4 +1,4 @@
-from Funciones.funciones import obtener_caracter, obtener_entero, coincidencia
+from Funciones.funciones_uni import obtener_caracter, obtener_entero, coincidencia
 
 
 def login():
