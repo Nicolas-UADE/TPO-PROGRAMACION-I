@@ -1,7 +1,7 @@
 
 import re
 from functools import reduce
-from listas import (
+from modulos.listas import (
     PRODUCTOS,
     PRODUCTOS_NOMBRE,
     PRODUCTOS_CATEGORIA,

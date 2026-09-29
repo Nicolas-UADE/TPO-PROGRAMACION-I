@@ -9,7 +9,7 @@ from Funciones.funciones_uni import (
     buscar_por_nombre,
     validar_email,
 )
-from listas import ELIMINADO, lista_clientes
+from modulos.listas import ELIMINADO, lista_clientes
 
 def alta_clientes():
     """

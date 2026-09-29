@@ -1,4 +1,4 @@
-import listas
+from modulos import listas
 from Funciones.funciones_uni import inicio,obtener_entero
 from Funciones.funciones_ventas import listar_ventas,baja_venta,alta_venta,modificar_venta,menu_estadisticas_ventas
 

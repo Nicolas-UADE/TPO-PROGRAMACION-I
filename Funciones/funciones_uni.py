@@ -1,15 +1,12 @@
 import random
 import re
-from listas import (
+from modulos.listas import (
     PRODUCTOS_CODIGO,
     PRODUCTOS_NOMBRE,
     PRODUCTOS_CATEGORIA,
     PRODUCTOS_PRECIO,
     USUARIOS_ADMIN,
     USUARIOS_LECTORES,
-    
-)
-from listas import (
     PRODUCTOS_STOCK,
     PRODUCTOS,
     PRODUCTOS_DESCUENTO,

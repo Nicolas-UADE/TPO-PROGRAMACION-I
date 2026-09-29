@@ -1,4 +1,4 @@
-import listas
+from modulos import listas
 from crud.crud_productos import productos
 from crud.crud_clientes import clientes
 from crud.crud_ventas import ventas

@@ -1,4 +1,4 @@
-from listas import (
+from modulos.listas import (
     PRODUCTOS_DESCUENTO,
     PRODUCTOS,
     PRODUCTOS_CODIGO,

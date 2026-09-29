@@ -1,5 +1,5 @@
 from Funciones.funciones_uni import inicio,obtener_entero
-import listas
+from modulos import listas
 from Funciones.funciones_clientes import listado_clientes,baja_clientes,alta_clientes,modificar_clientes
 
 def clientes():

@@ -1,5 +1,5 @@
 from Funciones.funciones_uni import inicio,obtener_entero
-import listas
+from modulos import listas
 from Funciones.funciones_productos import listar_productos,baja_producto,alta_producto,modificar_producto
 
 def productos():
