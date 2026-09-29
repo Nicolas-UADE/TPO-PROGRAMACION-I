@@ -80,12 +80,12 @@ def baja_producto():
     inicio_baja(texto)
 
     pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
+        "\n\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
     )
 
     while pregunta_codigo == 0:
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
+            "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
         )
 
     if pregunta_codigo == -1:
@@ -96,7 +96,7 @@ def baja_producto():
     while pos == -1:
         print("Producto inexistente.")
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto a eliminar. -1 Para salir\n.", -1, 1000000
+            "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
         )
         if pregunta_codigo == -1:
             return
@@ -125,12 +125,12 @@ def modificar_producto():
     inicio_modificar(texto)
 
     pregunta_codigo = obtener_entero(
-        "\nIngrese código del producto... -1 Para salir\n.", -1, 1000000
+        "\nIngrese código del producto.\n-1 para salir\n.", -1, 1000000
     )
 
     while pregunta_codigo == 0:
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto... -1 Para salir\n.", -1, 1000000
+            "\nIngrese código del producto.\n-1 para salir\n.", -1, 1000000
         )
 
     if pregunta_codigo == -1:
@@ -264,7 +264,7 @@ def listar_productos():
     texto = "LISTA DE PRODUCTOS"
     inicio_listado(texto)
     pregunta_orden = obtener_entero(
-        "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo. -1 para salir\n.",
+        "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo.\n-1 para salir\n.",
         -1,
         4,
     )
@@ -272,7 +272,7 @@ def listar_productos():
         return
     if pregunta_orden == 0:
         pregunta_orden = obtener_entero(
-            "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo. -1 para salir\n.",
+            "\nElija metodo de ordenamiento.\n[1] ID\n[2] ALFABETICAMENTE\n[3] Buscar por nombre\n[4] Buscar por codigo.\n-1 para salir\n.",
             -1,
             4,
         )

@@ -67,7 +67,7 @@ def menu_estadisticas_ventas():
         case 3:
             # Muestra el total de una venta puntual buscandola por su id.
             id_venta = obtener_entero(
-                "Ingrese ID de venta. -1 Para salir\n.", -1, 999999
+                "Ingrese ID de venta.\n-1 para salir\n.", -1, 999999
             )
 
             if id_venta == -1:
@@ -87,7 +87,7 @@ def alta_venta():
     texto = "ALTA DE VENTAS"
     inicio_alta(texto)
 
-    id_cliente = pedir_cliente("Ingrese ID del cliente. -1 Para salir\n.")
+    id_cliente = pedir_cliente("Ingrese ID del cliente.\n-1 para salir\n.")
 
     if id_cliente == -1:
         return
@@ -201,7 +201,7 @@ def baja_venta():
     inicio_baja(texto)
 
     id_venta = obtener_entero(
-        "Ingrese ID de venta a eliminar. -1 Para salir\n.", -1, 999999
+        "Ingrese ID de venta a eliminar.\n-1 para salir\n.", -1, 999999
     )
 
     if id_venta == -1:
@@ -247,7 +247,7 @@ def modificar_venta():
     texto = "MODIFICACION DE VENTAS"
     inicio_modificar(texto)
 
-    id_venta = obtener_entero("Ingrese ID de venta. -1 Para salir\n.", -1, 999999)
+    id_venta = obtener_entero("Ingrese ID de venta.\n-1 para salir\n.", -1, 999999)
 
     if id_venta == -1:
         return
@@ -275,7 +275,7 @@ def modificar_venta():
         case 1:
             # Cambia el cliente en todos los items de esa venta.
             nuevo_cliente = pedir_cliente(
-                "Ingrese nuevo ID del cliente. -1 Para salir\n."
+                "Ingrese nuevo ID del cliente.\n-1 para salir\n."
             )
 
             if nuevo_cliente == -1:
@@ -312,7 +312,7 @@ def modificar_venta():
         case 3:
             # Cambia la cantidad de un producto puntual dentro de la venta y ajusta el stock.
             codigo = obtener_entero(
-                "Ingrese codigo del producto. -1 Para salir\n.", -1, 999999
+                "Ingrese codigo del producto.\n-1 para salir\n.", -1, 999999
             )
 
             if codigo == -1:
@@ -766,7 +766,7 @@ def resumen_estadistico():
 
 def consultar_cliente_y_ventas():
     """Muestra los datos de un cliente y todas las ventas que realizo."""
-    id_cliente = pedir_cliente("Ingrese ID del cliente. -1 Para salir\n.")
+    id_cliente = pedir_cliente("Ingrese ID del cliente.\n-1 para salir\n.")
 
     if id_cliente == -1:
         return

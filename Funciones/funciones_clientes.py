@@ -69,7 +69,7 @@ def listado_clientes():
     inicio_listado(texto)
 
     pregunta_orden = obtener_entero(
-        "\nElija metodo de ordenamiento. \n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo. -1 para salir\n.",
+        "\nElija metodo de ordenamiento. \n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
         -1,
         3,
     )
@@ -79,7 +79,7 @@ def listado_clientes():
         case 0:
             # Reintento rápido si selecciona una opción fuera del menú
             pregunta_orden = obtener_entero(
-                "\nElija metodo de ordenamiento.\n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo. -1 para salir\n.",
+                "\nElija metodo de ordenamiento.\n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
                 -1,
                 3,
             )
@@ -95,7 +95,7 @@ def listado_clientes():
         case 2:
             # Búsqueda por Nombre con reintento si no existe
             pregunta_nombre = obtener_caracter(
-                "\n\nIngrese nombre del cliente a buscar. -1 Para salir\n."
+                "\n\nIngrese nombre del cliente a buscar.\n-1 para salir\n."
             )
 
             if pregunta_nombre == "-1":
@@ -105,7 +105,7 @@ def listado_clientes():
             while esta == -2:
                 print("Cliente inexistente.")
                 pregunta_nombre = obtener_caracter(
-                    "\nIngrese código del cliente a buscar. -1 Para salir\n."
+                    "\nIngrese código del cliente a buscar.\n-1 para salir\n."
                 )
                 if pregunta_nombre == "-1":
                     return
@@ -120,13 +120,13 @@ def listado_clientes():
         case 3:
             # Búsqueda por ID (código) con reintento si no existe
             pregunta_codigo = obtener_entero(
-                "\n\nIngrese código del cliente a buscar. -1 Para salir\n.", -1, 1000000
+                "\n\nIngrese código del cliente a buscar.\n-1 para salir\n.", -1, 1000000
             )
 
             match pregunta_codigo:
                 case 0:
                     pregunta_codigo = obtener_entero(
-                        "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                        "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
                         -1,
                         1000000,
                     )
@@ -138,7 +138,7 @@ def listado_clientes():
             while esta == -2:
                 print("Cliente inexistente.")
                 pregunta_codigo = obtener_entero(
-                    "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                    "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
                     -1,
                     1000000,
                 )
@@ -163,13 +163,13 @@ def baja_clientes():
     inicio_baja(texto)
 
     pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+        "\n\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
     )
 
     match pregunta_codigo:
         case 0:
             pregunta_codigo = obtener_entero(
-                "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+                "\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
             )
         case -1:
             return
@@ -179,7 +179,7 @@ def baja_clientes():
     while esta == -2:
         print("Cliente inexistente.")
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a eliminar. -1 Para salir\n.", -1, 1000000
+            "\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
         )
         if pregunta_codigo == -1:
             return
@@ -210,13 +210,13 @@ def modificar_clientes():
     inicio_modificar(texto)
 
     pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+        "\n\nIngrese código del cliente a modificar.\n-1 para salir\n.", -1, 1000000
     )
 
     match pregunta_codigo:
         case 0:
             pregunta_codigo = obtener_entero(
-                "\nIngrese código del cliente a modificar. -1 Para salir\n.",
+                "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
                 -1,
                 1000000,
             )
@@ -228,7 +228,7 @@ def modificar_clientes():
     while esta == -2:
         print("Cliente inexistente.")
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a modificar. -1 Para salir\n.", -1, 1000000
+            "\nIngrese código del cliente a modificar.\n-1 para salir\n.", -1, 1000000
         )
         if pregunta_codigo == -1:
             return
