@@ -68,30 +68,30 @@ def productos_activos():
 
 def inicio(texto):
     """Imprime un titulo centrado, sin color (para menus generales)."""
-    print(texto.center(118, "-"))
+    print(texto.center(118, "="))
 
 
 def inicio_alta(texto):
     """Titulo centrado en verde, para pantallas de alta."""
-    linea = texto.center(118, "-")
+    linea = texto.center(118, "=")
     print(f"\033[32m{linea}\033[0m")
 
 
 def inicio_baja(texto):
     """Titulo centrado en rojo, para pantallas de baja."""
-    linea = texto.center(118, "-")
+    linea = texto.center(118, "=")
     print(f"\033[31m{linea}\033[0m")
 
 
 def inicio_modificar(texto):
     """Titulo centrado en azul, para pantallas de modificacion."""
-    linea = texto.center(118, "-")
+    linea = texto.center(118, "=")
     print(f"\033[34m{linea}\033[0m")
 
 
 def inicio_listado(texto):
     """Titulo centrado en celeste, para pantallas de listado."""
-    linea = texto.center(118, "-")
+    linea = texto.center(118, "=")
     print(f"\033[36m{linea}\033[0m")
 
 
