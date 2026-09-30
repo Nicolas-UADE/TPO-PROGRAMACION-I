@@ -1,4 +1,3 @@
-
 import re
 from functools import reduce
 from modulos.listas import (
@@ -16,7 +15,10 @@ from modulos.listas import (
     VENTAS_FECHA,
     VENTAS_CANTIDAD,
     VENTAS_PRECIO_UNITARIO,
-    VENTAS_IMPORTE,VENTAS_CATEGORIA,lista_clientes,productos_id_individual
+    VENTAS_IMPORTE,
+    VENTAS_CATEGORIA,
+    lista_clientes,
+    productos_id_individual,
 )
 
 from Funciones.funciones_uni import (
@@ -26,8 +28,12 @@ from Funciones.funciones_uni import (
     inicio_modificar,
     inicio_baja,
     inicio_listado,
-    inicio,recortar_texto,generador_de_id,buscar_por_id
+    inicio,
+    recortar_texto,
+    generador_de_id,
+    buscar_por_id,
 )
+
 
 def menu_estadisticas_ventas():
     """Submenu para ver distintos tipos de estadisticas sobre las ventas."""
@@ -405,6 +411,7 @@ def listar_ventas():
 
     inicio_listado("")
 
+
 def buscar_venta(matriz_ventas, id_venta):
     """Devuelve todas las posiciones donde aparece ese id de venta."""
     posiciones = []
@@ -438,6 +445,7 @@ def pedir_fecha():
             print("\nFecha invalida. Use el formato DD/MM/AAAA.\n")
 
     return fecha
+
 
 def generar_id_venta(matriz_ventas):
     """Junta los ids de ventas que no fueron eliminadas y genera uno nuevo que no se repita."""
@@ -764,6 +772,7 @@ def resumen_estadistico():
 
         print("\nNo hay ventas registradas." "\n==============================")
 
+
 def consultar_cliente_y_ventas():
     """Muestra los datos de un cliente y todas las ventas que realizo."""
     id_cliente = pedir_cliente("Ingrese ID del cliente.\n-1 para salir\n.")
@@ -803,8 +812,7 @@ def consultar_cliente_y_ventas():
         print(
             f"\nTotal comprado por el cliente: "
             f"${redondear_precio(total_comprado):.2f}"
-)
-
+        )
 
 
 def buscar_posicion_producto(codigo):
@@ -834,6 +842,7 @@ def obtener_nombre_cliente(id_cliente):
         return f"CLIENTE ELIMINADO ({id_cliente})"
 
     return f"{lista_clientes[posicion]['nombre']} ({id_cliente})"
+
 
 def obtener_nombre_producto(codigo):
     """Devuelve el nombre del producto, o "ELIMINADO" si ya no existe."""

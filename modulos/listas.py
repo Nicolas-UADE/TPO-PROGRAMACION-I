@@ -174,7 +174,7 @@ lista_clientes = [
 ]
 
 
-#VENTAS
+# VENTAS
 
 # Constantes con la posicion de cada dato dentro de cada fila de VENTAS.
 VENTAS_ID = 0
@@ -203,5 +203,5 @@ VENTAS = [
     [100007, 7, 326581, "ALIMENTOS", "07/09/2026", 3, 1600, 4800],
     [100008, 8, 267914, "BEBIDAS", "08/09/2026", 2, 2380, 4760],
     [100009, 9, 519348, "LIMPIEZA", "09/09/2026", 1, 1330, 1330],
-    [100010, 10, 482719, "OTROS", "10/09/2026", 2, 1425, 2850]
+    [100010, 10, 482719, "OTROS", "10/09/2026", 2, 1425, 2850],
 ]

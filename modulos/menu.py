@@ -4,6 +4,7 @@ from crud.crud_clientes import clientes
 from crud.crud_ventas import ventas
 from Funciones.funciones_uni import obtener_entero, inicio
 
+
 def mostrar_menu():
     """Muestra el menu principal y devuelve la opcion elegida."""
     texto = "MENU PRINCIPAL"

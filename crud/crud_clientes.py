@@ -1,6 +1,12 @@
-from Funciones.funciones_uni import inicio,obtener_entero
+from Funciones.funciones_uni import inicio, obtener_entero
 from modulos import listas
-from Funciones.funciones_clientes import listado_clientes,baja_clientes,alta_clientes,modificar_clientes
+from Funciones.funciones_clientes import (
+    listado_clientes,
+    baja_clientes,
+    alta_clientes,
+    modificar_clientes,
+)
+
 
 def clientes():
     """
@@ -33,10 +39,11 @@ def clientes():
                     modificar_clientes()
         else:
             # El usuario común solo puede consultar el listado
-            ask = obtener_entero("[0] ◀️  Retroceder\n[1] 📝 Listado de clientes\n.", 0, 1)
+            ask = obtener_entero(
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de clientes\n.", 0, 1
+            )
             match ask:
                 case 0:
                     seguir = False
                 case 1:
                     listado_clientes()
-

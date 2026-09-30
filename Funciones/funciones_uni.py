@@ -14,9 +14,7 @@ from modulos.listas import (
     USUARIOS_ADMIN,
     CONTRASENIAS_ADMIN,
     CONTRASENIAS_LECTORES,
-   
 )
-
 
 
 def generador_de_id(lista):
@@ -27,12 +25,6 @@ def generador_de_id(lista):
         nuevo_id = random.randint(100000, 999999)
 
     return nuevo_id
-
-
-
-
-
-
 
 
 def validar_email(email):
@@ -72,9 +64,6 @@ def productos_activos():
                 ]
             )
     return activos
-
-
-
 
 
 def inicio(texto):
@@ -288,16 +277,3 @@ def ordenar_alfabeticamente():
             f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
         )
     print("-" * ancho)
-
-
-
-
-
-
-
-
-
-
-
-
-

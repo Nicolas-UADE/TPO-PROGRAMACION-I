@@ -11,6 +11,7 @@ from Funciones.funciones_uni import (
 )
 from modulos.listas import ELIMINADO, lista_clientes
 
+
 def alta_clientes():
     """
     Registra un nuevo cliente pidiendo sus datos personales.
@@ -120,7 +121,9 @@ def listado_clientes():
         case 3:
             # Búsqueda por ID (código) con reintento si no existe
             pregunta_codigo = obtener_entero(
-                "\n\nIngrese código del cliente a buscar.\n-1 para salir\n.", -1, 1000000
+                "\n\nIngrese código del cliente a buscar.\n-1 para salir\n.",
+                -1,
+                1000000,
             )
 
             match pregunta_codigo:
@@ -169,7 +172,9 @@ def baja_clientes():
     match pregunta_codigo:
         case 0:
             pregunta_codigo = obtener_entero(
-                "\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
+                "\nIngrese código del cliente a eliminar.\n-1 para salir\n.",
+                -1,
+                1000000,
             )
         case -1:
             return
@@ -353,5 +358,3 @@ def lista_cabeza_clientes():
     )
 
     print("-" * ancho)
-
-

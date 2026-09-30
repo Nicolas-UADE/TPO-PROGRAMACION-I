@@ -21,9 +21,8 @@ from Funciones.funciones_uni import (
     inicio_baja,
     inicio_listado,
     buscar,
-    generador_de_id
-    )
-
+    generador_de_id,
+)
 
 
 def alta_producto():
@@ -319,7 +318,6 @@ def listar_productos():
                 i += 1
     texto = ""
     inicio_listado(texto)
-
 
 
 def lista_cabeza_productos():

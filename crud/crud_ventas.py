@@ -1,6 +1,12 @@
 from modulos import listas
-from Funciones.funciones_uni import inicio,obtener_entero
-from Funciones.funciones_ventas import listar_ventas,baja_venta,alta_venta,modificar_venta,menu_estadisticas_ventas
+from Funciones.funciones_uni import inicio, obtener_entero
+from Funciones.funciones_ventas import (
+    listar_ventas,
+    baja_venta,
+    alta_venta,
+    modificar_venta,
+    menu_estadisticas_ventas,
+)
 
 
 def ventas():
@@ -35,7 +41,9 @@ def ventas():
         else:
             # Usuario normal solo puede ver el listado y las estadisticas.
             opcion = obtener_entero(
-                "[0] ◀️  Retroceder\n[1] 📝 Listado de ventas\n[2] 📈 Estadisticas\n.", 0, 2
+                "[0] ◀️  Retroceder\n[1] 📝 Listado de ventas\n[2] 📈 Estadisticas\n.",
+                0,
+                2,
             )
 
             match opcion:
@@ -45,5 +53,3 @@ def ventas():
                     listar_ventas()
                 case 2:
                     menu_estadisticas_ventas()
-
-
