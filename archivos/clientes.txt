@@ -1,0 +1,10 @@
+1;JUAN PEREZ;30111222;1145678901;juan.perez@gmail.com
+2;ANA GOMEZ;28555666;1156789012;ana.gomez@gmail.com
+3;CARLOS FERNANDEZ;32444555;1167890123;carlos.fernandez@yahoo.com
+4;LUCIA MARTINEZ;35222333;1178901234;lucia.martinez@hotmail.com
+5;DIEGO RODRIGUEZ;27888999;1189012345;diego.rodriguez@yahoo.com
+6;SOFIA LOPEZ;33666777;1190123456;sofia.lopez@hotmail.com
+7;MARTIN SANCHEZ;29999000;1101234567;martin.sanchez@gmail.com
+8;VALENTINA TORRES;31777888;1112345678;valentina.torres@hotmail.com
+9;FEDERICO DIAZ;26333444;1123456789;federico.diaz@yahoo.com
+10;CAMILA ROMERO;34111222;1134567890;camila.romero@gmail.com
