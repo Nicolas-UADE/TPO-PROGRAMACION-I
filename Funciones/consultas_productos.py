@@ -23,3 +23,10 @@ def nombres_activos():
     return [fila[PRODUCTOS_NOMBRE] for fila in PRODUCTOS if fila[PRODUCTOS_CODIGO] != ELIMINADO]
 
 
+def nombres_por_categoria(categoria):
+    """Devuelve los nombres de los productos activos de una categoria."""
+    return [
+        fila[PRODUCTOS_NOMBRE]
+        for fila in PRODUCTOS
+        if fila[PRODUCTOS_CATEGORIA] == categoria and fila[PRODUCTOS_CODIGO] != ELIMINADO
+    ]
