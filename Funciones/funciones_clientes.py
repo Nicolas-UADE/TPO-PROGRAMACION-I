@@ -11,6 +11,12 @@ from Funciones.funciones_uni import (
 )
 from modulos.listas import ELIMINADO, lista_clientes
 
+def obtener_cliente(indice):
+    assert indice >=0
+
+    cliente=lista_clientes[indice] #HACERLO CON UN ARCHIVO, DESDE EL JSON
+    if cliente== ELIMINADO:
+        raise ValueError("El Cliente feu dado de baja")
 
 def alta_clientes():
     """
@@ -20,46 +26,48 @@ def alta_clientes():
     texto = "ALTA DE CLIENTES"
     inicio_alta(texto)
 
-    # Captura de datos básicos
-    nombre = obtener_caracter("Nombre y apellido:\n.").upper()
-    dni = obtener_entero("DNI:\n.", 1000000, 99999999)
-    telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
-    email = obtener_caracter("Email:\n.").lower()
-
-    # Bucle de validación para asegurar un email correcto
-    while validar_email(email) == False:
-        print("\nIngrese un mail valido.\n")
+    try:
+        # Captura de datos básicos
+        nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+        dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+        telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
         email = obtener_caracter("Email:\n.").lower()
 
-    # Conversión a string para evitar inconvenientes de formato
-    el_dni = str(dni)
-    el_telefono = str(telefono)
+        # Bucle de validación para asegurar un email correcto
+        while validar_email(email) == False:
+            print("\nIngrese un mail valido.\n")
+            email = obtener_caracter("Email:\n.").lower()
 
-    # Autoincrementable simple para el ID
-    nuevo_id = len(lista_clientes) + 1
+        # Conversión a string para evitar inconvenientes de formato
+        el_dni = str(dni)
+        el_telefono = str(telefono)
 
-    cliente = {
-        "id": nuevo_id,
-        "nombre": nombre,
-        "dni": el_dni,
-        "telefono": el_telefono,
-        "email": email,
-    }
+        # Autoincrementable simple para el ID
+        nuevo_id = len(lista_clientes) + 1
 
-    # Confirmación final de guardado
-    pregunta_seguridad = obtener_caracter(
-        f"\nEsta seguro de agregar al cliente? Y/N\n."
-    ).upper()
+        cliente = {
+            "id": nuevo_id,
+            "nombre": nombre,
+            "dni": el_dni,
+            "telefono": el_telefono,
+            "email": email,
+        }
 
-    if pregunta_seguridad == "Y":
-        lista_clientes.append(cliente)
-        print("\n\033[32mCliente agregado correctamente.\033[0m")
-    else:
-        print("\n\033[31mAlta de cliente cancelada.\033[0m")
+        # Confirmación final de guardado
+        pregunta_seguridad = obtener_caracter(
+            f"\nEsta seguro de agregar al cliente? Y/N\n."
+        ).upper()
 
-    texto = ""
-    inicio_alta(texto)
+        if pregunta_seguridad == "Y":
+            lista_clientes.append(cliente)
+            print("\n\033[32mCliente agregado correctamente.\033[0m")
+        else:
+            print("\n\033[31mAlta de cliente cancelada.\033[0m")
 
+        texto = ""
+        inicio_alta(texto)
+    except (FileNotFoundError, OSError)as error: #futuro, agregar json.JSONDecodeError
+        print(f'Error!{error}')
 
 def listado_clientes():
     """
@@ -68,95 +76,111 @@ def listado_clientes():
     """
     texto = "LISTADO CLIENTES"
     inicio_listado(texto)
-
-    pregunta_orden = obtener_entero(
-        "\nElija metodo de ordenamiento. \n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
-        -1,
-        3,
-    )
-    match pregunta_orden:
-        case -1:
-            return
-        case 0:
-            # Reintento rápido si selecciona una opción fuera del menú
-            pregunta_orden = obtener_entero(
-                "\nElija metodo de ordenamiento.\n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
-                -1,
-                3,
-            )
-        case 1:
-            # Imprime todos los clientes que sigan activos en el sistema
-            lista_cabeza_clientes()
-            for cliente in lista_clientes:
-                if cliente != ELIMINADO:
-                    print(
-                        f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
-                    )
-
-        case 2:
-            # Búsqueda por Nombre con reintento si no existe
-            pregunta_nombre = obtener_caracter(
-                "\n\nIngrese nombre del cliente a buscar.\n-1 para salir\n."
-            )
-
-            if pregunta_nombre == "-1":
+ 
+    try:
+        pregunta_orden = obtener_entero(
+            "\nElija metodo de ordenamiento. \n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
+            -1,
+            3,
+        )
+        match pregunta_orden:
+            case -1:
                 return
-            esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
-
-            while esta == -2:
-                print("Cliente inexistente.")
-                pregunta_nombre = obtener_caracter(
-                    "\nIngrese código del cliente a buscar.\n-1 para salir\n."
+            case 0:
+                # Reintento rápido si selecciona una opción fuera del menú
+                pregunta_orden = obtener_entero(
+                    "\nElija metodo de ordenamiento.\n[1] ID\n[2] Buscar por nombre\n[3] Buscar por codigo.\n-1 para salir\n.",
+                    -1,
+                    3,
                 )
+            case 1:
+                # Imprime todos los clientes que sigan activos en el sistema
+                lista_cabeza_clientes()
+                for cliente in lista_clientes:
+                    if cliente != ELIMINADO:
+                        print(
+                            f"|{cliente['id']:<20} | {cliente['nombre']:<20} | {cliente['dni']:<20} | {cliente['telefono']:<20} | {cliente['email']:<20}"
+                        )
+ 
+            case 2:
+                # Búsqueda por Nombre con reintento si no existe
+                pregunta_nombre = obtener_caracter(
+                    "\n\nIngrese nombre del cliente a buscar.\n-1 para salir\n."
+                )
+ 
                 if pregunta_nombre == "-1":
                     return
-                esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
-
-            cliente_encontrado = lista_clientes[esta]
-
-            print(
-                f"|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
-            )
-
-        case 3:
-            # Búsqueda por ID (código) con reintento si no existe
-            pregunta_codigo = obtener_entero(
-                "\n\nIngrese código del cliente a buscar.\n-1 para salir\n.",
-                -1,
-                1000000,
-            )
-
-            match pregunta_codigo:
-                case 0:
-                    pregunta_codigo = obtener_entero(
-                        "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
-                        -1,
-                        1000000,
+ 
+                while True:
+                    esta = buscar_por_nombre(lista_clientes, pregunta_nombre)
+                    if esta != -2:
+                        try:
+                            cliente_encontrado = obtener_cliente(esta)
+                            break
+                        except ValueError:
+                            # Estaba en la lista pero dado de baja
+                            pass
+ 
+                    print("Cliente inexistente.")
+                    pregunta_nombre = obtener_caracter(
+                        "\nIngrese nombre del cliente a buscar.\n-1 para salir\n."
                     )
-                case -1:
-                    return
-
-            esta = buscar_por_id(lista_clientes, pregunta_codigo)
-
-            while esta == -2:
-                print("Cliente inexistente.")
+                    if pregunta_nombre == "-1":
+                        return
+ 
+                print(
+                    f"|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
+                )
+ 
+            case 3:
+                # Búsqueda por ID (código) con reintento si no existe
                 pregunta_codigo = obtener_entero(
-                    "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
+                    "\n\nIngrese código del cliente a buscar.\n-1 para salir\n.",
                     -1,
                     1000000,
                 )
-                if pregunta_codigo == -1:
-                    return
-                esta = buscar_por_id(lista_clientes, pregunta_codigo)
-            cliente_encontrado = lista_clientes[esta]
-            print(
-                f"\n|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
-            )
+ 
+                match pregunta_codigo:
+                    case 0:
+                        pregunta_codigo = obtener_entero(
+                            "\nIngrese código del cliente a buscar.\n-1 para salir\n.",
+                            -1,
+                            1000000,
+                        )
+                    case -1:
+                        return
+ 
+                while True:
+                    esta = buscar_por_id(lista_clientes, pregunta_codigo)
+                    if esta != -2:
+                        try:
+                            cliente_encontrado = obtener_cliente(esta)
+                            break
+                        except ValueError:
+                            # Estaba en la lista pero dado de baja
+                            pass
+ 
+                    print("Cliente inexistente.")
+                    pregunta_codigo = obtener_entero(
+                        "\nIngrese código del cliente a buscar.\n-1 para salir\n.",
+                        -1,
+                        1000000,
+                    )
+                    if pregunta_codigo == -1:
+                        return
+ 
+                print(
+                    f"\n|{cliente_encontrado['id']:<20} | {cliente_encontrado['nombre']:<20} | {cliente_encontrado['dni']:<20} | {cliente_encontrado['telefono']:<20} | {cliente_encontrado['email']:<20}"
+                )
+ 
+    except (FileNotFoundError, OSError)as error: #futuro, agregar json.JSONDecodeError
+            print(f'Error!{error}')
 
+ 
     texto = ""
     inicio_listado(texto)
-
-
+ 
+ 
 def baja_clientes():
     """
     Aplica una baja lógica a un cliente reemplazándolo por la constante 'ELIMINADO'
