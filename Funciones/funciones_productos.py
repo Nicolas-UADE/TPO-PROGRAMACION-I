@@ -10,7 +10,7 @@ from modulos.listas import (
     productos_nombre_individual,
     ELIMINADO,
 )
-from Funciones.archivos_productos import guardar_productos_archivo
+from Funciones.archivos_productos import agregar_producto_archivo, reemplazar_producto_archivo
 from Funciones.funciones_uni import (
     obtener_caracter,
     obtener_entero,
@@ -24,6 +24,20 @@ from Funciones.funciones_uni import (
     buscar,
     generador_de_id,
 )
+
+
+def actualizar_producto(pos, columna, valor):
+    producto_nuevo = PRODUCTOS[pos][:]
+    producto_nuevo[columna] = valor
+    codigo = PRODUCTOS[pos][PRODUCTOS_CODIGO]
+
+    if reemplazar_producto_archivo(codigo, producto_nuevo):
+        PRODUCTOS[pos][columna] = valor
+        if columna == PRODUCTOS_NOMBRE:
+            productos_nombre_individual[pos] = valor
+        return True
+
+    return False
 
 
 def alta_producto():
@@ -64,11 +78,12 @@ def alta_producto():
         "Esta seguro de agregar este producto? Y/N\n."
     ).upper()
     if pregunta_seguridad == "Y":
-        PRODUCTOS.append([codigo, pregunta_nombre, categoria, precio, stock, descuento])
-        productos_id_individual.append(codigo)
-        productos_nombre_individual.append(pregunta_nombre)
-        guardar_productos_archivo(PRODUCTOS)
-        print("\n\033[32mProducto agregado correctamente.\033[0m")
+        producto = [codigo, pregunta_nombre, categoria, precio, stock, descuento]
+        if agregar_producto_archivo(producto):
+            PRODUCTOS.append(producto)
+            productos_id_individual.append(codigo)
+            productos_nombre_individual.append(pregunta_nombre)
+            print("\n\033[32mProducto agregado correctamente.\033[0m")
     else:
         print("\n\033[31mAlta de producto cancelada.\033[0m")
     texto = ""
@@ -108,12 +123,13 @@ def baja_producto():
     ).upper()
 
     if pregunta_seguridad == "Y":
-        PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
-        productos_id_individual[pos] = ELIMINADO
-        productos_nombre_individual[pos] = ELIMINADO
-        guardar_productos_archivo(PRODUCTOS)
-
-        print("\n\033[32mProductos eliminado correctamente.\033[0m")
+        producto_nuevo = PRODUCTOS[pos][:]
+        producto_nuevo[PRODUCTOS_CODIGO] = ELIMINADO
+        if reemplazar_producto_archivo(pregunta_codigo, producto_nuevo):
+            PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
+            productos_id_individual[pos] = ELIMINADO
+            productos_nombre_individual[pos] = ELIMINADO
+            print("\n\033[32mProducto eliminado correctamente.\033[0m")
 
     else:
         print("\n\033[31mBaja de producto cancelada.\033[0m")
@@ -156,9 +172,8 @@ def modificar_producto():
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    PRODUCTOS[pos][PRODUCTOS_NOMBRE] = nuevo_nombre
-                    productos_nombre_individual[pos] = nuevo_nombre
-                    guardar_productos_archivo(PRODUCTOS)
+                    if not actualizar_producto(pos, PRODUCTOS_NOMBRE, nuevo_nombre):
+                        return
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -177,8 +192,8 @@ def modificar_producto():
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    PRODUCTOS[pos][PRODUCTOS_PRECIO] = precio
-                    guardar_productos_archivo(PRODUCTOS)
+                    if not actualizar_producto(pos, PRODUCTOS_PRECIO, precio):
+                        return
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -197,8 +212,8 @@ def modificar_producto():
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    PRODUCTOS[pos][PRODUCTOS_STOCK] = stock
-                    guardar_productos_archivo(PRODUCTOS)
+                    if not actualizar_producto(pos, PRODUCTOS_STOCK, stock):
+                        return
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -217,8 +232,8 @@ def modificar_producto():
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    PRODUCTOS[pos][PRODUCTOS_DESCUENTO] = descuento
-                    guardar_productos_archivo(PRODUCTOS)
+                    if not actualizar_producto(pos, PRODUCTOS_DESCUENTO, descuento):
+                        return
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -250,8 +265,8 @@ def modificar_producto():
                 ).upper()
 
                 if pregunta_seguridad == "Y":
-                    PRODUCTOS[pos][PRODUCTOS_CATEGORIA] = nueva_categoria
-                    guardar_productos_archivo(PRODUCTOS)
+                    if not actualizar_producto(pos, PRODUCTOS_CATEGORIA, nueva_categoria):
+                        return
 
                     print("\n\033[32mProducto modificado correctamente.\033[0m")
 

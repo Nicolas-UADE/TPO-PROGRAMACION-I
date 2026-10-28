@@ -1,4 +1,7 @@
+import os
+
 ARCHIVO_PRODUCTOS = "archivos/productos.txt"
+ARCHIVO_AUXILIAR = "archivos/productos_auxiliar.txt"
 
 
 def convertir_producto(linea):
@@ -29,13 +32,10 @@ def cargar_productos_archivo():
                     productos.append(convertir_producto(linea))
     except FileNotFoundError:
         print("No se encontro el archivo de productos.")
+    except (OSError, ValueError, IndexError):
+        print("No se pudieron leer los productos.")
+        return []
     return productos
-
-
-def guardar_productos_archivo(productos):
-    with open(ARCHIVO_PRODUCTOS, "w", encoding="utf-8") as archivo:
-        for producto in productos:
-            archivo.write(preparar_linea_producto(producto))
 
 
 def mostrar_productos_archivo():
@@ -48,6 +48,8 @@ def mostrar_productos_archivo():
                         print(producto)
     except FileNotFoundError:
         print("No se encontro el archivo de productos.")
+    except (OSError, ValueError, IndexError):
+        print("No se pudieron leer los productos.")
 
 
 def buscar_producto_archivo(codigo):
@@ -60,4 +62,42 @@ def buscar_producto_archivo(codigo):
                         return producto
     except FileNotFoundError:
         print("No se encontro el archivo de productos.")
+    except (OSError, ValueError, IndexError):
+        print("No se pudieron leer los productos.")
     return None
+
+
+def agregar_producto_archivo(producto):
+    try:
+        with open(ARCHIVO_PRODUCTOS, "a", encoding="utf-8") as archivo:
+            archivo.write(preparar_linea_producto(producto))
+        return True
+    except OSError:
+        print("No se pudo guardar el producto.")
+        return False
+
+
+def reemplazar_producto_archivo(codigo, producto_nuevo):
+    encontrado = False
+    try:
+        with open(ARCHIVO_PRODUCTOS, "r", encoding="utf-8") as archivo:
+            with open(ARCHIVO_AUXILIAR, "w", encoding="utf-8") as auxiliar:
+                for linea in archivo:
+                    producto = convertir_producto(linea)
+                    if producto[0] == codigo:
+                        auxiliar.write(preparar_linea_producto(producto_nuevo))
+                        encontrado = True
+                    else:
+                        auxiliar.write(linea)
+
+        if encontrado:
+            os.replace(ARCHIVO_AUXILIAR, ARCHIVO_PRODUCTOS)
+            return True
+
+        os.remove(ARCHIVO_AUXILIAR)
+        return False
+    except (OSError, ValueError, IndexError):
+        print("No se pudo modificar el archivo de productos.")
+        if os.path.exists(ARCHIVO_AUXILIAR):
+            os.remove(ARCHIVO_AUXILIAR)
+        return False
