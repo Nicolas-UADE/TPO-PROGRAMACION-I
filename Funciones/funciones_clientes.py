@@ -176,7 +176,7 @@ def listado_clientes():
     except (FileNotFoundError, OSError)as error: #futuro, agregar json.JSONDecodeError
             print(f'Error!{error}')
 
- 
+
     texto = ""
     inicio_listado(texto)
  
@@ -188,46 +188,59 @@ def baja_clientes():
     """
     texto = "BAJA DE CLIENTES"
     inicio_baja(texto)
-
-    pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
-    )
-
-    match pregunta_codigo:
-        case 0:
+ 
+    try:
+        pregunta_codigo = obtener_entero(
+            "\n\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
+        )
+ 
+        match pregunta_codigo:
+            case 0:
+                pregunta_codigo = obtener_entero(
+                    "\nIngrese código del cliente a eliminar.\n-1 para salir\n.",
+                    -1,
+                    1000000,
+                )
+            case -1:
+                return
+ 
+        # Validación de existencia del ID (y de que no esté ya dado de baja)
+        while True:
+            esta = buscar_por_id(lista_clientes, pregunta_codigo)
+            if esta != -2:
+                try:
+                    obtener_cliente(esta)
+                    break
+                except ValueError:
+                    pass
+ 
+            print("Cliente inexistente.")
             pregunta_codigo = obtener_entero(
                 "\nIngrese código del cliente a eliminar.\n-1 para salir\n.",
                 -1,
                 1000000,
             )
-        case -1:
-            return
-
-    # Validación de existencia del ID
-    esta = buscar_por_id(lista_clientes, pregunta_codigo)
-    while esta == -2:
-        print("Cliente inexistente.")
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a eliminar.\n-1 para salir\n.", -1, 1000000
-        )
-        if pregunta_codigo == -1:
-            return
-        esta = buscar_por_id(lista_clientes, pregunta_codigo)
-
-    # Confirmación de la baja
-    pregunta_seguridad = obtener_caracter(
-        f"\nEsta seguro de eliminar al cliente {pregunta_codigo}? Y/N\n."
-    ).upper()
-
-    if pregunta_seguridad == "Y":
-        # Se reemplaza por constante ELIMINADO para mantener las posiciones de la lista
-        lista_clientes[esta] = ELIMINADO
-        print("\n\033[32mCliente eliminado correctamente.\033[0m")
-    else:
-        print("\n\033[31mBaja de cliente cancelada.\033[0m")
-
+            if pregunta_codigo == -1:
+                return
+ 
+        # Confirmación de la baja
+        pregunta_seguridad = obtener_caracter(
+            f"\nEsta seguro de eliminar al cliente {pregunta_codigo}? Y/N\n."
+        ).upper()
+ 
+        if pregunta_seguridad == "Y":
+            # Se reemplaza por constante ELIMINADO para mantener las posiciones de la lista
+            lista_clientes[esta] = ELIMINADO
+            print("\n\033[32mCliente eliminado correctamente.\033[0m")
+        else:
+            print("\n\033[31mBaja de cliente cancelada.\033[0m")
+ 
+    except (FileNotFoundError, OSError)as error: #futuro, agregar json.JSONDecodeError
+            print(f'Error!{error}')
+ 
     texto = ""
     inicio_baja(texto)
+ 
 
 
 def modificar_clientes():
