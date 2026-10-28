@@ -16,7 +16,7 @@ def obtener_cliente(indice):
 
     cliente=lista_clientes[indice] #HACERLO CON UN ARCHIVO, DESDE EL JSON
     if cliente== ELIMINADO:
-        raise ValueError("El Cliente feu dado de baja")
+        raise ValueError("El Cliente fue dado de baja")
 
 def alta_clientes():
     """
@@ -95,7 +95,7 @@ def listado_clientes():
                 )
             case 1:
                 # Imprime todos los clientes que sigan activos en el sistema
-                lista_cabeza_clientes()
+                buscar_por_id()
                 for cliente in lista_clientes:
                     if cliente != ELIMINADO:
                         print(
@@ -250,148 +250,116 @@ def modificar_clientes():
     """
     texto = "MODIFICAR CLIENTES"
     inicio_modificar(texto)
-
-    pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del cliente a modificar.\n-1 para salir\n.", -1, 1000000
-    )
-
-    match pregunta_codigo:
-        case 0:
+ 
+    try:
+        pregunta_codigo = obtener_entero(
+            "\n\nIngrese código del cliente a modificar.\n-1 para salir\n.", -1, 1000000
+        )
+ 
+        match pregunta_codigo:
+            case 0:
+                pregunta_codigo = obtener_entero(
+                    "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
+                    -1,
+                    1000000,
+                )
+            case -1:
+                return
+ 
+        # Comprobación de que el ID existe (y de que no esté dado de baja)
+        while True:
+            esta = buscar_por_id(lista_clientes, pregunta_codigo)
+            if esta != -2:
+                try:
+                    obtener_cliente(esta)
+                    break
+                except ValueError:
+                    pass
+ 
+            print("Cliente inexistente.")
             pregunta_codigo = obtener_entero(
                 "\nIngrese código del cliente a modificar.\n-1 para salir\n.",
                 -1,
                 1000000,
             )
-        case -1:
-            return
-
-    # Comprobación de que el ID existe
-    esta = buscar_por_id(lista_clientes, pregunta_codigo)
-    while esta == -2:
-        print("Cliente inexistente.")
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del cliente a modificar.\n-1 para salir\n.", -1, 1000000
+            if pregunta_codigo == -1:
+                return
+ 
+        # Selección de campo a modificar
+        pregunta_eleccion = obtener_entero(
+            "Que quieres modificar.\n[1] Nombre\n[2] DNI\n[3] Telefono\n[4] Email\n.",
+            1,
+            4,
         )
-        if pregunta_codigo == -1:
-            return
-        esta = buscar_por_id(lista_clientes, pregunta_codigo)
-
-    # Selección de campo a modificar
-    pregunta_eleccion = obtener_entero(
-        "Que quieres modificar.\n[1] Nombre\n[2] DNI\n[3] Telefono\n[4] Email\n.", 1, 4
-    )
-
-    match pregunta_eleccion:
-        case 1:
-            # Cambio de Nombre
-            nombre = obtener_caracter("Nombre y apellido:\n.").upper()
-            pregunta_seguridad = obtener_caracter(
-                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-            ).upper()
-
-            if pregunta_seguridad == "Y":
-                lista_clientes[esta]["nombre"] = nombre
-                print("\n\033[32mCliente modificado correctamente.\033[0m")
-
-                pregunta_eleccion_otra = obtener_caracter(
-                    "Desea hacer otra modificacion? Y/N\n"
-                )
-                if pregunta_eleccion_otra == "Y":
-                    texto = ""
-                    inicio_modificar(texto)
-                    modificar_clientes()
-            else:
-                print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
-        case 2:
-            # Cambio de DNI
-            dni = obtener_entero("DNI:\n.", 1000000, 99999999)
-            pregunta_seguridad = obtener_caracter(
-                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-            ).upper()
-
-            if pregunta_seguridad == "Y":
-                el_dni = str(dni)
-                lista_clientes[esta]["dni"] = el_dni
-                print("\n\033[32mCliente modificado correctamente.\033[0m")
-
-                pregunta_eleccion_otra = obtener_caracter(
-                    "Desea hacer otra modificacion? Y/N\n"
-                )
-                if pregunta_eleccion_otra == "Y":
-                    texto = ""
-                    inicio_modificar(texto)
-                    modificar_clientes()
-            else:
-                print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
-        case 3:
-            # Cambio de Teléfono
-            telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
-            pregunta_seguridad = obtener_caracter(
-                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-            ).upper()
-
-            if pregunta_seguridad == "Y":
-                el_telefono = str(telefono)
-                lista_clientes[esta]["telefono"] = el_telefono
-                print("\n\033[32mCliente modificado correctamente.\033[0m")
-
-                pregunta_eleccion_otra = obtener_caracter(
-                    "Desea hacer otra modificacion? Y/N\n"
-                )
-                if pregunta_eleccion_otra == "Y":
-                    texto = ""
-                    inicio_modificar(texto)
-                    modificar_clientes()
-            else:
-                print("\n\033[31mModificacion de cliente cancelada.\033[0m")
-
-        case 4:
-            # Cambio de Email con re-validación
-            email = obtener_caracter("Email:\n.").lower()
-            while validar_email(email) == False:
-                print("\nIngrese un mail valido.\n")
-                email = obtener_caracter("Email:\n.").lower()
-
-            pregunta_seguridad = obtener_caracter(
-                f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
-            ).upper()
-
-            if pregunta_seguridad == "Y":
-                lista_clientes[esta]["email"] = email
-                print("\n\033[32mCliente modificado correctamente.\033[0m")
-
-                pregunta_eleccion_otra = obtener_caracter(
-                    "Desea hacer otra modificacion? Y/N\n"
-                )
-                if pregunta_eleccion_otra == "Y":
-                    texto = ""
-                    inicio_modificar(texto)
-                    modificar_clientes()
-            else:
-                print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+ 
+        match pregunta_eleccion:
+            case 1:
+                # Cambio de Nombre
+                nombre = obtener_caracter("Nombre y apellido:\n.").upper()
+                pregunta_seguridad = obtener_caracter(
+                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+                ).upper()
+ 
+                if pregunta_seguridad == "Y":
+                    lista_clientes[esta]["nombre"] = nombre
+                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+ 
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    ).upper()
+                    if pregunta_eleccion_otra == "Y":
+                        texto = ""
+                        inicio_modificar(texto)
+                        modificar_clientes()
+                else:
+                    print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+ 
+            case 2:
+                # Cambio de DNI
+                dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+                pregunta_seguridad = obtener_caracter(
+                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+                ).upper()
+ 
+                if pregunta_seguridad == "Y":
+                    el_dni = str(dni)
+                    lista_clientes[esta]["dni"] = el_dni
+                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+ 
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    ).upper()
+                    if pregunta_eleccion_otra == "Y":
+                        texto = ""
+                        inicio_modificar(texto)
+                        modificar_clientes()
+                else:
+                    print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+ 
+            case 3:
+                # Cambio de Teléfono
+                telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
+                pregunta_seguridad = obtener_caracter(
+                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+                ).upper()
+ 
+                if pregunta_seguridad == "Y":
+                    el_telefono = str(telefono)
+                    lista_clientes[esta]["telefono"] = el_telefono
+                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+ 
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    ).upper()
+                    if pregunta_eleccion_otra == "Y":
+                        texto = ""
+                        inicio_modificar(texto)
+                        modificar_clientes()
+                else:
+                    print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+ 
+    except (FileNotFoundError, OSError)as error: #futuro, agregar json.JSONDecodeError
+        print(f'Error!{error}')
 
     texto = ""
     inicio_modificar(texto)
-
-
-def lista_cabeza_clientes():
-    """Imprime el encabezado de la tabla de clientes (los titulos de cada columna)."""
-    list = []
-    codigo = "ID"
-    nombre = "Nombre"
-    dni = "DNI"
-    telefono = "TELEFONO"
-    email = "EMAIL"
-
-    list.append(codigo), list.append(nombre), list.append(dni), list.append(
-        telefono
-    ), list.append(email)
-    ancho = 120
-    print("-" * ancho)
-    print(
-        f"|{list[0]:<20} | {list[1]:<20} | {list[2]:<20} | {list[3]:<20} | {list[4]:<20}"
-    )
-
-    print("-" * ancho)
