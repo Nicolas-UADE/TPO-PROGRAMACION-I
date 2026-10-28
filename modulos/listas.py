@@ -49,51 +49,22 @@ PRODUCTOS_STOCK = 4
 PRODUCTOS_DESCUENTO = 5
 
 
-# Lista principal de productos. Cada producto es una lista con:
-# [codigo, nombre, categoria, precio, stock, descuento]
-PRODUCTOS = [
-    [482719, "PILAS", "OTROS", 1500, 25, 5],
-    [935164, "ARROZ", "ALIMENTOS", 1800, 18, 0],
-    [271853, "ATUN", "ALIMENTOS", 1200, 32, 10],
-    [604927, "ACEITE", "ALIMENTOS", 3500, 14, 13],
-    [158436, "AZUCAR", "ALIMENTOS", 1300, 27, 9],
-    [793205, "YERBA", "ALIMENTOS", 4200, 12, 20],
-    [326581, "GALLETITAS", "ALIMENTOS", 1600, 20, 0],
-    [841672, "CAFE", "BEBIDAS", 5500, 9, 0],
-    [519348, "JABON", "LIMPIEZA", 1400, 35, 5],
-    [267914, "PEPSI", "BEBIDAS", 2800, 16, 15],
-]
+# Los productos se cargan desde el archivo al iniciar el programa.
+from Funciones.archivos_productos import cargar_productos_archivo
 
-# Listas auxiliares que van en paralelo a PRODUCTOS (misma posicion = mismo producto).
-# Sirven para buscar mas rapido por nombre o por id sin recorrer toda la matriz PRODUCTOS.
-productos_nombre_individual = [
-    "PILAS",
-    "ARROZ",
-    "ATUN",
-    "ACEITE",
-    "AZUCAR",
-    "YERBA",
-    "GALLETITAS",
-    "CAFE",
-    "JABON",
-    "PEPSI",
-]
+PRODUCTOS = cargar_productos_archivo()
 
-productos_id_individual = [
-    482719,
-    935164,
-    271853,
-    604927,
-    158436,
-    793205,
-    326581,
-    841672,
-    519348,
-    267914,
-]
+# Estas listas conservan las mismas posiciones que PRODUCTOS para las busquedas actuales.
+productos_nombre_individual = []
+productos_id_individual = []
 
-# Nota: esta lista no se termina usando en ningun lado (el descuento ya esta en PRODUCTOS).
-descuentos_individual = [5, 0, 10, 13, 9, 20, 0, 0, 5, 15]
+for producto in PRODUCTOS:
+    if producto[PRODUCTOS_CODIGO] == ELIMINADO:
+        productos_nombre_individual.append(ELIMINADO)
+        productos_id_individual.append(ELIMINADO)
+    else:
+        productos_nombre_individual.append(producto[PRODUCTOS_NOMBRE])
+        productos_id_individual.append(producto[PRODUCTOS_CODIGO])
 
 
 #############################################
