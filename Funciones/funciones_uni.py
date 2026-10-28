@@ -241,16 +241,18 @@ def busqueda_secuencial(lista, parametro, i=0):
     return busqueda_secuencial(lista, parametro, i + 1)
 
 
-def busqueda_por_codigo(lista, codigo):
-    """Igual que busqueda_secuencial pero para productos, comparando por su codigo."""
-    i = 0
-    while i < len(lista) and lista[i][PRODUCTOS_CODIGO] != codigo:
-        i += 1
-    if i < len(lista):
-        return i
-    else:
+def busqueda_por_codigo(lista, codigo, i=0):
+    """Igual que busqueda_secuencial pero para productos, comparando por su codigo. Es recursiva."""
+    # caso base: no quedan productos por revisar, el codigo no esta
+    if i == len(lista):
         return -1
 
+    # caso base: el producto de la posicion i tiene ese codigo
+    if lista[i][PRODUCTOS_CODIGO] == codigo:
+        return i
+
+    # caso recursivo: revisamos el siguiente producto
+    return busqueda_por_codigo(lista, codigo, i + 1)
 
 def ordenar_por_codigo():
     """Imprime la tabla de productos activos ordenada por codigo."""
