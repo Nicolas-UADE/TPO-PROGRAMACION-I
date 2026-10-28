@@ -34,6 +34,8 @@ from Funciones.funciones_uni import (
     buscar_por_id,
 )
 
+from Funciones.funciones_recursivas import sumar_cantidades_recursivo
+
 
 def menu_estadisticas_ventas():
     """Submenu para ver distintos tipos de estadisticas sobre las ventas."""
@@ -664,13 +666,7 @@ def porcentaje_ventas_categoria(categoria):
 
 def total_productos_vendidos():
     """Devuelve la cantidad total de unidades vendidas."""
-    cantidad_total = 0
-
-    for fila in obtener_ventas_activas():
-
-        cantidad_total = cantidad_total + fila[VENTAS_CANTIDAD]
-
-    return cantidad_total
+    return sumar_cantidades_recursivo(obtener_ventas_activas())
 
 
 def mayor_menor_venta():
