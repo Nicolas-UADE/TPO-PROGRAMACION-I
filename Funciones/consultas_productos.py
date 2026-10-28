@@ -18,3 +18,8 @@ def codigos_activos():
 
 
 
+def nombres_activos():
+    """Devuelve la lista de nombres de los productos activos, usando comprension de listas."""
+    return [fila[PRODUCTOS_NOMBRE] for fila in PRODUCTOS if fila[PRODUCTOS_CODIGO] != ELIMINADO]
+
+
