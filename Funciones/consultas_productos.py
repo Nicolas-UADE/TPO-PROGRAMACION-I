@@ -9,7 +9,7 @@ from modulos.listas import (
 
 def categorias_distintas():
     """Devuelve un conjunto con las categorias que aparecen en PRODUCTOS (sin repetir)."""
-    return {fila[PRODUCTOS_CATEGORIA] for fila in PRODUCTOS}
+    return {fila[PRODUCTOS_CATEGORIA] for fila in PRODUCTOS if fila[PRODUCTOS_CODIGO] != ELIMINADO}
 
 
 def codigos_activos():
