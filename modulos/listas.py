@@ -145,21 +145,7 @@ VENTAS_PRECIO_UNITARIO = 6
 VENTAS_IMPORTE = 7
 
 
-# Lista de ventas. Cada fila es un producto vendido dentro de una venta:
-# [id_venta, id_cliente, codigo_producto, categoria, fecha, cantidad, precio_unitario, importe]
-# Notar que una misma venta (mismo id) puede tener varias filas si se compraron varios productos juntos.
-VENTAS = [
-    [100001, 1, 935164, "ALIMENTOS", "01/09/2026", 2, 1800, 3600],
-    [100001, 1, 267914, "BEBIDAS", "01/09/2026", 1, 2380, 2380],
-    [100002, 2, 519348, "LIMPIEZA", "02/09/2026", 2, 1330, 2660],
-    [100003, 3, 271853, "ALIMENTOS", "03/09/2026", 2, 1080, 2160],
-    [100003, 3, 482719, "OTROS", "03/09/2026", 1, 1425, 1425],
-    [100004, 4, 841672, "BEBIDAS", "04/09/2026", 1, 5500, 5500],
-    [100005, 5, 604927, "ALIMENTOS", "05/09/2026", 1, 3045, 3045],
-    [100005, 5, 158436, "ALIMENTOS", "05/09/2026", 2, 1183, 2366],
-    [100006, 6, 793205, "ALIMENTOS", "06/09/2026", 1, 3360, 3360],
-    [100007, 7, 326581, "ALIMENTOS", "07/09/2026", 3, 1600, 4800],
-    [100008, 8, 267914, "BEBIDAS", "08/09/2026", 2, 2380, 4760],
-    [100009, 9, 519348, "LIMPIEZA", "09/09/2026", 1, 1330, 1330],
-    [100010, 10, 482719, "OTROS", "10/09/2026", 2, 1425, 2850],
-]
+# Cada fila de ventas se lee del archivo de texto al iniciar.
+from Funciones.archivos_ventas import cargar_ventas_archivo
+
+VENTAS = cargar_ventas_archivo()

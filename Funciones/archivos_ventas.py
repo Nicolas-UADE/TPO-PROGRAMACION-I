@@ -18,6 +18,21 @@ def convertir_venta(linea):
     ]
 
 
+def cargar_ventas_archivo():
+    ventas = []
+    try:
+        with open(ARCHIVO_VENTAS, "r", encoding="utf-8") as archivo:
+            for linea in archivo:
+                if linea.strip() != "":
+                    ventas.append(convertir_venta(linea))
+    except FileNotFoundError:
+        print("No se encontro el archivo de ventas.")
+    except (OSError, ValueError, IndexError):
+        print("No se pudieron leer las ventas.")
+        return []
+    return ventas
+
+
 def mostrar_ventas_archivo():
     try:
         with open(ARCHIVO_VENTAS, "r", encoding="utf-8") as archivo:

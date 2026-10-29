@@ -35,6 +35,8 @@ from Funciones.funciones_uni import (
 )
 
 from Funciones.funciones_recursivas import sumar_cantidades_recursivo
+from Funciones.archivos_ventas import agregar_ventas_archivo
+from Funciones.archivos_productos import reemplazar_producto_archivo
 
 
 def menu_estadisticas_ventas():
@@ -88,6 +90,38 @@ def menu_estadisticas_ventas():
             else:
                 total = total_venta(id_venta)
                 print(f"\nTotal de la venta {id_venta}: ${total:,.2f}")
+
+
+def guardar_venta_confirmada(venta_temporal):
+    cambios = {}
+    for venta in venta_temporal:
+        codigo = venta[VENTAS_PRODUCTO]
+        if codigo not in cambios:
+            posicion = buscar_posicion_producto(codigo)
+            if posicion == -1:
+                return False
+            original = PRODUCTOS[posicion][:]
+            cambios[codigo] = [posicion, original, original[:]]
+        cambios[codigo][2][PRODUCTOS_STOCK] -= venta[VENTAS_CANTIDAD]
+
+    guardados = []
+    for codigo in cambios:
+        if not reemplazar_producto_archivo(codigo, cambios[codigo][2]):
+            for codigo_anterior in guardados:
+                reemplazar_producto_archivo(codigo_anterior, cambios[codigo_anterior][1])
+            return False
+        guardados.append(codigo)
+
+    if not agregar_ventas_archivo(venta_temporal):
+        for codigo in guardados:
+            reemplazar_producto_archivo(codigo, cambios[codigo][1])
+        return False
+
+    for codigo in cambios:
+        posicion = cambios[codigo][0]
+        PRODUCTOS[posicion][PRODUCTOS_STOCK] = cambios[codigo][2][PRODUCTOS_STOCK]
+    VENTAS.extend(venta_temporal)
+    return True
 
 
 def alta_venta():
@@ -190,13 +224,10 @@ def alta_venta():
     confirmacion = obtener_respuesta("Esta seguro de agregar esta venta? Y/N\n.")
 
     if confirmacion == "Y":
-        # Recien aca se guarda de verdad en VENTAS y se descuenta el stock.
-        for venta in venta_temporal:
-            VENTAS.append(venta)
-            posicion_producto = buscar_posicion_producto(venta[VENTAS_PRODUCTO])
-            PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= venta[VENTAS_CANTIDAD]
-
-        print("\n\033[32mVenta agregada correctamente.\033[0m")
+        if guardar_venta_confirmada(venta_temporal):
+            print("\n\033[32mVenta agregada correctamente.\033[0m")
+        else:
+            print("\n\033[31mNo se pudo guardar la venta.\033[0m")
     else:
         print("\n\033[31mAlta de venta cancelada.\033[0m")
 
