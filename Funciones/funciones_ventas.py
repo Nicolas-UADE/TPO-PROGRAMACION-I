@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from modulos.listas import (
     PRODUCTOS,
+    PRODUCTOS_CODIGO,
     PRODUCTOS_NOMBRE,
     PRODUCTOS_CATEGORIA,
     PRODUCTOS_PRECIO,
@@ -18,7 +19,6 @@ from modulos.listas import (
     VENTAS_IMPORTE,
     VENTAS_CATEGORIA,
     lista_clientes,
-    productos_id_individual,
 )
 
 from Funciones.funciones_uni import (
@@ -813,8 +813,9 @@ def consultar_cliente_y_ventas():
 
 def buscar_posicion_producto(codigo):
     """Devuelve la posicion de un producto segun su codigo, o -1 si no existe."""
-    if codigo in productos_id_individual:
-        return productos_id_individual.index(codigo)
+    for posicion in range(len(PRODUCTOS)):
+        if PRODUCTOS[posicion][PRODUCTOS_CODIGO] == codigo:
+            return posicion
 
     return -1
 

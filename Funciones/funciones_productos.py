@@ -6,8 +6,6 @@ from modulos.listas import (
     PRODUCTOS_NOMBRE,
     PRODUCTOS_PRECIO,
     PRODUCTOS_STOCK,
-    productos_id_individual,
-    productos_nombre_individual,
     ELIMINADO,
 )
 from Funciones.archivos_productos import agregar_producto_archivo, reemplazar_producto_archivo
@@ -16,12 +14,11 @@ from Funciones.funciones_uni import (
     obtener_entero,
     ordenar_por_codigo,
     ordenar_alfabeticamente,
-    busqueda_secuencial,
+    busqueda_por_codigo,
     inicio_alta,
     inicio_modificar,
     inicio_baja,
     inicio_listado,
-    buscar,
     generador_de_id,
 )
 
@@ -33,8 +30,6 @@ def actualizar_producto(pos, columna, valor):
 
     if reemplazar_producto_archivo(codigo, producto_nuevo):
         PRODUCTOS[pos][columna] = valor
-        if columna == PRODUCTOS_NOMBRE:
-            productos_nombre_individual[pos] = valor
         return True
 
     return False
@@ -72,7 +67,8 @@ def alta_producto():
 
     descuento = obtener_entero("Ingrese descuento: 1-100 (%)\n.", 1, 100)
 
-    codigo = generador_de_id(productos_id_individual)
+    codigos = [producto[PRODUCTOS_CODIGO] for producto in PRODUCTOS]
+    codigo = generador_de_id(codigos)
 
     pregunta_seguridad = obtener_caracter(
         "Esta seguro de agregar este producto? Y/N\n."
@@ -81,8 +77,6 @@ def alta_producto():
         producto = [codigo, pregunta_nombre, categoria, precio, stock, descuento]
         if agregar_producto_archivo(producto):
             PRODUCTOS.append(producto)
-            productos_id_individual.append(codigo)
-            productos_nombre_individual.append(pregunta_nombre)
             print("\n\033[32mProducto agregado correctamente.\033[0m")
     else:
         print("\n\033[31mAlta de producto cancelada.\033[0m")
@@ -107,7 +101,7 @@ def baja_producto():
     if pregunta_codigo == -1:
         return
 
-    pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
+    pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
 
     while pos == -1:
         print("Producto inexistente.")
@@ -116,7 +110,7 @@ def baja_producto():
         )
         if pregunta_codigo == -1:
             return
-        pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
+        pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
 
     pregunta_seguridad = obtener_caracter(
         f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N\n."
@@ -127,8 +121,6 @@ def baja_producto():
         producto_nuevo[PRODUCTOS_CODIGO] = ELIMINADO
         if reemplazar_producto_archivo(pregunta_codigo, producto_nuevo):
             PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
-            productos_id_individual[pos] = ELIMINADO
-            productos_nombre_individual[pos] = ELIMINADO
             print("\n\033[32mProducto eliminado correctamente.\033[0m")
 
     else:
@@ -153,7 +145,7 @@ def modificar_producto():
 
     if pregunta_codigo == -1:
         return
-    pos = busqueda_secuencial(productos_id_individual, pregunta_codigo)
+    pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
 
     if pos == -1 or pos == ELIMINADO:
         print("Producto inexistente.")
@@ -310,35 +302,27 @@ def listar_productos():
 
     if pregunta_orden == 3:
         pregunta = obtener_caracter("\nIngrese nombre del producto\n.").upper()
-        cuenta_busqueda, busqueda_posiciones = buscar(
-            productos_nombre_individual, pregunta
-        )
-        if cuenta_busqueda == 0:
+        encontrados = []
+        for producto in PRODUCTOS:
+            if producto[PRODUCTOS_CODIGO] != ELIMINADO and producto[PRODUCTOS_NOMBRE] == pregunta:
+                encontrados.append(producto)
+
+        if len(encontrados) == 0:
             print("Producto no encontrado...")
             return
-        else:
-            i = 0
-            print(f"\nCantidad de productos encontrados: {cuenta_busqueda}\n")
-            while i < cuenta_busqueda:
-                producto = PRODUCTOS[busqueda_posiciones[i]]
-                if producto[PRODUCTOS_CODIGO] != ELIMINADO:
-                    print(f"\n{producto}\n")
-                i += 1
+
+        print(f"\nCantidad de productos encontrados: {len(encontrados)}\n")
+        for producto in encontrados:
+            print(f"\n{producto}\n")
 
     if pregunta_orden == 4:
         pregunta = obtener_entero("\nIngrese codigo del producto\n.", 100000, 1000000)
-        cuenta_busqueda, busqueda_posiciones = buscar(productos_id_individual, pregunta)
-        if cuenta_busqueda == 0:
+        pos = busqueda_por_codigo(PRODUCTOS, pregunta)
+        if pos == -1:
             print("Producto no encontrado...")
             return
-        else:
-            i = 0
-            while i < cuenta_busqueda:
-                producto = PRODUCTOS[busqueda_posiciones[i]]
-                if producto[PRODUCTOS_CODIGO] != ELIMINADO:
-                    print(f"\nProducto encontrado...{cuenta_busqueda}\n")
-                    print(f"\n{producto}\n")
-                i += 1
+        print("\nProducto encontrado...1\n")
+        print(f"\n{PRODUCTOS[pos]}\n")
     texto = ""
     inicio_listado(texto)
 
@@ -367,7 +351,7 @@ def lista_cabeza_productos():
 def productos_nombres_activos():
     """Devuelve solo los nombres de productos que no fueron eliminados."""
     activos = []
-    for i in productos_nombre_individual:
-        if i != ELIMINADO:
-            activos.append(i)
+    for producto in PRODUCTOS:
+        if producto[PRODUCTOS_CODIGO] != ELIMINADO:
+            activos.append(producto[PRODUCTOS_NOMBRE])
     return activos

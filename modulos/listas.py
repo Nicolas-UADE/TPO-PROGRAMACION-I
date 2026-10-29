@@ -54,19 +54,6 @@ from Funciones.archivos_productos import cargar_productos_archivo
 
 PRODUCTOS = cargar_productos_archivo()
 
-# Estas listas conservan las mismas posiciones que PRODUCTOS para las busquedas actuales.
-productos_nombre_individual = []
-productos_id_individual = []
-
-for producto in PRODUCTOS:
-    if producto[PRODUCTOS_CODIGO] == ELIMINADO:
-        productos_nombre_individual.append(ELIMINADO)
-        productos_id_individual.append(ELIMINADO)
-    else:
-        productos_nombre_individual.append(producto[PRODUCTOS_NOMBRE])
-        productos_id_individual.append(producto[PRODUCTOS_CODIGO])
-
-
 #############################################
 # CLIENTES#
 # Lista de clientes. A diferencia de productos, cada cliente es un diccionario
