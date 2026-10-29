@@ -35,7 +35,11 @@ from Funciones.funciones_uni import (
 )
 
 from Funciones.funciones_recursivas import sumar_cantidades_recursivo
-from Funciones.archivos_ventas import agregar_ventas_archivo
+from Funciones.archivos_ventas import (
+    agregar_ventas_archivo,
+    dar_baja_venta_archivo,
+    modificar_ventas_archivo,
+)
 from Funciones.archivos_productos import reemplazar_producto_archivo
 
 
@@ -121,6 +125,70 @@ def guardar_venta_confirmada(venta_temporal):
         posicion = cambios[codigo][0]
         PRODUCTOS[posicion][PRODUCTOS_STOCK] = cambios[codigo][2][PRODUCTOS_STOCK]
     VENTAS.extend(venta_temporal)
+    return True
+
+
+def guardar_baja_confirmada(id_venta, posiciones):
+    cambios = {}
+    for posicion_venta in posiciones:
+        venta = VENTAS[posicion_venta]
+        codigo = venta[VENTAS_PRODUCTO]
+        posicion_producto = buscar_posicion_producto(codigo)
+        if posicion_producto != -1:
+            if codigo not in cambios:
+                original = PRODUCTOS[posicion_producto][:]
+                cambios[codigo] = [posicion_producto, original, original[:]]
+            cambios[codigo][2][PRODUCTOS_STOCK] += venta[VENTAS_CANTIDAD]
+
+    guardados = []
+    for codigo in cambios:
+        if not reemplazar_producto_archivo(codigo, cambios[codigo][2]):
+            for codigo_anterior in guardados:
+                reemplazar_producto_archivo(codigo_anterior, cambios[codigo_anterior][1])
+            return False
+        guardados.append(codigo)
+
+    if not dar_baja_venta_archivo(id_venta):
+        for codigo in guardados:
+            reemplazar_producto_archivo(codigo, cambios[codigo][1])
+        return False
+
+    for codigo in cambios:
+        posicion = cambios[codigo][0]
+        PRODUCTOS[posicion][PRODUCTOS_STOCK] = cambios[codigo][2][PRODUCTOS_STOCK]
+    for posicion_venta in posiciones:
+        VENTAS[posicion_venta][VENTAS_ID] = ELIMINADO
+    return True
+
+
+def guardar_cambios_venta(cambios):
+    if not modificar_ventas_archivo(cambios):
+        return False
+    for posicion in cambios:
+        VENTAS[posicion] = cambios[posicion]
+    return True
+
+
+def guardar_cantidad_venta(posicion_venta, posicion_producto, nueva_cantidad):
+    venta_nueva = VENTAS[posicion_venta][:]
+    cantidad_anterior = venta_nueva[VENTAS_CANTIDAD]
+    venta_nueva[VENTAS_CANTIDAD] = nueva_cantidad
+    venta_nueva[VENTAS_IMPORTE] = redondear_precio(
+        nueva_cantidad * venta_nueva[VENTAS_PRECIO_UNITARIO]
+    )
+
+    producto_original = PRODUCTOS[posicion_producto][:]
+    producto_nuevo = producto_original[:]
+    producto_nuevo[PRODUCTOS_STOCK] -= nueva_cantidad - cantidad_anterior
+    codigo = producto_original[PRODUCTOS_CODIGO]
+    if not reemplazar_producto_archivo(codigo, producto_nuevo):
+        return False
+    if not modificar_ventas_archivo({posicion_venta: venta_nueva}):
+        reemplazar_producto_archivo(codigo, producto_original)
+        return False
+
+    PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] = producto_nuevo[PRODUCTOS_STOCK]
+    VENTAS[posicion_venta] = venta_nueva
     return True
 
 
@@ -263,18 +331,10 @@ def baja_venta():
     )
 
     if confirmacion == "Y":
-        # Al eliminar la venta, se le devuelve el stock a cada producto involucrado.
-        for posicion_venta in posiciones:
-            codigo = VENTAS[posicion_venta][VENTAS_PRODUCTO]
-            cantidad = VENTAS[posicion_venta][VENTAS_CANTIDAD]
-            posicion_producto = buscar_posicion_producto(codigo)
-
-            if posicion_producto != -1:
-                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] += cantidad
-
-            VENTAS[posicion_venta][VENTAS_ID] = ELIMINADO
-
-        print("\n\033[32mVenta eliminada correctamente.\033[0m")
+        if guardar_baja_confirmada(id_venta, posiciones):
+            print("\n\033[32mVenta eliminada correctamente.\033[0m")
+        else:
+            print("\n\033[31mNo se pudo guardar la baja.\033[0m")
     else:
         print("\n\033[31mBaja de venta cancelada.\033[0m")
 
@@ -326,10 +386,15 @@ def modificar_venta():
             )
 
             if confirmacion == "Y":
+                cambios = {}
                 for posicion in posiciones:
-                    VENTAS[posicion][VENTAS_CLIENTE] = nuevo_cliente
-
-                print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    venta_nueva = VENTAS[posicion][:]
+                    venta_nueva[VENTAS_CLIENTE] = nuevo_cliente
+                    cambios[posicion] = venta_nueva
+                if guardar_cambios_venta(cambios):
+                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+                else:
+                    print("\n\033[31mNo se pudo guardar el cambio.\033[0m")
             else:
                 print("\n\033[31mModificacion cancelada.\033[0m")
 
@@ -341,10 +406,15 @@ def modificar_venta():
             )
 
             if confirmacion == "Y":
+                cambios = {}
                 for posicion in posiciones:
-                    VENTAS[posicion][VENTAS_FECHA] = nueva_fecha
-
-                print("\n\033[32mFecha modificada correctamente.\033[0m")
+                    venta_nueva = VENTAS[posicion][:]
+                    venta_nueva[VENTAS_FECHA] = nueva_fecha
+                    cambios[posicion] = venta_nueva
+                if guardar_cambios_venta(cambios):
+                    print("\n\033[32mFecha modificada correctamente.\033[0m")
+                else:
+                    print("\n\033[31mNo se pudo guardar el cambio.\033[0m")
             else:
                 print("\n\033[31mModificacion cancelada.\033[0m")
 
@@ -387,14 +457,10 @@ def modificar_venta():
             )
 
             if confirmacion == "Y":
-                # Ajusta el stock segun la diferencia entre la cantidad vieja y la nueva.
-                diferencia = nueva_cantidad - cantidad_anterior
-                PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] -= diferencia
-                VENTAS[posicion_venta][VENTAS_CANTIDAD] = nueva_cantidad
-                VENTAS[posicion_venta][VENTAS_IMPORTE] = redondear_precio(
-                    nueva_cantidad * VENTAS[posicion_venta][VENTAS_PRECIO_UNITARIO]
-                )
-                print("\n\033[32mCantidad modificada correctamente.\033[0m")
+                if guardar_cantidad_venta(posicion_venta, posicion_producto, nueva_cantidad):
+                    print("\n\033[32mCantidad modificada correctamente.\033[0m")
+                else:
+                    print("\n\033[31mNo se pudo guardar el cambio.\033[0m")
             else:
                 print("\n\033[31mModificacion cancelada.\033[0m")
 

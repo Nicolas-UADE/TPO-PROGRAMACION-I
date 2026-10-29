@@ -102,3 +102,30 @@ def dar_baja_venta_archivo(id_venta):
         if os.path.exists(ARCHIVO_AUXILIAR):
             os.remove(ARCHIVO_AUXILIAR)
         return False
+
+
+def modificar_ventas_archivo(cambios):
+    encontrados = 0
+    posicion = 0
+    try:
+        with open(ARCHIVO_VENTAS, "r", encoding="utf-8") as archivo:
+            with open(ARCHIVO_AUXILIAR, "w", encoding="utf-8") as auxiliar:
+                for linea in archivo:
+                    if posicion in cambios:
+                        auxiliar.write(preparar_linea_venta(cambios[posicion]))
+                        encontrados += 1
+                    else:
+                        auxiliar.write(linea)
+                    posicion += 1
+
+        if encontrados == len(cambios) and encontrados > 0:
+            os.replace(ARCHIVO_AUXILIAR, ARCHIVO_VENTAS)
+            return True
+
+        os.remove(ARCHIVO_AUXILIAR)
+        return False
+    except (OSError, ValueError, IndexError):
+        print("No se pudo modificar el archivo de ventas.")
+        if os.path.exists(ARCHIVO_AUXILIAR):
+            os.remove(ARCHIVO_AUXILIAR)
+        return False
