@@ -37,6 +37,7 @@ from Funciones.funciones_uni import (
 from Funciones.funciones_recursivas import sumar_cantidades_recursivo
 from Funciones.archivos_ventas import (
     agregar_ventas_archivo,
+    buscar_ventas_archivo,
     dar_baja_venta_archivo,
     modificar_ventas_archivo,
 )
@@ -473,9 +474,9 @@ def listar_ventas():
     inicio_listado(texto)
 
     opcion = obtener_entero(
-        "[1] Todas las ventas\n[2] Buscar por ID\n[3] Consultar cliente y sus ventas\n-1. Salir\n.",
+        "[1] Todas las ventas\n[2] Buscar por ID\n[3] Consultar cliente y sus ventas\n[4] Buscar por ID en archivo\n-1. Salir\n.",
         -1,
-        3,
+        4,
     )
 
     if opcion == -1:
@@ -502,6 +503,11 @@ def listar_ventas():
             # Muestra los datos del cliente junto con todas sus ventas.
             consultar_cliente_y_ventas()
             return
+
+        case 4:
+            # Busca los items de una venta directamente en el archivo ventas.txt.
+            id_venta = obtener_entero("Ingrese ID de venta\n.", 1, 999999)
+            ventas_encontradas = buscar_ventas_archivo(id_venta)
 
     if len(ventas_encontradas) == 0:
         print("\n\033[31mNo se encontraron ventas.\033[0m")
