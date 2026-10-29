@@ -1,4 +1,7 @@
+import os
+
 ARCHIVO_VENTAS = "archivos/ventas.txt"
+ARCHIVO_AUXILIAR = "archivos/ventas_auxiliar.txt"
 
 
 def convertir_venta(linea):
@@ -56,4 +59,31 @@ def agregar_ventas_archivo(ventas_nuevas):
         return True
     except OSError:
         print("No se pudo guardar la venta.")
+        return False
+
+
+def dar_baja_venta_archivo(id_venta):
+    encontrado = False
+    try:
+        with open(ARCHIVO_VENTAS, "r", encoding="utf-8") as archivo:
+            with open(ARCHIVO_AUXILIAR, "w", encoding="utf-8") as auxiliar:
+                for linea in archivo:
+                    venta = convertir_venta(linea)
+                    if venta[0] == id_venta:
+                        venta[0] = -1
+                        auxiliar.write(preparar_linea_venta(venta))
+                        encontrado = True
+                    else:
+                        auxiliar.write(linea)
+
+        if encontrado:
+            os.replace(ARCHIVO_AUXILIAR, ARCHIVO_VENTAS)
+            return True
+
+        os.remove(ARCHIVO_AUXILIAR)
+        return False
+    except (OSError, ValueError, IndexError):
+        print("No se pudo dar de baja la venta.")
+        if os.path.exists(ARCHIVO_AUXILIAR):
+            os.remove(ARCHIVO_AUXILIAR)
         return False
