@@ -50,9 +50,9 @@ def menu_estadisticas_ventas():
     inicio(texto)
     opcion = obtener_entero(
         "[0] Retroceder\n[1] Resumen completo\n"
-        "[2] Estadisticas por categoria\n[3] Total de una venta\n.",
+        "[2] Estadisticas por categoria\n[3] Total de una venta\n[4] Clientes distintos con compras\n.",
         0,
-        3,
+        4,
     )
 
     match opcion:
@@ -95,6 +95,10 @@ def menu_estadisticas_ventas():
             else:
                 total = total_venta(id_venta)
                 print(f"\nTotal de la venta {id_venta}: ${total:,.2f}")
+        case 4:
+            # Cuenta los clientes distintos que hicieron compras (usa un conjunto).
+            cantidad = cantidad_clientes_con_ventas()
+            print(f"\nClientes distintos con compras: {cantidad}")
 
 
 def guardar_venta_confirmada(venta_temporal):
@@ -684,6 +688,16 @@ def total_venta(id_venta):
             total = total + fila[VENTAS_IMPORTE]
 
     return total
+
+
+def clientes_con_ventas():
+    """Devuelve un conjunto con los ID de los clientes que tienen ventas activas, sin repetir."""
+    return {venta[VENTAS_CLIENTE] for venta in obtener_ventas_activas()}
+
+
+def cantidad_clientes_con_ventas():
+    """Devuelve cuantos clientes distintos tienen ventas activas."""
+    return len(clientes_con_ventas())
 
 
 def contar_ventas():
