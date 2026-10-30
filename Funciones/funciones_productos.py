@@ -34,99 +34,109 @@ def actualizar_producto(pos, columna, valor):
 
     return False
 
-
+    
 def alta_producto():
     """Permite cargar un producto nuevo con sus datos."""
     texto = "ALTA DE PRODUCTOS"
     inicio_alta(texto)
-    pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
-
-    while pregunta_nombre in productos_nombres_activos():
-        print("Poducto ya vigente...")
+ 
+    try:
         pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
-
-    categoria = obtener_entero(
-        "\nIngrese categoría...  \n[1] Alimentos\n[2] Limpieza\n[3] Bebidas\n[4] Otros\n.",
-        1,
-        4,
-    )
-
-    match categoria:
-        case 1:
-            categoria = "ALIMENTOS"
-        case 2:
-            categoria = "LIMPIEZA"
-        case 3:
-            categoria = "BEBIDAS"
-        case 4:
-            categoria = "OTROS"
-
-    precio = obtener_entero("Ingrese precio\n.", 0, 100000000)
-
-    stock = obtener_entero("Ingrese stock\n.", 0, 100000)
-
-    descuento = obtener_entero("Ingrese descuento: 1-100 (%)\n.", 1, 100)
-
-    codigos = [producto[PRODUCTOS_CODIGO] for producto in PRODUCTOS]
-    codigo = generador_de_id(codigos)
-
-    pregunta_seguridad = obtener_caracter(
-        "Esta seguro de agregar este producto? Y/N\n."
-    ).upper()
-    if pregunta_seguridad == "Y":
-        producto = [codigo, pregunta_nombre, categoria, precio, stock, descuento]
-        if agregar_producto_archivo(producto):
-            PRODUCTOS.append(producto)
-            print("\n\033[32mProducto agregado correctamente.\033[0m")
-    else:
-        print("\n\033[31mAlta de producto cancelada.\033[0m")
+ 
+        while pregunta_nombre in productos_nombres_activos():
+            print("Poducto ya vigente...")
+            pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
+ 
+        categoria = obtener_entero(
+            "\nIngrese categoría...  \n[1] Alimentos\n[2] Limpieza\n[3] Bebidas\n[4] Otros\n.",
+            1,
+            4,
+        )
+ 
+        match categoria:
+            case 1:
+                categoria = "ALIMENTOS"
+            case 2:
+                categoria = "LIMPIEZA"
+            case 3:
+                categoria = "BEBIDAS"
+            case 4:
+                categoria = "OTROS"
+ 
+        precio = obtener_entero("Ingrese precio\n.", 0, 100000000)
+ 
+        stock = obtener_entero("Ingrese stock\n.", 0, 100000)
+ 
+        descuento = obtener_entero("Ingrese descuento: 1-100 (%)\n.", 1, 100)
+ 
+        codigos = [producto[PRODUCTOS_CODIGO] for producto in PRODUCTOS]
+        codigo = generador_de_id(codigos)
+ 
+        pregunta_seguridad = obtener_caracter(
+            "Esta seguro de agregar este producto? Y/N\n."
+        ).upper()
+        if pregunta_seguridad == "Y":
+            producto = [codigo, pregunta_nombre, categoria, precio, stock, descuento]
+            if agregar_producto_archivo(producto):
+                PRODUCTOS.append(producto)
+                print("\n\033[32mProducto agregado correctamente.\033[0m")
+        else:
+            print("\n\033[31mAlta de producto cancelada.\033[0m")
+    except (FileNotFoundError, OSError)as error:
+        print(f"\n\033[31mError!:{error}\033[0m")
+ 
     texto = ""
     inicio_alta(texto)
-
-
+ 
+ 
 def baja_producto():
     """Permite dar de baja un producto existente."""
     texto = "BAJA DE PRODUCTOS"
     inicio_baja(texto)
-
-    pregunta_codigo = obtener_entero(
-        "\n\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
-    )
-
-    while pregunta_codigo == 0:
+ 
+    try:
         pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
+            "\n\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
         )
-
-    if pregunta_codigo == -1:
-        return
-
-    pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
-
-    while pos == -1:
-        print("Producto inexistente.")
-        pregunta_codigo = obtener_entero(
-            "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
-        )
+ 
+        while pregunta_codigo == 0:
+            pregunta_codigo = obtener_entero(
+                "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
+            )
+ 
         if pregunta_codigo == -1:
             return
+ 
         pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
-
-    pregunta_seguridad = obtener_caracter(
-        f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N\n."
-    ).upper()
-
-    if pregunta_seguridad == "Y":
-        producto_nuevo = PRODUCTOS[pos][:]
-        producto_nuevo[PRODUCTOS_CODIGO] = ELIMINADO
-        if reemplazar_producto_archivo(pregunta_codigo, producto_nuevo):
-            PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
-            print("\n\033[32mProducto eliminado correctamente.\033[0m")
-
-    else:
-        print("\n\033[31mBaja de producto cancelada.\033[0m")
+ 
+        while pos == -1:
+            print("Producto inexistente.")
+            pregunta_codigo = obtener_entero(
+                "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
+            )
+            if pregunta_codigo == -1:
+                return
+            pos = busqueda_por_codigo(PRODUCTOS, pregunta_codigo)
+ 
+        pregunta_seguridad = obtener_caracter(
+            f"\nEsta seguro de eliminar el producto {pregunta_codigo}? Y/N\n."
+        ).upper()
+ 
+        if pregunta_seguridad == "Y":
+            producto_nuevo = PRODUCTOS[pos][:]
+            producto_nuevo[PRODUCTOS_CODIGO] = ELIMINADO
+            if reemplazar_producto_archivo(pregunta_codigo, producto_nuevo):
+                PRODUCTOS[pos][PRODUCTOS_CODIGO] = ELIMINADO
+                print("\n\033[32mProducto eliminado correctamente.\033[0m")
+ 
+        else:
+            print("\n\033[31mBaja de producto cancelada.\033[0m")
+    except (FileNotFoundError, OSError)as error:
+        print(f"\n\033[31mError!:{error}\033[0m")
+ 
     texto = ""
     inicio_baja(texto)
+ 
 
 
 def modificar_producto():

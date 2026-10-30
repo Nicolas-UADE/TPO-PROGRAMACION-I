@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "nombre": "JUAN PEREZ",
+        "dni": "30111222",
+        "telefono": "1145678901",
+        "email": "juan.perez@gmail.com"
+    },
+    {
+        "id": 1,
+        "nombre": "JUAN PEREZ",
+        "dni": "30111222",
+        "telefono": "1145678901",
+        "email": "juan.perez@gmail.com"
+    },
+    {
+        "id": 2,
+        "nombre": "ANA GOMEZ",
+        "dni": "28555666",
+        "telefono": "1156789012",
+        "email": "ana.gomez@gmail.com"
+    },
+    {
+        "id": 3,
+        "nombre": "CARLOS FERNANDEZ",
+        "dni": "32444555",
+        "telefono": "1167890123",
+        "email": "carlos.fernandez@yahoo.com"
+    },
+    {
+        "id": 4,
+        "nombre": "LUCIA MARTINEZ",
+        "dni": "35222333",
+        "telefono": "1178901234",
+        "email": "lucia.martinez@hotmail.com"
+    },
+    {
+        "id": 5,
+        "nombre": "DIEGO RODRIGUEZ",
+        "dni": "27888999",
+        "telefono": "1189012345",
+        "email": "diego.rodriguez@yahoo.com"
+    },
+    {
+        "id": 6,
+        "nombre": "SOFIA LOPEZ",
+        "dni": "33666777",
+        "telefono": "1190123456",
+        "email": "sofia.lopez@hotmail.com"
+    },
+    {
+        "id": 7,
+        "nombre": "MARTIN SANCHEZ",
+        "dni": "29999000",
+        "telefono": "1101234567",
+        "email": "martin.sanchez@gmail.com"
+    },
+    {
+        "id": 8,
+        "nombre": "VALENTINA TORRES",
+        "dni": "31777888",
+        "telefono": "1112345678",
+        "email": "valentina.torres@hotmail.com"
+        },
+    {
+        "id": 9,
+        "nombre": "FEDERICO DIAZ",
+        "dni": "26333444",
+        "telefono": "1123456789",
+        "email": "federico.diaz@yahoo.com"
+    },
+    {
+        "id": 10,
+        "nombre": "CAMILA ROMERO",
+        "dni": "34111222",
+        "telefono": "1134567890",
+        "email": "camila.romero@gmail.com"
+    }
+]
