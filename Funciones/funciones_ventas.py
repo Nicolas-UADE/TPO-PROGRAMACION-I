@@ -50,9 +50,9 @@ def menu_estadisticas_ventas():
     inicio(texto)
     opcion = obtener_entero(
         "[0] Retroceder\n[1] Resumen completo\n"
-        "[2] Estadisticas por categoria\n[3] Total de una venta\n[4] Clientes distintos con compras\n.",
+        "[2] Estadisticas por categoria\n[3] Total de una venta\n[4] Clientes distintos con compras\n[5] Resumen por categoria\n.",
         0,
-        4,
+        5,
     )
 
     match opcion:
@@ -99,6 +99,19 @@ def menu_estadisticas_ventas():
             # Cuenta los clientes distintos que hicieron compras (usa un conjunto).
             cantidad = cantidad_clientes_con_ventas()
             print(f"\nClientes distintos con compras: {cantidad}")
+        case 5:
+            # Muestra, por categoria, las unidades vendidas y el importe total (usa un diccionario).
+            resumen = resumen_ventas_por_categoria()
+
+            if len(resumen) == 0:
+                print("\n\033[31mNo hay ventas registradas.\033[0m")
+            else:
+                for categoria in sorted(resumen):
+                    datos = resumen[categoria]
+                    print(
+                        f"{categoria}: unidades {datos['unidades']}, "
+                        f"importe ${datos['importe']:,.2f}"
+                    )
 
 
 def guardar_venta_confirmada(venta_temporal):
@@ -698,6 +711,22 @@ def clientes_con_ventas():
 def cantidad_clientes_con_ventas():
     """Devuelve cuantos clientes distintos tienen ventas activas."""
     return len(clientes_con_ventas())
+
+
+def resumen_ventas_por_categoria():
+    """Arma un diccionario {categoria: {unidades, importe}} con lo vendido en cada categoria."""
+    resumen = {}
+
+    for venta in obtener_ventas_activas():
+        categoria = venta[VENTAS_CATEGORIA]
+
+        if categoria not in resumen:
+            resumen[categoria] = {"unidades": 0, "importe": 0}
+
+        resumen[categoria]["unidades"] += venta[VENTAS_CANTIDAD]
+        resumen[categoria]["importe"] += venta[VENTAS_IMPORTE]
+
+    return resumen
 
 
 def contar_ventas():
