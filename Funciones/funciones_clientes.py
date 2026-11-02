@@ -10,6 +10,7 @@ from Funciones.funciones_uni import (
     validar_email,
 )
 from modulos.listas import ELIMINADO, lista_clientes
+from Funciones.archivos_clientes import guardar_clientes_json
 
 def obtener_cliente(indice):
     assert indice >=0
@@ -17,6 +18,7 @@ def obtener_cliente(indice):
     cliente=lista_clientes[indice] #HACERLO CON UN ARCHIVO, DESDE EL JSON
     if cliente== ELIMINADO:
         raise ValueError("El Cliente fue dado de baja")
+    return cliente
 
 def alta_clientes():
     """
@@ -60,6 +62,7 @@ def alta_clientes():
 
         if pregunta_seguridad == "Y":
             lista_clientes.append(cliente)
+            guardar_clientes_json(lista_clientes)
             print("\n\033[32mCliente agregado correctamente.\033[0m")
         else:
             print("\n\033[31mAlta de cliente cancelada.\033[0m")
@@ -95,7 +98,6 @@ def listado_clientes():
                 )
             case 1:
                 # Imprime todos los clientes que sigan activos en el sistema
-                buscar_por_id()
                 for cliente in lista_clientes:
                     if cliente != ELIMINADO:
                         print(
@@ -231,6 +233,7 @@ def baja_clientes():
         if pregunta_seguridad == "Y":
             # Se reemplaza por constante ELIMINADO para mantener las posiciones de la lista
             lista_clientes[esta] = ELIMINADO
+            guardar_clientes_json(lista_clientes)
             print("\n\033[32mCliente eliminado correctamente.\033[0m")
         else:
             print("\n\033[31mBaja de cliente cancelada.\033[0m")
@@ -302,6 +305,7 @@ def modificar_clientes():
  
                 if pregunta_seguridad == "Y":
                     lista_clientes[esta]["nombre"] = nombre
+                    guardar_clientes_json(lista_clientes)
                     print("\n\033[32mCliente modificado correctamente.\033[0m")
  
                     pregunta_eleccion_otra = obtener_caracter(
@@ -324,6 +328,7 @@ def modificar_clientes():
                 if pregunta_seguridad == "Y":
                     el_dni = str(dni)
                     lista_clientes[esta]["dni"] = el_dni
+                    guardar_clientes_json(lista_clientes)
                     print("\n\033[32mCliente modificado correctamente.\033[0m")
  
                     pregunta_eleccion_otra = obtener_caracter(
@@ -346,6 +351,7 @@ def modificar_clientes():
                 if pregunta_seguridad == "Y":
                     el_telefono = str(telefono)
                     lista_clientes[esta]["telefono"] = el_telefono
+                    guardar_clientes_json(lista_clientes)
                     print("\n\033[32mCliente modificado correctamente.\033[0m")
  
                     pregunta_eleccion_otra = obtener_caracter(
