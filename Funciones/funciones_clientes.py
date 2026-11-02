@@ -12,6 +12,13 @@ from Funciones.funciones_uni import (
 from modulos.listas import ELIMINADO, lista_clientes
 from Funciones.archivos_clientes import guardar_clientes_json
 
+def dni_repetido(dni, posicion_actual=-1):
+    for i in range(len(lista_clientes)):
+        if lista_clientes[i] != ELIMINADO and i != posicion_actual:
+            if lista_clientes[i]["dni"] == str(dni):
+                return True
+    return False
+
 def obtener_cliente(indice):
     cliente = lista_clientes[indice]
     if cliente== ELIMINADO:
@@ -30,6 +37,9 @@ def alta_clientes():
         # Captura de datos básicos
         nombre = obtener_caracter("Nombre y apellido:\n.").upper()
         dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+        while dni_repetido(dni):
+            print("Ese DNI ya pertenece a otro cliente.")
+            dni = obtener_entero("Ingrese otro DNI:\n.", 1000000, 99999999)
         telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
         email = obtener_caracter("Email:\n.").lower()
 
@@ -328,6 +338,9 @@ def modificar_clientes():
             case 2:
                 # Cambio de DNI
                 dni = obtener_entero("DNI:\n.", 1000000, 99999999)
+                while dni_repetido(dni, esta):
+                    print("Ese DNI ya pertenece a otro cliente.")
+                    dni = obtener_entero("Ingrese otro DNI:\n.", 1000000, 99999999)
                 pregunta_seguridad = obtener_caracter(
                     f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
                 ).upper()
