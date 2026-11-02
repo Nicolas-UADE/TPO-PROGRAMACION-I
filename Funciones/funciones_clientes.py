@@ -13,9 +13,7 @@ from modulos.listas import ELIMINADO, lista_clientes
 from Funciones.archivos_clientes import guardar_clientes_json
 
 def obtener_cliente(indice):
-    assert indice >=0
-
-    cliente=lista_clientes[indice] #HACERLO CON UN ARCHIVO, DESDE EL JSON
+    cliente = lista_clientes[indice]
     if cliente== ELIMINADO:
         raise ValueError("El Cliente fue dado de baja")
     return cliente
@@ -62,8 +60,10 @@ def alta_clientes():
 
         if pregunta_seguridad == "Y":
             lista_clientes.append(cliente)
-            guardar_clientes_json(lista_clientes)
-            print("\n\033[32mCliente agregado correctamente.\033[0m")
+            if guardar_clientes_json(lista_clientes):
+                print("\n\033[32mCliente agregado correctamente.\033[0m")
+            else:
+                lista_clientes.pop()
         else:
             print("\n\033[31mAlta de cliente cancelada.\033[0m")
 
@@ -232,9 +232,12 @@ def baja_clientes():
  
         if pregunta_seguridad == "Y":
             # Se reemplaza por constante ELIMINADO para mantener las posiciones de la lista
+            cliente_anterior = lista_clientes[esta]
             lista_clientes[esta] = ELIMINADO
-            guardar_clientes_json(lista_clientes)
-            print("\n\033[32mCliente eliminado correctamente.\033[0m")
+            if guardar_clientes_json(lista_clientes):
+                print("\n\033[32mCliente eliminado correctamente.\033[0m")
+            else:
+                lista_clientes[esta] = cliente_anterior
         else:
             print("\n\033[31mBaja de cliente cancelada.\033[0m")
  
@@ -304,9 +307,13 @@ def modificar_clientes():
                 ).upper()
  
                 if pregunta_seguridad == "Y":
+                    nombre_anterior = lista_clientes[esta]["nombre"]
                     lista_clientes[esta]["nombre"] = nombre
-                    guardar_clientes_json(lista_clientes)
-                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    if guardar_clientes_json(lista_clientes):
+                        print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    else:
+                        lista_clientes[esta]["nombre"] = nombre_anterior
+                        return
  
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -327,9 +334,13 @@ def modificar_clientes():
  
                 if pregunta_seguridad == "Y":
                     el_dni = str(dni)
+                    dni_anterior = lista_clientes[esta]["dni"]
                     lista_clientes[esta]["dni"] = el_dni
-                    guardar_clientes_json(lista_clientes)
-                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    if guardar_clientes_json(lista_clientes):
+                        print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    else:
+                        lista_clientes[esta]["dni"] = dni_anterior
+                        return
  
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
@@ -350,13 +361,46 @@ def modificar_clientes():
  
                 if pregunta_seguridad == "Y":
                     el_telefono = str(telefono)
+                    telefono_anterior = lista_clientes[esta]["telefono"]
                     lista_clientes[esta]["telefono"] = el_telefono
-                    guardar_clientes_json(lista_clientes)
-                    print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    if guardar_clientes_json(lista_clientes):
+                        print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    else:
+                        lista_clientes[esta]["telefono"] = telefono_anterior
+                        return
  
                     pregunta_eleccion_otra = obtener_caracter(
                         "Desea hacer otra modificacion? Y/N\n"
                     ).upper()
+                    if pregunta_eleccion_otra == "Y":
+                        texto = ""
+                        inicio_modificar(texto)
+                        modificar_clientes()
+                else:
+                    print("\n\033[31mModificacion de cliente cancelada.\033[0m")
+
+            case 4:
+                email = obtener_caracter("Email:\n.").lower()
+                while validar_email(email) == False:
+                    print("\nIngrese un mail valido.\n")
+                    email = obtener_caracter("Email:\n.").lower()
+
+                pregunta_seguridad = obtener_caracter(
+                    f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
+                )
+
+                if pregunta_seguridad == "Y":
+                    email_anterior = lista_clientes[esta]["email"]
+                    lista_clientes[esta]["email"] = email
+                    if guardar_clientes_json(lista_clientes):
+                        print("\n\033[32mCliente modificado correctamente.\033[0m")
+                    else:
+                        lista_clientes[esta]["email"] = email_anterior
+                        return
+
+                    pregunta_eleccion_otra = obtener_caracter(
+                        "Desea hacer otra modificacion? Y/N\n"
+                    )
                     if pregunta_eleccion_otra == "Y":
                         texto = ""
                         inicio_modificar(texto)
