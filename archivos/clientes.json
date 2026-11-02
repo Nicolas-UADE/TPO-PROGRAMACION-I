@@ -7,13 +7,6 @@
         "email": "juan.perez@gmail.com"
     },
     {
-        "id": 1,
-        "nombre": "JUAN PEREZ",
-        "dni": "30111222",
-        "telefono": "1145678901",
-        "email": "juan.perez@gmail.com"
-    },
-    {
         "id": 2,
         "nombre": "ANA GOMEZ",
         "dni": "28555666",
@@ -61,7 +54,7 @@
         "dni": "31777888",
         "telefono": "1112345678",
         "email": "valentina.torres@hotmail.com"
-        },
+    },
     {
         "id": 9,
         "nombre": "FEDERICO DIAZ",

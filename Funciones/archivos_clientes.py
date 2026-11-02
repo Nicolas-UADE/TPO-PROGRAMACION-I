@@ -1,4 +1,7 @@
+import json
+
 ARCHIVO_CLIENTES = "archivos/clientes.txt"
+ARCHIVO_CLIENTES_JSON = "archivos/clientes.json"
 
 
 def convertir_cliente(linea):
@@ -32,3 +35,26 @@ def buscar_cliente_archivo(id_cliente):
     except FileNotFoundError:
         print("No se encontro el archivo de clientes.")
     return None
+
+
+def cargar_clientes_json():
+    """Lee los clientes desde clientes.json y devuelve una lista de diccionarios."""
+    try:
+        with open(ARCHIVO_CLIENTES_JSON, "r", encoding="utf-8") as archivo:
+            return json.load(archivo)
+    except FileNotFoundError:
+        print("No se encontro el archivo de clientes.")
+    except (OSError, ValueError):
+        print("No se pudieron leer los clientes.")
+    return []
+
+
+def guardar_clientes_json(clientes):
+    """Guarda la lista de clientes en clientes.json. Devuelve True si se pudo guardar."""
+    try:
+        with open(ARCHIVO_CLIENTES_JSON, "w", encoding="utf-8") as archivo:
+            json.dump(clientes, archivo)
+        return True
+    except OSError:
+        print("No se pudieron guardar los clientes.")
+        return False
