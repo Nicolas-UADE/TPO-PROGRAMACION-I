@@ -1,5 +1,6 @@
 from Funciones.funciones_uni import (
     obtener_caracter,
+    obtener_respuesta,
     obtener_entero,
     buscar_por_id,
     inicio_alta,
@@ -64,7 +65,7 @@ def alta_clientes():
         }
 
         # Confirmación final de guardado
-        pregunta_seguridad = obtener_caracter(
+        pregunta_seguridad = obtener_respuesta(
             f"\nEsta seguro de agregar al cliente? Y/N\n."
         ).upper()
 
@@ -236,7 +237,7 @@ def baja_clientes():
                 return
  
         # Confirmación de la baja
-        pregunta_seguridad = obtener_caracter(
+        pregunta_seguridad = obtener_respuesta(
             f"\nEsta seguro de eliminar al cliente {pregunta_codigo}? Y/N\n."
         ).upper()
  
@@ -312,7 +313,7 @@ def modificar_clientes():
             case 1:
                 # Cambio de Nombre
                 nombre = obtener_caracter("Nombre y apellido:\n.").upper()
-                pregunta_seguridad = obtener_caracter(
+                pregunta_seguridad = obtener_respuesta(
                     f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
                 ).upper()
  
@@ -325,7 +326,7 @@ def modificar_clientes():
                         lista_clientes[esta]["nombre"] = nombre_anterior
                         return
  
-                    pregunta_eleccion_otra = obtener_caracter(
+                    pregunta_eleccion_otra = obtener_respuesta(
                         "Desea hacer otra modificacion? Y/N\n"
                     ).upper()
                     if pregunta_eleccion_otra == "Y":
@@ -341,7 +342,7 @@ def modificar_clientes():
                 while dni_repetido(dni, esta):
                     print("Ese DNI ya pertenece a otro cliente.")
                     dni = obtener_entero("Ingrese otro DNI:\n.", 1000000, 99999999)
-                pregunta_seguridad = obtener_caracter(
+                pregunta_seguridad = obtener_respuesta(
                     f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
                 ).upper()
  
@@ -355,7 +356,7 @@ def modificar_clientes():
                         lista_clientes[esta]["dni"] = dni_anterior
                         return
  
-                    pregunta_eleccion_otra = obtener_caracter(
+                    pregunta_eleccion_otra = obtener_respuesta(
                         "Desea hacer otra modificacion? Y/N\n"
                     ).upper()
                     if pregunta_eleccion_otra == "Y":
@@ -368,7 +369,7 @@ def modificar_clientes():
             case 3:
                 # Cambio de Teléfono
                 telefono = obtener_entero("Telefono:\n.", 1000000000, 9999999999)
-                pregunta_seguridad = obtener_caracter(
+                pregunta_seguridad = obtener_respuesta(
                     f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
                 ).upper()
  
@@ -382,7 +383,7 @@ def modificar_clientes():
                         lista_clientes[esta]["telefono"] = telefono_anterior
                         return
  
-                    pregunta_eleccion_otra = obtener_caracter(
+                    pregunta_eleccion_otra = obtener_respuesta(
                         "Desea hacer otra modificacion? Y/N\n"
                     ).upper()
                     if pregunta_eleccion_otra == "Y":
@@ -398,7 +399,7 @@ def modificar_clientes():
                     print("\nIngrese un mail valido.\n")
                     email = obtener_caracter("Email:\n.").lower()
 
-                pregunta_seguridad = obtener_caracter(
+                pregunta_seguridad = obtener_respuesta(
                     f"\nEsta seguro de modificar el cliente {pregunta_codigo}? Y/N\n."
                 )
 
@@ -411,7 +412,7 @@ def modificar_clientes():
                         lista_clientes[esta]["email"] = email_anterior
                         return
 
-                    pregunta_eleccion_otra = obtener_caracter(
+                    pregunta_eleccion_otra = obtener_respuesta(
                         "Desea hacer otra modificacion? Y/N\n"
                     )
                     if pregunta_eleccion_otra == "Y":
