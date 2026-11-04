@@ -36,10 +36,8 @@ from Funciones.funciones_uni import (
 
 from Funciones.funciones_recursivas import sumar_cantidades_recursivo
 from Funciones.archivos_ventas import (
-    agregar_ventas_archivo,
-    buscar_ventas_archivo,
-    dar_baja_venta_archivo,
-    modificar_ventas_archivo,
+    buscar_ventas_json,
+    guardar_ventas_json,
 )
 from Funciones.archivos_productos import reemplazar_producto_archivo
 
@@ -134,7 +132,8 @@ def guardar_venta_confirmada(venta_temporal):
             return False
         guardados.append(codigo)
 
-    if not agregar_ventas_archivo(venta_temporal):
+    ventas_nuevas = VENTAS + venta_temporal
+    if not guardar_ventas_json(ventas_nuevas):
         for codigo in guardados:
             reemplazar_producto_archivo(codigo, cambios[codigo][1])
         return False
@@ -166,7 +165,11 @@ def guardar_baja_confirmada(id_venta, posiciones):
             return False
         guardados.append(codigo)
 
-    if not dar_baja_venta_archivo(id_venta):
+    for posicion_venta in posiciones:
+        VENTAS[posicion_venta][VENTAS_ID] = ELIMINADO
+    if not guardar_ventas_json(VENTAS):
+        for posicion_venta in posiciones:
+            VENTAS[posicion_venta][VENTAS_ID] = id_venta
         for codigo in guardados:
             reemplazar_producto_archivo(codigo, cambios[codigo][1])
         return False
@@ -174,13 +177,14 @@ def guardar_baja_confirmada(id_venta, posiciones):
     for codigo in cambios:
         posicion = cambios[codigo][0]
         PRODUCTOS[posicion][PRODUCTOS_STOCK] = cambios[codigo][2][PRODUCTOS_STOCK]
-    for posicion_venta in posiciones:
-        VENTAS[posicion_venta][VENTAS_ID] = ELIMINADO
     return True
 
 
 def guardar_cambios_venta(cambios):
-    if not modificar_ventas_archivo(cambios):
+    ventas_nuevas = VENTAS[:]
+    for posicion in cambios:
+        ventas_nuevas[posicion] = cambios[posicion]
+    if not guardar_ventas_json(ventas_nuevas):
         return False
     for posicion in cambios:
         VENTAS[posicion] = cambios[posicion]
@@ -201,12 +205,14 @@ def guardar_cantidad_venta(posicion_venta, posicion_producto, nueva_cantidad):
     codigo = producto_original[PRODUCTOS_CODIGO]
     if not reemplazar_producto_archivo(codigo, producto_nuevo):
         return False
-    if not modificar_ventas_archivo({posicion_venta: venta_nueva}):
+    venta_anterior = VENTAS[posicion_venta]
+    VENTAS[posicion_venta] = venta_nueva
+    if not guardar_ventas_json(VENTAS):
+        VENTAS[posicion_venta] = venta_anterior
         reemplazar_producto_archivo(codigo, producto_original)
         return False
 
     PRODUCTOS[posicion_producto][PRODUCTOS_STOCK] = producto_nuevo[PRODUCTOS_STOCK]
-    VENTAS[posicion_venta] = venta_nueva
     return True
 
 
@@ -522,9 +528,9 @@ def listar_ventas():
             return
 
         case 4:
-            # Busca los items de una venta directamente en el archivo ventas.txt.
+            # Busca los items de una venta directamente en el archivo ventas.json.
             id_venta = obtener_entero("Ingrese ID de venta\n.", 1, 999999)
-            ventas_encontradas = buscar_ventas_archivo(id_venta)
+            ventas_encontradas = buscar_ventas_json(id_venta)
 
     if len(ventas_encontradas) == 0:
         print("\n\033[31mNo se encontraron ventas.\033[0m")

@@ -1,7 +1,9 @@
+import json
 import os
 
 ARCHIVO_VENTAS = "archivos/ventas.txt"
 ARCHIVO_AUXILIAR = "archivos/ventas_auxiliar.txt"
+ARCHIVO_VENTAS_JSON = "archivos/ventas.json"
 
 
 def convertir_venta(linea):
@@ -129,3 +131,35 @@ def modificar_ventas_archivo(cambios):
         if os.path.exists(ARCHIVO_AUXILIAR):
             os.remove(ARCHIVO_AUXILIAR)
         return False
+
+
+def cargar_ventas_json():
+    """Lee las ventas desde ventas.json y devuelve una lista de listas."""
+    try:
+        with open(ARCHIVO_VENTAS_JSON, "r", encoding="utf-8") as archivo:
+            return json.load(archivo)
+    except FileNotFoundError:
+        print("No se encontro el archivo de ventas.")
+    except (OSError, ValueError):
+        print("No se pudieron leer las ventas.")
+    return []
+
+
+def guardar_ventas_json(ventas):
+    """Guarda la lista de ventas en ventas.json. Devuelve True si se pudo guardar."""
+    try:
+        with open(ARCHIVO_VENTAS_JSON, "w", encoding="utf-8") as archivo:
+            json.dump(ventas, archivo)
+        return True
+    except OSError:
+        print("No se pudieron guardar las ventas.")
+        return False
+
+
+def buscar_ventas_json(id_venta):
+    """Devuelve las filas de ventas.json que pertenecen al id de venta indicado."""
+    ventas_encontradas = []
+    for venta in cargar_ventas_json():
+        if venta[0] == id_venta:
+            ventas_encontradas.append(venta)
+    return ventas_encontradas

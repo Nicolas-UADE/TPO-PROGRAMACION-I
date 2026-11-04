@@ -76,7 +76,7 @@ VENTAS_PRECIO_UNITARIO = 6
 VENTAS_IMPORTE = 7
 
 
-# Cada fila de ventas se lee del archivo de texto al iniciar.
-from Funciones.archivos_ventas import cargar_ventas_archivo
+# Cada fila de ventas se carga desde ventas.json al iniciar el programa.
+from Funciones.archivos_ventas import cargar_ventas_json
 
-VENTAS = cargar_ventas_archivo()
+VENTAS = cargar_ventas_json()
