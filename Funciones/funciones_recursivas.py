@@ -1,4 +1,4 @@
-from modulos.listas import PRODUCTOS_CODIGO, VENTAS_CANTIDAD
+from modulos.listas import VENTAS_CANTIDAD
 
 
 def sumar_cantidades_recursivo(filas, i=0):
