@@ -53,7 +53,7 @@ def guardar_clientes_json(clientes):
     """Guarda la lista de clientes en clientes.json. Devuelve True si se pudo guardar."""
     try:
         with open(ARCHIVO_CLIENTES_JSON, "w", encoding="utf-8") as archivo:
-            json.dump(clientes, archivo)
+            json.dump(clientes, archivo, indent=4, ensure_ascii=False)
         return True
     except OSError:
         print("No se pudieron guardar los clientes.")
