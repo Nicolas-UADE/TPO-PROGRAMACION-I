@@ -10,7 +10,7 @@ from Funciones.funciones_productos import (
     listar_productos,
     baja_producto,
     alta_producto,
-    modificar_producto,
+    modificar_producto,cargar_productos_archivo
 )
 
 
@@ -21,23 +21,29 @@ def consultas_rapidas():
         "[3] Codigos activos\n[4] Nombres activos\n.", 0, 4
     )
 
-    if opcion == 1:
-        for categoria in sorted(categorias_distintas()):
-            print(categoria)
-    elif opcion == 2:
-        categoria = obtener_caracter("Ingrese categoria\n.").upper()
-        nombres = nombres_por_categoria(categoria)
-        if len(nombres) == 0:
-            print("No hay productos en esa categoria.")
-        else:
-            for nombre in nombres:
+    productos = cargar_productos_archivo()
+
+    match opcion:
+        case 1:
+            for categoria in sorted(categorias_distintas(productos)):
+                print(categoria)
+
+        case 2:
+            categoria = obtener_caracter("Ingrese categoria\n.")
+            nombres = nombres_por_categoria(productos, categoria)
+            if len(nombres) == 0:
+                print("No hay productos en esa categoria.")
+            else:
+                for nombre in nombres:
+                    print(nombre)
+
+        case 3:
+            for codigo in sorted(codigos_activos(productos)):
+                print(codigo)
+
+        case 4:
+            for nombre in nombres_activos(productos):
                 print(nombre)
-    elif opcion == 3:
-        for codigo in sorted(codigos_activos()):
-            print(codigo)
-    elif opcion == 4:
-        for nombre in nombres_activos():
-            print(nombre)
 
 
 def productos():

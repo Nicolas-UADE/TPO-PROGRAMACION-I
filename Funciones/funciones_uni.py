@@ -1,5 +1,5 @@
 import random
-import re
+
 from modulos.listas import (
     PRODUCTOS_CODIGO,
     PRODUCTOS_NOMBRE,
@@ -8,7 +8,7 @@ from modulos.listas import (
     USUARIOS_ADMIN,
     USUARIOS_LECTORES,
     PRODUCTOS_STOCK,
-    PRODUCTOS,
+    
     PRODUCTOS_DESCUENTO,
     ELIMINADO,
     USUARIOS_ADMIN,
@@ -28,9 +28,21 @@ def generador_de_id(lista):
 
 
 def validar_email(email):
-    """Chequea que el email tenga formato valido y termine en uno de los dominios permitidos."""
-    patron_email = r"^[a-zA-Z0-9._-]+@(gmail|hotmail|outlook|yahoo)\.com$"
-    return re.match(patron_email, email) != None
+    """Chequea que el email tenga formato valido."""
+    if email.count("@") != 1 or " " in email:
+        return False
+
+    usuario, dominio = email.split("@")
+    partes = dominio.split(".")
+
+    if usuario == "" or len(partes) < 2:
+        return False
+
+    for parte in partes:
+        if parte == "" or not parte.replace("-", "").isalnum():
+            return False
+
+    return len(partes[-1]) >= 2 and partes[-1].isalpha()
 
 
 def recortar_texto(texto, ancho_maximo):
@@ -48,23 +60,13 @@ def positivo(valor):
     return valor > 0
 
 
-def productos_activos():
-    """Devuelve solo los productos que no fueron eliminados, en formato de lista de listas."""
+def productos_activos(productos):
+    """Devuelve solo los productos que no fueron eliminados."""
     activos = []
-    for i in PRODUCTOS:
-        if i[PRODUCTOS_CODIGO] != ELIMINADO:
-            activos.append(
-                [
-                    i[PRODUCTOS_CODIGO],
-                    i[PRODUCTOS_NOMBRE],
-                    i[PRODUCTOS_CATEGORIA],
-                    i[PRODUCTOS_PRECIO],
-                    i[PRODUCTOS_STOCK],
-                    i[PRODUCTOS_DESCUENTO],
-                ]
-            )
+    for producto in productos:
+        if producto[PRODUCTOS_CODIGO] != ELIMINADO:
+            activos.append(producto)
     return activos
-
 
 def inicio(texto):
     """Imprime un titulo centrado, sin color (para menus generales)."""
@@ -204,27 +206,24 @@ def buscar_por_nombre(lista, nombre):
 
 
 def obtener_entero(texto, minimo, maximo):
-    """Pide un numero entero por teclado, valida que sea numero y que este dentro del rango permitido."""
-    valor_invalido = True
-    while valor_invalido == True:
+    """Pide un numero entero por teclado, valida que no este vacio, que sea numero y que este dentro del rango permitido."""
+    while True:
         valor_str = input(texto).strip()
 
-        es_entero = valor_str.isdigit()
+        if valor_str == "":
+            print("Debe ingresar un valor.")
+            continue
 
-        # Contempla el caso de numeros negativos (el signo "-" no lo detecta isdigit()).
-        if valor_str.startswith("-") and len(valor_str) > 1:
-            es_entero = valor_str[1:].isdigit()
-
-        if es_entero == False:
-            print("Debe ingresar un numero entero.")
-        else:
+        try:
             valor = int(valor_str)
+        except ValueError:
+            print("Debe ingresar un numero entero.")
+            continue
 
-            if not rango(minimo, maximo, valor):
-                print("Valor no valido.")
-            else:
-                valor_invalido = False
-    return valor
+        if rango(minimo, maximo, valor):
+            return valor
+
+        print("Valor no valido.")
 
 
 def busqueda_secuencial(lista, parametro, i=0):
@@ -254,14 +253,13 @@ def busqueda_por_codigo(lista, codigo, i=0):
     # caso recursivo: revisamos el siguiente producto
     return busqueda_por_codigo(lista, codigo, i + 1)
 
-def ordenar_por_codigo():
-    """Imprime la tabla de productos activos ordenada por codigo."""
-    ordenados_codigo = sorted(
-        productos_activos(), key=lambda fila: fila[PRODUCTOS_CODIGO]
-    )
+def ordenar_por_codigo(lista):
+    """Imprime la tabla ordenada por codigo."""
+    activos = [fila for fila in lista if fila[PRODUCTOS_CODIGO] != ELIMINADO]
+    ordenados = sorted(activos, key=lambda fila: fila[PRODUCTOS_CODIGO])
     ancho = 118
     print("-" * ancho)
-    for i in ordenados_codigo:
+    for i in ordenados:
         descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
             f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"
@@ -269,14 +267,13 @@ def ordenar_por_codigo():
     print("-" * ancho)
 
 
-def ordenar_alfabeticamente():
-    """Imprime la tabla de productos activos ordenada alfabeticamente por nombre."""
-    ordenados_codigo = sorted(
-        productos_activos(), key=lambda fila: fila[PRODUCTOS_NOMBRE]
-    )
+def ordenar_alfabeticamente(lista):
+    """Imprime la tabla ordenada alfabeticamente por nombre."""
+    activos = [fila for fila in lista if fila[PRODUCTOS_CODIGO] != ELIMINADO]
+    ordenados = sorted(activos, key=lambda fila: fila[PRODUCTOS_NOMBRE])
     ancho = 118
     print("-" * ancho)
-    for i in ordenados_codigo:
+    for i in ordenados:
         descuento = f"{i[PRODUCTOS_DESCUENTO]}%"
         print(
             f"|{i[PRODUCTOS_CODIGO]:<15} | {i[PRODUCTOS_NOMBRE]:<15} | {i[PRODUCTOS_CATEGORIA]:<15} | {redondeo(i[PRODUCTOS_PRECIO]):<15} | {i[PRODUCTOS_STOCK]:<15} | {descuento:<15}"

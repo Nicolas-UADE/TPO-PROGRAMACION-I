@@ -50,10 +50,10 @@ PRODUCTOS_DESCUENTO = 5
 
 
 # Los productos se cargan desde el archivo al iniciar el programa.
-from Funciones.archivos_productos import cargar_productos_archivo
+
 from Funciones.archivos_clientes import cargar_clientes_json
 
-PRODUCTOS = cargar_productos_archivo()
+
 
 #############################################
 # CLIENTES#
