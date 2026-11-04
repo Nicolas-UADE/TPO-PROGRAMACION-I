@@ -53,7 +53,9 @@ PRODUCTOS_DESCUENTO = 5
 
 from Funciones.archivos_clientes import cargar_clientes_json
 
+from Funciones.archivos_productos import cargar_productos_archivo
 
+PRODUCTOS = cargar_productos_archivo()
 
 #############################################
 # CLIENTES#
