@@ -149,7 +149,7 @@ def guardar_ventas_json(ventas):
     """Guarda la lista de ventas en ventas.json. Devuelve True si se pudo guardar."""
     try:
         with open(ARCHIVO_VENTAS_JSON, "w", encoding="utf-8") as archivo:
-            json.dump(ventas, archivo)
+            json.dump(ventas, archivo, indent=4)
         return True
     except OSError:
         print("No se pudieron guardar las ventas.")
