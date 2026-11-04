@@ -234,7 +234,7 @@ def modificar_producto():
             print("\n\033[32mProducto modificado correctamente.\033[0m")
 
             pregunta_otra = obtener_caracter(
-                "Desea hacer otra modificacion? Y/N\n"
+                "Desea hacer otra modificacion? Y/N\n."
             ).upper()
             if pregunta_otra == "Y":
                 modificar_producto()
