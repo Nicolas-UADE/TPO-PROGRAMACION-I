@@ -20,7 +20,10 @@ from modulos.listas import (
     VENTAS_CATEGORIA,
     lista_clientes,
 )
-from Funciones.archivos_productos import reemplazar_producto_archivo, cargar_productos_archivo
+from Funciones.archivos_productos import (
+    reemplazar_producto_archivo,
+    cargar_productos_archivo,
+)
 
 from Funciones.funciones_uni import (
     obtener_entero,
@@ -129,7 +132,9 @@ def guardar_venta_confirmada(venta_temporal):
     for codigo in cambios:
         if not reemplazar_producto_archivo(codigo, cambios[codigo][2]):
             for codigo_anterior in guardados:
-                reemplazar_producto_archivo(codigo_anterior, cambios[codigo_anterior][1])
+                reemplazar_producto_archivo(
+                    codigo_anterior, cambios[codigo_anterior][1]
+                )
             return False
         guardados.append(codigo)
 
@@ -162,7 +167,9 @@ def guardar_baja_confirmada(id_venta, posiciones):
     for codigo in cambios:
         if not reemplazar_producto_archivo(codigo, cambios[codigo][2]):
             for codigo_anterior in guardados:
-                reemplazar_producto_archivo(codigo_anterior, cambios[codigo_anterior][1])
+                reemplazar_producto_archivo(
+                    codigo_anterior, cambios[codigo_anterior][1]
+                )
             return False
         guardados.append(codigo)
 
@@ -485,7 +492,9 @@ def modificar_venta():
             )
 
             if confirmacion == "Y":
-                if guardar_cantidad_venta(posicion_venta, posicion_producto, nueva_cantidad):
+                if guardar_cantidad_venta(
+                    posicion_venta, posicion_producto, nueva_cantidad
+                ):
                     print("\n\033[32mCantidad modificada correctamente.\033[0m")
                 else:
                     print("\n\033[31mNo se pudo guardar el cambio.\033[0m")
@@ -1006,6 +1015,7 @@ def obtener_nombre_producto(codigo):
         return "ELIMINADO"
 
     return PRODUCTOS[posicion][PRODUCTOS_NOMBRE]
+
 
 def refrescar_productos():
     """Vuelve a leer productos.txt y actualiza la lista PRODUCTOS en el lugar."""

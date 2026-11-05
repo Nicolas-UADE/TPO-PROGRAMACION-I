@@ -7,7 +7,11 @@ from modulos.listas import (
     PRODUCTOS_STOCK,
     ELIMINADO,
 )
-from Funciones.archivos_productos import agregar_producto_archivo, reemplazar_producto_archivo,cargar_productos_archivo
+from Funciones.archivos_productos import (
+    agregar_producto_archivo,
+    reemplazar_producto_archivo,
+    cargar_productos_archivo,
+)
 from Funciones.funciones_uni import (
     obtener_caracter,
     obtener_entero,
@@ -55,7 +59,9 @@ def alta_producto():
 
         while pregunta_nombre in productos_nombres_activos(productos):
             print("Producto ya vigente...")
-            pregunta_nombre = obtener_caracter("\nIngrese nombre del producto\n.").upper()
+            pregunta_nombre = obtener_caracter(
+                "\nIngrese nombre del producto\n."
+            ).upper()
 
         categoria = obtener_entero(
             "\nIngrese categoría...  \n[1] Alimentos\n[2] Limpieza\n[3] Bebidas\n[4] Otros\n.",
@@ -96,8 +102,8 @@ def alta_producto():
 
     texto = ""
     inicio_alta(texto)
- 
- 
+
+
 def baja_producto():
     """Permite dar de baja un producto existente."""
     texto = "BAJA DE PRODUCTOS"
@@ -112,7 +118,9 @@ def baja_producto():
 
         while pregunta_codigo == 0:
             pregunta_codigo = obtener_entero(
-                "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
+                "\nIngrese código del producto a eliminar.\n-1 para salir\n.",
+                -1,
+                1000000,
             )
 
         if pregunta_codigo == -1:
@@ -123,7 +131,9 @@ def baja_producto():
         while pos == -1:
             print("Producto inexistente.")
             pregunta_codigo = obtener_entero(
-                "\nIngrese código del producto a eliminar.\n-1 para salir\n.", -1, 1000000
+                "\nIngrese código del producto a eliminar.\n-1 para salir\n.",
+                -1,
+                1000000,
             )
             if pregunta_codigo == -1:
                 return
@@ -152,7 +162,6 @@ def baja_producto():
 
     texto = ""
     inicio_baja(texto)
-
 
 
 def modificar_producto():
@@ -243,7 +252,8 @@ def modificar_producto():
 
     except (FileNotFoundError, OSError) as error:
         print(f"\n\033[31mError!: {error}\033[0m")
- 
+
+
 def listar_productos():
     """Muestra los productos y permite ordenarlos o buscarlos."""
     texto = "LISTA DE PRODUCTOS"
@@ -284,7 +294,8 @@ def listar_productos():
                 encontrados = [
                     p
                     for p in productos
-                    if p[PRODUCTOS_CODIGO] != ELIMINADO and p[PRODUCTOS_NOMBRE] == pregunta
+                    if p[PRODUCTOS_CODIGO] != ELIMINADO
+                    and p[PRODUCTOS_NOMBRE] == pregunta
                 ]
 
                 if len(encontrados) == 0:
@@ -313,7 +324,7 @@ def listar_productos():
 
     texto = ""
     inicio_listado(texto)
- 
+
 
 def lista_cabeza_productos():
     """Imprime el encabezado de la tabla de productos (los titulos de cada columna)."""

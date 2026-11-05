@@ -8,7 +8,6 @@ from modulos.listas import (
     USUARIOS_ADMIN,
     USUARIOS_LECTORES,
     PRODUCTOS_STOCK,
-    
     PRODUCTOS_DESCUENTO,
     ELIMINADO,
     USUARIOS_ADMIN,
@@ -67,6 +66,7 @@ def productos_activos(productos):
         if producto[PRODUCTOS_CODIGO] != ELIMINADO:
             activos.append(producto)
     return activos
+
 
 def inicio(texto):
     """Imprime un titulo centrado, sin color (para menus generales)."""
@@ -252,6 +252,7 @@ def busqueda_por_codigo(lista, codigo, i=0):
 
     # caso recursivo: revisamos el siguiente producto
     return busqueda_por_codigo(lista, codigo, i + 1)
+
 
 def ordenar_por_codigo(lista):
     """Imprime la tabla ordenada por codigo."""
