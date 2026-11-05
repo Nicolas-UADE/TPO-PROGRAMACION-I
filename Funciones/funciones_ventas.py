@@ -20,6 +20,7 @@ from modulos.listas import (
     VENTAS_CATEGORIA,
     lista_clientes,
 )
+from Funciones.archivos_productos import reemplazar_producto_archivo, cargar_productos_archivo
 
 from Funciones.funciones_uni import (
     obtener_entero,
@@ -218,6 +219,7 @@ def guardar_cantidad_venta(posicion_venta, posicion_producto, nueva_cantidad):
 
 def alta_venta():
     """Carga una venta nueva. Permite agregar varios productos antes de confirmar."""
+    refrescar_productos()
     texto = "ALTA DE VENTAS"
     inicio_alta(texto)
 
@@ -328,6 +330,7 @@ def alta_venta():
 
 def baja_venta():
     """Elimina una venta (o todos los productos de esa venta si tiene varios items)."""
+    refrescar_productos()
     texto = "BAJA DE VENTAS"
     inicio_baja(texto)
 
@@ -367,6 +370,7 @@ def baja_venta():
 
 def modificar_venta():
     """Permite modificar el cliente, la fecha o la cantidad de un producto de una venta."""
+    refrescar_productos()
     texto = "MODIFICACION DE VENTAS"
     inicio_modificar(texto)
 
@@ -493,6 +497,7 @@ def modificar_venta():
 
 def listar_ventas():
     """Muestra el listado de ventas, con distintas formas de filtrarlas."""
+    refrescar_productos()
     texto = "LISTA DE VENTAS"
     inicio_listado(texto)
 
@@ -1001,3 +1006,7 @@ def obtener_nombre_producto(codigo):
         return "ELIMINADO"
 
     return PRODUCTOS[posicion][PRODUCTOS_NOMBRE]
+
+def refrescar_productos():
+    """Vuelve a leer productos.txt y actualiza la lista PRODUCTOS en el lugar."""
+    PRODUCTOS[:] = cargar_productos_archivo()
