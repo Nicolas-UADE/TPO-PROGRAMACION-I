@@ -83,12 +83,13 @@ def reemplazar_producto_archivo(codigo, producto_nuevo):
         with open(ARCHIVO_PRODUCTOS, "r", encoding="utf-8") as archivo:
             with open(ARCHIVO_AUXILIAR, "w", encoding="utf-8") as auxiliar:
                 for linea in archivo:
-                    producto = convertir_producto(linea)
-                    if producto[0] == codigo:
-                        auxiliar.write(preparar_linea_producto(producto_nuevo))
-                        encontrado = True
-                    else:
-                        auxiliar.write(linea)
+                    if linea.strip() != "":
+                        producto = convertir_producto(linea)
+                        if producto[0] == codigo:
+                            auxiliar.write(preparar_linea_producto(producto_nuevo))
+                            encontrado = True
+                        else:
+                            auxiliar.write(linea)
 
         if encontrado:
             os.replace(ARCHIVO_AUXILIAR, ARCHIVO_PRODUCTOS)
@@ -96,8 +97,8 @@ def reemplazar_producto_archivo(codigo, producto_nuevo):
 
         os.remove(ARCHIVO_AUXILIAR)
         return False
-    except (OSError, ValueError, IndexError):
-        print("No se pudo modificar el archivo de productos.")
+    except (OSError, ValueError, IndexError) as error:
+        print(f"No se pudo modificar el archivo de productos. Motivo: {error}")
         if os.path.exists(ARCHIVO_AUXILIAR):
             os.remove(ARCHIVO_AUXILIAR)
         return False
