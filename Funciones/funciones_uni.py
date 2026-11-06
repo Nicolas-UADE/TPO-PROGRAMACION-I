@@ -26,22 +26,14 @@ def generador_de_id(lista):
     return nuevo_id
 
 
+import re
+
 def validar_email(email):
-    """Chequea que el email tenga formato valido."""
-    if email.count("@") != 1 or " " in email:
-        return False
-
-    usuario, dominio = email.split("@")
-    partes = dominio.split(".")
-
-    if usuario == "" or len(partes) < 2:
-        return False
-
-    for parte in partes:
-        if parte == "" or not parte.replace("-", "").isalnum():
-            return False
-
-    return len(partes[-1]) >= 2 and partes[-1].isalpha()
+    """Chequea que el email tenga formato valido (cualquier dominio)."""
+    patron = r"[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}"
+    if re.fullmatch(patron, email):
+        return True
+    return False
 
 
 def recortar_texto(texto, ancho_maximo):
